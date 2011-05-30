@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.cockpitconfig.objects.CommunicationMapper">
+
+ <resultMap id="CommunicationResultMap" type="Communication">
+	 <id property="id" column="COMM_ID" />
+	 <result property="medium" column="LABEL" />
+ </resultMap>
+
+ <resultMap id="CriteriaResultMap" type="Criteria">
+ 	<id property="id" column="CRI_ID" />
+ 	<result property="condition" column="LABEL" />
+ </resultMap>
+
+ <resultMap id="TimeFrameResultMap" type="TimeFrame">
+ 	<id property="id" column="TIME_ID" />
+ 	<result property="frame" column="LABEL" />
+ </resultMap>
+
+ <resultMap id="NotificationLevelResultMap" type="NotificationLevel">
+ 	<id property="id" column="NOTI_ID" />
+ 	<result property="level" column="LABEL" />
+ </resultMap>
+
+ <resultMap id="AssertionGroupResultMap" type="AssertionGroup">
+ 	<id property="id" column="ASSERTION_PK" />
+ 	<result property="constraintName" column="LABEL" />
+ 	<result property="communicationID" column="COMMUNICATION_ID" />
+ </resultMap>
+
+ <resultMap id="CommunicationViaEmailResultMap" type="CommunicationViaEmail">
+ 	<id property="id" column="COMMEMAIL_PK" />
+ 	<result property="assertionGroupID" column="ASSGROUP_ID" />
+ 	<result property="recipents" column="EMAILRECIPENTS" />
+ </resultMap>
+
+ <resultMap id="AssertionConditionResultMap" type="AssertionCondition">
+ 	<id property="id" column="ASSERTIONCOND_PK" />
+	<result property="criteriaID" column="CRITERIA_ID" />
+	<result property="minVal" column="MIN_VALUE" />
+	<result property="maxVal" column="MAX_VALUE" />
+	<result property="minDelta" column="MIN_DELTA" />
+	<result property="maxDelta" column="MAX_DELTA" />
+	<result property="timeFrameID" column="TIMEFRAME_ID" />
+	<result property="notificationID" column="NOTIFICATION_NAME" />
+	<result property="assertionGroupID" column="ASSERTIONGROUP_ID" />
+	<result property="assertionIndex" column="ASSERTION_INDEX" />
+ </resultMap>
+
+ <resultMap id="TimeConstraintsResultMap" type="TimeConstraints">
+ 	<id property="id" column="TIME_PK" />
+	<result property="assertionGroupID" column="ASSGRP_ID" />
+	<result property="monday" column="MONDAY" />
+	<result property="tuesday" column="TUESDAY" />
+	<result property="wednesday" column="WEDNESDAY" />
+	<result property="thursday" column="THURSDAY" />
+	<result property="friday" column="FRIDAY" />
+	<result property="saturday" column="SATURDAY" />
+	<result property="sunday" column="SUNDAY" />
+	<result property="startHour" column="START_HOUR" />
+	<result property="endHour" column="END_HOUR" />
+	<result property="startMin" column="START_MIN" />
+	<result property="endMin" column="END_MIN" />
+ </resultMap>
+
+ <select id="getMediumByID" parameterType="int" resultMap="CommunicationResultMap">
+	  select * from communication where COMM_ID = (#{id})
+ </select>
+
+ <select id="getAllConditions" resultMap="CriteriaResultMap">
+ 	  select * from criteria
+ </select>
+
+ <select id="getConditionByID" parameterType="int" resultMap="CriteriaResultMap">
+ 	  select * from criteria where CRI_ID = (#{id})
+ </select>
+
+ <select id="getAllFrames"  resultMap="TimeFrameResultMap">
+ 	  select * from timeframe
+ </select>
+
+ <select id="getFrameByID" parameterType="int" resultMap="TimeFrameResultMap">
+ 	  select * from timeframe where TIME_ID = (#{id})
+ </select>
+
+ <select id="getAllLevels"  resultMap="NotificationLevelResultMap">
+ 	  select * from notificationlevel
+ </select>
+
+ <select id="getLevelByID" parameterType="int" resultMap="NotificationLevelResultMap">
+ 	  select * from notificationlevel where NOTI_ID = (#{id})
+ </select>
+
+ <select id="getLastInsertedID" parameterType="int" resultMap="AssertionGroupResultMap">
+ 	  select * from assertiongroup where ASSERTION_PK = (SELECT max(ASSERTION_PK) from assertiongroup)
+ </select>
+
+ <select id="getPKForConstraint" parameterType="String" resultMap="AssertionGroupResultMap">
+ 	   select * from assertiongroup where LABEL=(#{constraintName})
+ </select>
+
+ <select id="getAllRuleName" resultMap="AssertionGroupResultMap">
+ 	   select * from assertiongroup
+ </select>
+
+  <select id="getRuleInfo" parameterType="AssertionCondition" resultMap="AssertionConditionResultMap">
+		select * from assertioncondition where ASSERTIONGROUP_ID = (#{assertionGroupID})
+ </select>
+
+ <select id="getFrequencyInfo" parameterType="TimeConstraints" resultMap="TimeConstraintsResultMap">
+ 	select * from timeconstraints where ASSGRP_ID = (#{assertionGroupID})
+ </select>
+
+ <select id="getGroupRow" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">
+ 	  select * from assertiongroup where ASSERTION_PK = (#{id})
+ </select>
+
+ <select id="getEmailRowInfo" parameterType="CommunicationViaEmail" resultMap="CommunicationViaEmailResultMap">
+ 	  select * from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
+ </select>
+
+ <select id="setRuleName" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">
+ 	  insert into assertiongroup (LABEL, COMMUNICATION_ID) VALUES (#{constraintName}, #{communicationID})
+ </select>
+
+ <select id="addRule" parameterType="AssertionCondition" resultMap="AssertionConditionResultMap">
+	insert into assertioncondition (CRITERIA_ID, MIN_VALUE, MAX_VALUE, MIN_DELTA, MAX_DELTA, TIMEFRAME_ID,
+	NOTIFICATION_ID, ASSERTIONGROUP_ID, ASSERTION_INDEX)
+	VALUES
+	(#{criteriaID}, #{minVal}, #{maxVal}, #{minDelta}, #{maxDelta}, #{timeFrameID}, #{notificationID},
+	 #{assertionGroupID}, #{assertionIndex})
+ </select>
+
+ <select id="setRuleTime" parameterType="TimeConstraints" resultMap="TimeConstraintsResultMap">
+ 	  insert into timeconstraints (ASSGRP_ID, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY,
+ 	  START_HOUR, START_MIN, END_HOUR, END_MIN)
+ 	  VALUES
+ 	  (#{assertionGroupID}, #{monday}, #{tuesday}, #{wednesday}, #{thursday}, #{friday}, #{saturday}, #{sunday},
+ 	   #{startHour}, #{startMin}, #{endHour}, #{endMin})
+ </select>
+
+ <select id="addRecipents" parameterType="CommunicationViaEmail" resultMap="CommunicationViaEmailResultMap">
+ 	  insert into communicationviaemail (ASSGROUP_ID, EMAILRECIPENTS)
+ 	  VALUES
+ 	  (#{assertionGroupID}, #{recipents})
+ </select>
+
+ <select id="updateCommID" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">
+ 	  update assertiongroup set COMMUNICATION_ID = (#{communicationID}) where ASSERTION_PK = (#{id})
+ </select>
+
+ <select id="deleteRulesWithID" parameterType="int" resultMap="AssertionConditionResultMap">
+	  delete from assertioncondition where ASSERTIONGROUP_ID = (#{assertionGroupID})
+ </select>
+
+ <select id="removeTimeConstraintsWithGivenID" parameterType="int" resultMap="TimeConstraintsResultMap">
+ 	  delete from timeconstraints where ASSGRP_ID = (#{assertionGroupID})
+ </select>
+
+ <select id="removeEmailRecipentWithGivenID" parameterType="CommunicationViaEmail" resultMap="CommunicationViaEmailResultMap">
+ 	  delete from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
+ </select>
+
+ </mapper>

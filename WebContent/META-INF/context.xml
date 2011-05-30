@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context docBase="CockpitConfig" path="/CockpitConfig">
+
+<Resource name="jdbc/Cockpit" auth="Container"
+            type="javax.sql.DataSource"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://localhost:3306/Cockpit"
+            username="root"
+            password="elca"
+            maxActive="100" maxIdle="30" maxWait="10000"
+            removeAbandoned="true"
+            removeAbandonedTimeout="60"
+            logAbandoned="true"
+            />
+
+</Context>
