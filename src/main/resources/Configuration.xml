@@ -43,7 +43,7 @@
  </environments>
 
 	<mappers>
-		<mapper resource="com/cockpitconfig/objects/CommunicationMapper.xml" />
+		<mapper resource="CommunicationMapper.xml" />
 	</mappers>
 
 </configuration>
