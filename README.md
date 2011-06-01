@@ -20,5 +20,6 @@ Who’s behind this?
 ==================
 ELCA Informatique SA, Lausanne
 
-Licence:
+Licence
 ========
+This tool is licensed under the terms of the GNU General Public License - version 3 or later, as published by the Free Software Foundation: http://www.gnu.org/licenses/gpl.html.
