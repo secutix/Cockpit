@@ -88,6 +88,8 @@ create table NOTIFICATIONOCCURRENCE (
 		TIMEOCCUR time not null,
 		DATEOCCUR date not null,
 		ASSERTIONCONDITION_PK int,
+		ALERTTYPE varchar(255),
+		DESCRIPTION varchar(255),
 		foreign key (ASSERTIONCONDITION_PK) references ASSERTIONCONDITION(ASSERTIONCOND_PK) on delete cascade
 );
 
@@ -124,4 +126,11 @@ create table COMMUNICATIONVIAEMAIL (
 		ASSGROUP_ID int not null,
 		EMAILRECIPENTS varchar(255),
 		foreign key (ASSGROUP_ID) references ASSERTIONGROUP(ASSERTION_PK) on delete cascade
+);
+
+drop table if exists SOURCES;
+create table SOURCES (
+		SOURCES_PK int not null AUTO_INCREMENT primary key,
+		SOURCE_URL varchar(255) not null,
+		DESCRIPTION varchar(255)
 );

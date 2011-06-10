@@ -6,12 +6,14 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.cockpitconfig.objects.NotificationLevel;
+import com.cockpitconfig.objects.NotificationOccurrences;
 
-public class NotificationLevelDAO {
+import java.util.HashMap;
+
+public class NotificationOccurrencesDAO {
 	private SqlSessionFactory sf;
 	//constructor will receive a myBatis sessionFactory object
-	public NotificationLevelDAO (SqlSessionFactory containerSessionFactory) {
+	public NotificationOccurrencesDAO (SqlSessionFactory containerSessionFactory) {
 
 		if(containerSessionFactory==null) {
 			System.err.println("Error: could not load myBatis sessionFactory");
@@ -19,32 +21,31 @@ public class NotificationLevelDAO {
 		sf = containerSessionFactory;
 	}
 
-	public ArrayList<NotificationLevel> getAllNotificationLevels() throws PersistenceException {
+	public ArrayList<NotificationOccurrences> getAlerts(HashMap tempHashMap) throws PersistenceException {
+		ArrayList<NotificationOccurrences> alerts = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<NotificationLevel> levels = (ArrayList<NotificationLevel>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllLevels");
-
-			if (levels == null) {
+			alerts = (ArrayList<NotificationOccurrences>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getNotifications", tempHashMap);
+			if (alerts == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-			return levels;
 		} finally {
 			session.close();
 		}
-
+		return alerts;
 	}
 
-	public ArrayList<NotificationLevel> getNotificationLevelByID(int getID) throws PersistenceException {
+	public int getTotalCount() throws PersistenceException {
+		Integer a = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<NotificationLevel> levels = (ArrayList<NotificationLevel>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getLevelByID", getID);
-			if (levels == null) {
+			a = (Integer) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getNotificationsCount");
+			if (a == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-
-			return levels;
 		} finally {
 			session.close();
 		}
+		return a;
 	}
 }

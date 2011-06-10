@@ -21,6 +21,7 @@ public class AssertionGroupDAO {
 	}
 
 	public void setConstraintName (AssertionGroup assGrp) throws PersistenceException {
+		System.out.println("Sapan");
 		SqlSession session = sf.openSession();
 		try {
 			session.selectList("com.cockpitconfig.objects.CommunicationMapper.setRuleName", assGrp);
@@ -30,6 +31,7 @@ public class AssertionGroupDAO {
 	}
 
 	public int getPKForRule (String ruleName) throws PersistenceException {
+		System.out.println("Pulkit");
 		SqlSession session = sf.openSession();
 		try {
 			ArrayList<AssertionGroup> getRuleRow = (ArrayList<AssertionGroup>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getPKForConstraint", ruleName);

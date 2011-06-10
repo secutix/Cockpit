@@ -1,3 +1,13 @@
+var showWelcomeScreen = function () {
+	//var obj = document.getElementById('body-frame');
+	document.getElementById('body-frame').src = 'recentActivityinfo.htm';
+}
+
+var showManageSourceScreen = function () {
+	//var obj = document.getElementById('body-frame');
+	document.getElementById('body-frame').src = 'manageSource.htm';
+}
+
 var showAssertionScreen = function () {
 	//var obj = document.getElementById('body-frame');
 	document.getElementById('body-frame').src = 'assertion.htm';
@@ -19,17 +29,23 @@ Ext.onReady(function() {
 			xtype		:'buttongroup',
 			width    	: document.getElementById("header-div").offsetWidth,
             items	: [{
+                text	: 'Activity',
+                width 	: document.getElementById("header-div").offsetWidth/7,
+                scale	: 'large',
+                handler : showWelcomeScreen
+            },{
+                text	: 'Manage Source',
+                width 	: document.getElementById("header-div").offsetWidth/7,
+                scale	: 'large',
+                handler : showManageSourceScreen
+            },{
                 text	: 'Alarm Monitoring',
-                width 	: document.getElementById("header-div").offsetWidth/6,
+                width 	: document.getElementById("header-div").offsetWidth/7,
                 scale	: 'large',
                 handler : showAssertionScreen
             },{
-                text	: 'Recorded Days',
-                width 	: document.getElementById("header-div").offsetWidth/6,
-                scale	: 'large'
-            },{
                 text	: 'System',
-                width 	: document.getElementById("header-div").offsetWidth/6,
+                width 	: document.getElementById("header-div").offsetWidth/7,
                //iconCls: 'add24',
                 scale	: 'large',
                 handler : showSystemInfo

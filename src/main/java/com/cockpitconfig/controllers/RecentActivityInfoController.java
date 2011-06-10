@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-public class GraphInfoController extends AbstractController{
+public class RecentActivityInfoController extends AbstractController{
 
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ModelAndView mav = new ModelAndView("GraphInfo", "System", "S");
+        ModelAndView mav = new ModelAndView("RecentActivityInfo", "System", "S");
         return mav;				// return modelandview object
     }
 }

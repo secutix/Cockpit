@@ -16,5 +16,7 @@ xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.spri
     <bean name="/assertion.htm" class="com.cockpitconfig.controllers.AssertionController" ></bean>
     <bean name="/cockpit.htm" class="com.cockpitconfig.controllers.CockpitWelcomeScreenController" ></bean>
     <bean name="/system.htm" class="com.cockpitconfig.controllers.SystemController" ></bean>
-    <bean name="/graphinfo.htm" class="com.cockpitconfig.controllers.GraphInfoController" ></bean>
+    <bean name="/recentActivityinfo.htm" class="com.cockpitconfig.controllers.RecentActivityInfoController" ></bean>
+    <bean name="/manageSource.htm" class="com.cockpitconfig.controllers.ManageSourceController" ></bean>
+    <bean name="/recentActivity.htm" class="com.cockpitconfig.controllers.RecentActivityController" ></bean>
 </beans>

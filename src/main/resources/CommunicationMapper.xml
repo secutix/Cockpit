@@ -23,6 +23,15 @@
  	<result property="level" column="LABEL" />
  </resultMap>
 
+ <resultMap id="NotificationOccurrencesResultMap" type="NotificationOccurrences">
+ 	<id property="id" column="NOTIOCC_ID" />
+ 	<result property="dateOccur" column="TIMEOCCUR" />
+ 	<result property="timeOccur" column="DATEOCCUR" />
+ 	<result property="type" column="ALERTTYPE" />
+ 	<result property="description" column="DESCRIPTION" />
+ 	<result property="assertionConditionID" column="ASSERTIONCONDITION_PK" />
+ </resultMap>
+
  <resultMap id="AssertionGroupResultMap" type="AssertionGroup">
  	<id property="id" column="ASSERTION_PK" />
  	<result property="constraintName" column="LABEL" />
@@ -33,6 +42,15 @@
  	<id property="id" column="COMMEMAIL_PK" />
  	<result property="assertionGroupID" column="ASSGROUP_ID" />
  	<result property="recipents" column="EMAILRECIPENTS" />
+ </resultMap>
+
+ <resultMap id="SourcesResultMap" type="Sources">
+ 	<id property="id" column="SOURCES_PK" />
+ 	<result property="url" column="SOURCE_URL" />
+ 	<result property="description" column="DESCRIPTION" />
+ </resultMap>
+
+ <resultMap id="Integer" type="Integer">
  </resultMap>
 
  <resultMap id="AssertionConditionResultMap" type="AssertionCondition">
@@ -118,6 +136,22 @@
 
  <select id="getEmailRowInfo" parameterType="CommunicationViaEmail" resultMap="CommunicationViaEmailResultMap">
  	  select * from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
+ </select>
+
+ <select id="getAllSources" parameterType="Sources" resultMap="SourcesResultMap">
+ 	  select * from sources
+ </select>
+
+ <select id="getAlerts" parameterType="map" resultMap="NotificationOccurrencesResultMap">
+ 	  select * from notificationoccurrence where (DATEOCCUR GREATER THAN (#{startdate}) AND DATEOCCUR LESS THAN (#{enddate}))
+ </select>
+
+ <select id="getNotifications" parameterType="map" resultMap="NotificationOccurrencesResultMap">
+ 	  SELECT * FROM notificationoccurrence ORDER BY DATEOCCUR DESC LIMIT 0,2
+ </select>
+
+ <select id="getNotificationCount" resultMap="Integer">
+ 	  SELECT COUNT(1) FROM notificationoccurrence
  </select>
 
  <select id="setRuleName" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">
