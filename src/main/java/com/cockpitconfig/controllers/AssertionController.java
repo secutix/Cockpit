@@ -3,7 +3,7 @@ package com.cockpitconfig.controllers;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import net.sf.json.*;
+import net.sf.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,8 +12,21 @@ import org.springframework.web.servlet.mvc.AbstractController;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.cockpitconfig.db.*;
-import com.cockpitconfig.objects.*;
+import com.cockpitconfig.db.AssertionGroupDAO;
+import com.cockpitconfig.db.AssertionConditionDAO;
+import com.cockpitconfig.db.CommunicationViaEmailDAO;
+import com.cockpitconfig.db.TimeConstraintsDAO;
+import com.cockpitconfig.db.TimeFrameDAO;
+import com.cockpitconfig.db.NotificationLevelDAO;
+import com.cockpitconfig.db.CriteriaDAO;
+
+import com.cockpitconfig.objects.AssertionGroup;
+import com.cockpitconfig.objects.AssertionCondition;
+import com.cockpitconfig.objects.CommunicationViaEmail;
+import com.cockpitconfig.objects.TimeConstraints;
+import com.cockpitconfig.objects.TimeFrame;
+import com.cockpitconfig.objects.NotificationLevel;
+import com.cockpitconfig.objects.Criteria;
 
 public class AssertionController extends AbstractController {
 

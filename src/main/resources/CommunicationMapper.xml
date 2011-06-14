@@ -23,7 +23,7 @@
  	<result property="level" column="LABEL" />
  </resultMap>
 
- <resultMap id="NotificationOccurrencesResultMap" type="NotificationOccurrences">
+ <resultMap id="NotificationOccurrenceResultMap" type="NotificationOccurrence">
  	<id property="id" column="NOTIOCC_ID" />
  	<result property="dateOccur" column="TIMEOCCUR" />
  	<result property="timeOccur" column="DATEOCCUR" />
@@ -50,9 +50,6 @@
  	<result property="description" column="DESCRIPTION" />
  </resultMap>
 
- <resultMap id="Integer" type="Integer">
- </resultMap>
-
  <resultMap id="AssertionConditionResultMap" type="AssertionCondition">
  	<id property="id" column="ASSERTIONCOND_PK" />
 	<result property="criteriaID" column="CRITERIA_ID" />
@@ -64,6 +61,9 @@
 	<result property="notificationID" column="NOTIFICATION_NAME" />
 	<result property="assertionGroupID" column="ASSERTIONGROUP_ID" />
 	<result property="assertionIndex" column="ASSERTION_INDEX" />
+ </resultMap>
+
+ <resultMap id="MyInteger" type="_integer">
  </resultMap>
 
  <resultMap id="TimeConstraintsResultMap" type="TimeConstraints">
@@ -142,16 +142,12 @@
  	  select * from sources
  </select>
 
- <select id="getAlerts" parameterType="map" resultMap="NotificationOccurrencesResultMap">
- 	  select * from notificationoccurrence where (DATEOCCUR GREATER THAN (#{startdate}) AND DATEOCCUR LESS THAN (#{enddate}))
+ <select id="getNotifications" parameterType="map" resultMap="NotificationOccurrenceResultMap">
+ 	  SELECT * FROM notificationoccurrence ORDER BY DATEOCCUR DESC LIMIT #{start},#{limit}
  </select>
 
- <select id="getNotifications" parameterType="map" resultMap="NotificationOccurrencesResultMap">
- 	  SELECT * FROM notificationoccurrence ORDER BY DATEOCCUR DESC LIMIT 0,2
- </select>
-
- <select id="getNotificationCount" resultMap="Integer">
- 	  SELECT COUNT(1) FROM notificationoccurrence
+ <select id="getNotificationsCount" resultMap="MyInteger">
+ 	  SELECT COUNT(*) FROM notificationoccurrence
  </select>
 
  <select id="setRuleName" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">

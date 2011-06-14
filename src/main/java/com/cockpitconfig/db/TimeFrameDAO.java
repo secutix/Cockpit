@@ -22,30 +22,31 @@ public class TimeFrameDAO {
 	}
 
 	public ArrayList<TimeFrame> getAllTimeFrames() throws PersistenceException {
+		ArrayList<TimeFrame> frames = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<TimeFrame> frames = (ArrayList<TimeFrame>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllFrames");
+			frames = (ArrayList<TimeFrame>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllFrames");
 			//assertNotNull("Medium list is null",comm);
 			if (frames == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
-			}			return frames;
+			}
 		} finally {
 			session.close();
 		}
+		return frames;
 	}
 
 	public ArrayList<TimeFrame> getTimeFrameByID(int getID) throws PersistenceException {
+		ArrayList<TimeFrame> frames = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<TimeFrame> frames = (ArrayList<TimeFrame>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getFrameByID", getID);
-			if (frames == null) {
+			 frames = (ArrayList<TimeFrame>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getFrameByID", getID);
+			 if (frames == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
-			}
-
-			return frames;
+			 }
 		} finally {
 			session.close();
 		}
+		return frames;
 	}
-
 }

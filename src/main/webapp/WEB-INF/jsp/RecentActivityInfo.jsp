@@ -25,7 +25,7 @@ Ext.onReady(function(){
 
     var fromDate = function() {
     	return new Ext.form.DateField ({
-    		fieldLabel		: 'Fraom',
+    		fieldLabel		: 'From',
 	    	id				: 'id-from',
 	    	name			: 'fromdate',
 	    	width			: 130,
@@ -52,10 +52,9 @@ Ext.onReady(function(){
 
     var getURL = function() {
     	var temp = Ext.getCmp('id-to').getValue().format('Y-m-d');
-    	alert(temp);
     }
 
-    var addButton = function() {
+/*    var addButton = function() {
     	return	new Ext.Button ({
     		text		: 'OK',
     		//bodyStyle	: 'padding-bottom:1110px;',
@@ -67,7 +66,7 @@ Ext.onReady(function(){
         		}
         	}
         });
-    };
+    };*/
 
     var durationForm = new Ext.FormPanel({
     	border		: false,
@@ -90,10 +89,6 @@ Ext.onReady(function(){
              	    columnWidth		: .17,
                     layout			: 'form',
                     items			: [fromDate()]
-                },{
-             	    columnWidth		: .17,
-                    layout			: 'form',
-                    items			: [addButton()]
                 }]
           }]
         }]
@@ -101,19 +96,15 @@ Ext.onReady(function(){
 
     durationForm.render(Ext.getBody());
 
-
-
-
     var store = new Ext.data.Store ({
         //remoteSort	: true,
         //baseParams	: {fromDate:Ext.getCmp('id-to').getValue().format('Y-m-d'), toDate:Ext.getCmp('id-to').getValue().format('Y-m-d')},
         //sortInfo	: {field:'lastpost', direction:'DESC'},
         autoLoad	: { params:
-        					{start:0, limit:2}
+        					{start:0, limit:10}
         			  },
 
         proxy	: new Ext.data.HttpProxy({
-            //url: 'http://extjs.com/forum/topics-browse-remote.php'
         	url: 'recentActivity.htm'
         }),
 
@@ -132,12 +123,9 @@ Ext.onReady(function(){
     store.on({
         'beforeload': {
             fn: function(store, options){
-                //console.info('store beforeload fired, arguments:', arguments);
                 options.params || (options.params = {}); //assert params
                 Ext.apply(options.params, {
-                    //apply stuff to params
-                    //assuming pageNumber has been calculated into this var
-                	fromDate:Ext.getCmp('id-from').getValue()?Ext.getCmp('id-from').getValue().format('Y-m-d'):null,
+                    fromDate:Ext.getCmp('id-from').getValue()?Ext.getCmp('id-from').getValue().format('Y-m-d'):null,
                 	toDate:Ext.getCmp('id-to').getValue()?Ext.getCmp('id-to').getValue().format('Y-m-d'):null,
                 });
             },
@@ -179,13 +167,13 @@ Ext.onReady(function(){
 
       bbar: new Ext.PagingToolbar({
         store			: store,
-        pageSize		:2,
-        displayInfo		:true
+        pageSize		: 10,
+        displayInfo		: true
       }),
 
-
     });
-              grid.render(Ext.getBody());
+
+    grid.render(Ext.getBody());
 });
 
 </script>

@@ -21,17 +21,18 @@ public class CommunicationViaEmailDAO {
 	}
 
 	public ArrayList<CommunicationViaEmail> getEmailRow (int grpID) throws PersistenceException {
+		ArrayList<CommunicationViaEmail> recipents = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<CommunicationViaEmail> recipents = (ArrayList<CommunicationViaEmail>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getEmailRowInfo", grpID);
+			recipents = (ArrayList<CommunicationViaEmail>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getEmailRowInfo", grpID);
 			if (recipents == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-
-			return recipents;
 		} finally {
 			session.close();
 		}
+
+		return recipents;
 	}
 
 	public void removeEmailRecipentWithID (int grpID) throws PersistenceException {

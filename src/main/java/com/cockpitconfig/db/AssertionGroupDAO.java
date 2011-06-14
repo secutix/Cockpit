@@ -6,7 +6,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.cockpitconfig.objects.*;
+import com.cockpitconfig.objects.AssertionGroup;
 
 public class AssertionGroupDAO {
 	private SqlSessionFactory sf;
@@ -21,7 +21,6 @@ public class AssertionGroupDAO {
 	}
 
 	public void setConstraintName (AssertionGroup assGrp) throws PersistenceException {
-		System.out.println("Sapan");
 		SqlSession session = sf.openSession();
 		try {
 			session.selectList("com.cockpitconfig.objects.CommunicationMapper.setRuleName", assGrp);
@@ -31,10 +30,10 @@ public class AssertionGroupDAO {
 	}
 
 	public int getPKForRule (String ruleName) throws PersistenceException {
-		System.out.println("Pulkit");
+		ArrayList<AssertionGroup> getRuleRow = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<AssertionGroup> getRuleRow = (ArrayList<AssertionGroup>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getPKForConstraint", ruleName);
+			getRuleRow = (ArrayList<AssertionGroup>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getPKForConstraint", ruleName);
 			if(getRuleRow == null || getRuleRow.size() == 0) {
 				return -1;
 			} else {
@@ -46,9 +45,10 @@ public class AssertionGroupDAO {
 	}
 
 	public ArrayList<AssertionGroup> getGrpRow (int grpID) throws PersistenceException {
+		ArrayList<AssertionGroup> getGrpRow = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<AssertionGroup> getGrpRow = (ArrayList<AssertionGroup>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getGroupRow", grpID);
+			getGrpRow = (ArrayList<AssertionGroup>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getGroupRow", grpID);
 			if(getGrpRow == null || getGrpRow.size() == 0) {
 				return null;
 			} else {
@@ -80,17 +80,20 @@ public class AssertionGroupDAO {
 	}
 
 	public ArrayList<AssertionGroup> getAllrules() throws PersistenceException {
+		ArrayList<AssertionGroup> rules = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<AssertionGroup> rules = (ArrayList<AssertionGroup>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllRuleName");
+			rules = (ArrayList<AssertionGroup>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllRuleName");
 
 			if (rules == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-			return rules;
+
 		} finally {
 			session.close();
 		}
+
+		return rules;
 	}
 
 }

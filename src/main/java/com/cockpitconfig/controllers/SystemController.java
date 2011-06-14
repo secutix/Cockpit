@@ -18,22 +18,6 @@ public class SystemController extends AbstractController{
         mav.addObject("OSVersion", System.getProperty("os.version"));
         mav.addObject("OSArchitecture", System.getProperty("os.arch"));
 
-        //request.setAttribute("JVMVendor", System.getProperty("java.vendor"));
-		/*response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Cache-Control", "no-cache");
-        JSONObject jsonResult = new JSONObject();
-
-        jsonResult.put("JVMVendor", System.getProperty("java.vendor"));
-        jsonResult.put("JVMVersion", System.getProperty("java.version"));
-        jsonResult.put("JVMVendorURL", System.getProperty("java.vendor.url"));
-        jsonResult.put("OSName", System.getProperty("os.name"));
-        jsonResult.put("OSVersion", System.getProperty("os.version"));
-        jsonResult.put("OSArchitectire", System.getProperty("os.arch"));
-
-        response.getWriter().write(jsonResult.toString());
-        response.getWriter().close();*/
-        //getServletContext().getRequestDispatcher("/system.htm").forward(request, response);
-
         return mav;				// return modelandview object
     }
 }

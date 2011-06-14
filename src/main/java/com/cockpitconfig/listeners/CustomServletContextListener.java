@@ -22,6 +22,7 @@ public class CustomServletContextListener implements ServletContextListener {
     	 ctx.setAttribute("sqlSessionFactory", sqlSessionFactory); //set the sqlSessionFactory as an application scoped variable
      } catch(Exception e){
     	 System.out.println("FATAL ERROR: myBatis could not be initialized");
+    	 System.out.println(e);
     	 System.exit(1);
     }
  }

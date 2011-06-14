@@ -15,7 +15,7 @@
  	<typeAlias alias="Criteria" type="com.cockpitconfig.objects.Criteria"/>
  	<typeAlias alias="TimeFrame" type="com.cockpitconfig.objects.TimeFrame"/>
  	<typeAlias alias="NotificationLevel" type="com.cockpitconfig.objects.NotificationLevel"/>
- 	<typeAlias alias="NotificationOccurrences" type="com.cockpitconfig.objects.NotificationOccurrences"/>
+ 	<typeAlias alias="NotificationOccurrence" type="com.cockpitconfig.objects.NotificationOccurrence"/>
  	<typeAlias alias="TimeConstraints" type="com.cockpitconfig.objects.TimeConstraints"/>
  	<typeAlias alias="CommunicationViaEmail" type="com.cockpitconfig.objects.CommunicationViaEmail"/>
  	<typeAlias alias="AssertionGroup" type="com.cockpitconfig.objects.AssertionGroup"/>

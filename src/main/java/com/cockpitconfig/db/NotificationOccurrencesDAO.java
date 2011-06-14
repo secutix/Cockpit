@@ -6,7 +6,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.cockpitconfig.objects.NotificationOccurrences;
+import com.cockpitconfig.objects.NotificationOccurrence;
 
 import java.util.HashMap;
 
@@ -21,11 +21,11 @@ public class NotificationOccurrencesDAO {
 		sf = containerSessionFactory;
 	}
 
-	public ArrayList<NotificationOccurrences> getAlerts(HashMap tempHashMap) throws PersistenceException {
-		ArrayList<NotificationOccurrences> alerts = null;
+	public ArrayList<NotificationOccurrence> getAlerts(HashMap tempHashMap) throws PersistenceException {
+		ArrayList<NotificationOccurrence> alerts = null;
 		SqlSession session = sf.openSession();
 		try {
-			alerts = (ArrayList<NotificationOccurrences>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getNotifications", tempHashMap);
+			alerts = (ArrayList<NotificationOccurrence>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getNotifications", tempHashMap);
 			if (alerts == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}

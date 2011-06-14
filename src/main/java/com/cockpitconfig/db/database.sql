@@ -85,8 +85,8 @@ create table ASSERTIONCONDITION (
 drop table if exists NOTIFICATIONOCCURRENCE;
 create table NOTIFICATIONOCCURRENCE (
 		NOTIOCC_PK int not null AUTO_INCREMENT primary key,
-		TIMEOCCUR time not null,
-		DATEOCCUR date not null,
+		TIMEOCCUR time,
+		DATEOCCUR date,
 		ASSERTIONCONDITION_PK int,
 		ALERTTYPE varchar(255),
 		DESCRIPTION varchar(255),

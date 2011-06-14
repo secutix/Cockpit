@@ -20,31 +20,32 @@ public class NotificationLevelDAO {
 	}
 
 	public ArrayList<NotificationLevel> getAllNotificationLevels() throws PersistenceException {
+		ArrayList<NotificationLevel> levels = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<NotificationLevel> levels = (ArrayList<NotificationLevel>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllLevels");
-
+			levels = (ArrayList<NotificationLevel>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllLevels");
 			if (levels == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-			return levels;
 		} finally {
 			session.close();
 		}
 
+		return levels;
 	}
 
 	public ArrayList<NotificationLevel> getNotificationLevelByID(int getID) throws PersistenceException {
+		ArrayList<NotificationLevel> levels = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<NotificationLevel> levels = (ArrayList<NotificationLevel>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getLevelByID", getID);
+			levels = (ArrayList<NotificationLevel>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getLevelByID", getID);
 			if (levels == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-
-			return levels;
 		} finally {
 			session.close();
 		}
+
+		return levels;
 	}
 }

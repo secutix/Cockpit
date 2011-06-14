@@ -19,33 +19,33 @@ public class CriteriaDAO {
 	}
 
 	public ArrayList<Criteria> getAllCriterias() throws PersistenceException {
+		ArrayList<Criteria> conditions = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<Criteria> conditions = (ArrayList<Criteria>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllConditions");
+			conditions = (ArrayList<Criteria>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllConditions");
 			if (conditions == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-
-			return conditions;
 		}
 		finally {
 			session.close();
 		}
 
+		return conditions;
 	}
 
 	public ArrayList<Criteria> getCriteriaByID(int getID) throws PersistenceException {
+		ArrayList<Criteria> conditions = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<Criteria> conditions = (ArrayList<Criteria>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getConditionByID", getID);
+			conditions = (ArrayList<Criteria>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getConditionByID", getID);
 			if (conditions == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-
-			return conditions;
-		}
-		finally {
+		} finally {
 			session.close();
 		}
+
+		return conditions;
 	}
 }

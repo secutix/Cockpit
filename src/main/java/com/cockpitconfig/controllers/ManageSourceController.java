@@ -10,8 +10,8 @@ import org.springframework.web.servlet.mvc.AbstractController;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.cockpitconfig.db.*;
-import com.cockpitconfig.objects.*;
+import com.cockpitconfig.db.SourcesDAO;
+import com.cockpitconfig.objects.Sources;
 
 public class ManageSourceController extends AbstractController {
 

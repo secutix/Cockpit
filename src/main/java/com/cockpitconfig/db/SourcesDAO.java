@@ -20,16 +20,17 @@ public class SourcesDAO {
 	}
 
 	public ArrayList<Sources> getSources () throws PersistenceException {
+		ArrayList<Sources> src = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<Sources> src = (ArrayList<Sources>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllSources");
+			 src = (ArrayList<Sources>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllSources");
 			if (src == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-
-			return src;
 		} finally {
 			session.close();
 		}
+
+		return src;
 	}
 }

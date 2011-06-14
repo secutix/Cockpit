@@ -30,17 +30,21 @@ public class AssertionConditionDAO {
 	}
 
 	public ArrayList<AssertionCondition> getRuleRow(int grpID) throws PersistenceException {
+		ArrayList<AssertionCondition> ruleRow = null;
 		SqlSession session = sf.openSession();
+
 		try {
-			ArrayList<AssertionCondition> ruleRow = (ArrayList<AssertionCondition>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getRuleInfo", grpID);
-			//assertNotNull("Medium list is null",comm);
+			ruleRow = (ArrayList<AssertionCondition>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getRuleInfo", grpID);
+
 			if (ruleRow == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-			return ruleRow;
+
 		} finally {
 			session.close();
 		}
+
+		return ruleRow;
 	}
 
 	public void removeRulesWithID (int grpID) throws PersistenceException {

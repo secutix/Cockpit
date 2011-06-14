@@ -37,15 +37,17 @@ public class TimeConstraintsDAO {
 	}
 
 	public ArrayList<TimeConstraints> getfrequencyRow(int grpID) throws PersistenceException {
+		ArrayList<TimeConstraints> frequencyRow = null;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<TimeConstraints> frequencyRow = (ArrayList<TimeConstraints>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getFrequencyInfo", grpID);
+			frequencyRow = (ArrayList<TimeConstraints>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getFrequencyInfo", grpID);
 			if (frequencyRow == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-			return frequencyRow;
 		} finally {
 			session.close();
 		}
+
+		return frequencyRow;
 	}
 }

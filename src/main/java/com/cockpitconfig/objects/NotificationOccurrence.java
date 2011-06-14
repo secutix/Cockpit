@@ -5,7 +5,7 @@ import java.util.Date;
 
 import net.sf.json.JSONObject;
 
-public class NotificationOccurrences {
+public class NotificationOccurrence {
 
 	private int id;
 	private Date dateOccur;
