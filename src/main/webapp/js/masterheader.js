@@ -5,7 +5,7 @@ var showWelcomeScreen = function () {
 
 var showManageSourceScreen = function () {
 	//var obj = document.getElementById('body-frame');
-	document.getElementById('body-frame').src = 'manageSource.htm';
+	document.getElementById('body-frame').src = 'manageSourceInfo.htm';
 }
 
 var showAssertionScreen = function () {

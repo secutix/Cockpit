@@ -35,17 +35,17 @@ public class NotificationOccurrencesDAO {
 		return alerts;
 	}
 
-	public int getTotalCount() throws PersistenceException {
-		Integer a = null;
+	public int getTotalCount(HashMap tempHashMap) throws PersistenceException {
+		Integer totalNumberOfAlerts = null;
 		SqlSession session = sf.openSession();
 		try {
-			a = (Integer) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getNotificationsCount");
-			if (a == null) {
+			totalNumberOfAlerts = (Integer) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getNotificationsCount", tempHashMap);
+			if (totalNumberOfAlerts == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
 		} finally {
 			session.close();
 		}
-		return a;
+		return totalNumberOfAlerts;
 	}
 }

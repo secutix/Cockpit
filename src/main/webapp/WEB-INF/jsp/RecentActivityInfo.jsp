@@ -84,11 +84,11 @@ Ext.onReady(function(){
                 },{
                 	columnWidth		: .17,
                     layout			: 'form',
-                    items			: [toDate()]
+                    items			: [fromDate()]
                 },{
              	    columnWidth		: .17,
                     layout			: 'form',
-                    items			: [fromDate()]
+                    items			: [toDate()]
                 }]
           }]
         }]
@@ -113,7 +113,7 @@ Ext.onReady(function(){
             totalProperty	: 'totalCount',
             idProperty		: 'threadid',
             fields: [
-				{name: 'Date', type:'date', dateFormat: 'timestamp'},
+				{name: 'Date', type:'string'},
                 {name: 'Type', type: 'string'},
                 {name: 'Description', type: 'string'}
             ]
@@ -133,13 +133,24 @@ Ext.onReady(function(){
         }
     });
 
+    function renderType(val){
+        if(val == "INFO"){
+            return '<span style="color:green;">' + val;
+        } else if (val == "WARNING") {
+        	return '<span style="color:orange;">' + val;
+    	} else if (val == "ALERT") {
+    		return '<span style="color:red;">' + val;
+    	}
+        return val;
+    }
+
     var grid = new Ext.grid.GridPanel({
         renderTo			: Ext.getBody(),
         width				: 700,
         height				: 500,
         frame				: true,
         title				: 'Available Sources',
-        trackMouseOver		: false,
+        trackMouseOver		: true,
     	autoExpandColumn	: 'topic',
         store				: store,
 
@@ -148,13 +159,14 @@ Ext.onReady(function(){
             header		: "Date",
             dataIndex	: 'Date',
             width		: 420,
-            //renderer	: renderTopic,
+    //        renderer	: formatDate,
             sortable	: true
         },{
             header		: "Type",
             dataIndex	: 'Type',
             width		: 70,
             align		: 'right',
+            renderer	: renderType,
             sortable	: true
         },{
             id			: 'last',

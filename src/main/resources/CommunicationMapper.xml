@@ -25,8 +25,8 @@
 
  <resultMap id="NotificationOccurrenceResultMap" type="NotificationOccurrence">
  	<id property="id" column="NOTIOCC_ID" />
- 	<result property="dateOccur" column="TIMEOCCUR" />
- 	<result property="timeOccur" column="DATEOCCUR" />
+ 	<result property="dateOccur" column="DATEOCCUR" />
+ 	<result property="timeOccur" column="TIMEOCCUR" />
  	<result property="type" column="ALERTTYPE" />
  	<result property="description" column="DESCRIPTION" />
  	<result property="assertionConditionID" column="ASSERTIONCONDITION_PK" />
@@ -138,16 +138,33 @@
  	  select * from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
  </select>
 
- <select id="getAllSources" parameterType="Sources" resultMap="SourcesResultMap">
+ <select id="getSources" parameterType="Sources" resultMap="SourcesResultMap">
  	  select * from sources
  </select>
 
+<select id="getSourceCount" resultMap="MyInteger">
+ 	  select COUNT(*) from sources
+ </select>
+
  <select id="getNotifications" parameterType="map" resultMap="NotificationOccurrenceResultMap">
- 	  SELECT * FROM notificationoccurrence ORDER BY DATEOCCUR DESC LIMIT #{start},#{limit}
+	select * from notificationoccurrence where TRUE
+	<if test="fromdate != null">
+		AND DATEOCCUR &gt; #{fromdate}
+	</if>
+	<if test="todate != null">
+		AND DATEOCCUR &lt; #{todate}
+	</if>
+	ORDER BY DATEOCCUR DESC LIMIT #{start},#{limit}
  </select>
 
  <select id="getNotificationsCount" resultMap="MyInteger">
- 	  SELECT COUNT(*) FROM notificationoccurrence
+	SELECT COUNT(*) FROM notificationoccurrence where TRUE
+	<if test="fromdate != null">
+		AND DATEOCCUR &gt; #{fromdate}
+	</if>
+	<if test="todate != null">
+		AND DATEOCCUR &lt; #{todate}
+	</if>
  </select>
 
  <select id="setRuleName" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">
@@ -190,6 +207,10 @@
 
  <select id="removeEmailRecipentWithGivenID" parameterType="CommunicationViaEmail" resultMap="CommunicationViaEmailResultMap">
  	  delete from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
+ </select>
+
+ <select id="removeSource" parameterType="String" resultMap="SourcesResultMap">
+ 	  delete from sources where SOURCE_URL = (#{url})
  </select>
 
  </mapper>

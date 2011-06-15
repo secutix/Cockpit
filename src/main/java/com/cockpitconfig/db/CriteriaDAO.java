@@ -26,11 +26,9 @@ public class CriteriaDAO {
 			if (conditions == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-		}
-		finally {
+		} finally {
 			session.close();
 		}
-
 		return conditions;
 	}
 
@@ -45,7 +43,6 @@ public class CriteriaDAO {
 		} finally {
 			session.close();
 		}
-
 		return conditions;
 	}
 }

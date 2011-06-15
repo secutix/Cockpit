@@ -26,7 +26,6 @@ public class TimeFrameDAO {
 		SqlSession session = sf.openSession();
 		try {
 			frames = (ArrayList<TimeFrame>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllFrames");
-			//assertNotNull("Medium list is null",comm);
 			if (frames == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}

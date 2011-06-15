@@ -1,5 +1,10 @@
 package com.cockpitconfig.objects;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import net.sf.json.JSONObject;
+
 public class Sources {
 
 	private int id;
@@ -28,5 +33,13 @@ public class Sources {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public JSONObject toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("id", this.id);
+		json.put("url", this.url);
+		json.put("description", this.description);
+		return json;
 	}
 }

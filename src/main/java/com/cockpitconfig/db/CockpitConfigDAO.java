@@ -26,8 +26,6 @@ public class CockpitConfigDAO {
 		try
 		{
 			ArrayList<Communication> comm = (ArrayList<Communication>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getMediumByID", 1);
-			//assertNotNull("Medium list is null",comm);
-
 			if (comm == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}

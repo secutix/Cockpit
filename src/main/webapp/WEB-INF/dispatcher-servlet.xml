@@ -19,4 +19,5 @@ xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.spri
     <bean name="/recentActivityinfo.htm" class="com.cockpitconfig.controllers.RecentActivityInfoController" ></bean>
     <bean name="/manageSource.htm" class="com.cockpitconfig.controllers.ManageSourceController" ></bean>
     <bean name="/recentActivity.htm" class="com.cockpitconfig.controllers.RecentActivityController" ></bean>
+    <bean name="/manageSourceInfo.htm" class="com.cockpitconfig.controllers.ManageSourceInfoController"></bean>
 </beans>

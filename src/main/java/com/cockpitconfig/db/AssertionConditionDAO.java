@@ -32,14 +32,11 @@ public class AssertionConditionDAO {
 	public ArrayList<AssertionCondition> getRuleRow(int grpID) throws PersistenceException {
 		ArrayList<AssertionCondition> ruleRow = null;
 		SqlSession session = sf.openSession();
-
 		try {
 			ruleRow = (ArrayList<AssertionCondition>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getRuleInfo", grpID);
-
 			if (ruleRow == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-
 		} finally {
 			session.close();
 		}

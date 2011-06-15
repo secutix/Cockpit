@@ -84,11 +84,9 @@ public class AssertionGroupDAO {
 		SqlSession session = sf.openSession();
 		try {
 			rules = (ArrayList<AssertionGroup>)session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllRuleName");
-
 			if (rules == null) {
 				throw new PersistenceException();		//TODO: Do Better Error handling
 			}
-
 		} finally {
 			session.close();
 		}

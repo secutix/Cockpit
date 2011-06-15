@@ -33,7 +33,6 @@ public class AssertionController extends AbstractController {
 	private final int INITIAL_VALUE = Integer.MIN_VALUE;
 	private static String REGEX = ":";
 	int lastInsertedGroupIndex = INITIAL_VALUE;
-	//int commMedium = -1;
 
 	@Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -141,16 +140,6 @@ public class AssertionController extends AbstractController {
 			// Remove from Nagios Table
 		}
 	}
-
-	/*private void updateMedium (int mediumID, int grpID) {
-		System.out.println("AC.java");
-		AssertionGroup ag = new AssertionGroup();
-		ag.setCommunicationID(mediumID);
-		ag.setId(grpID);
-		SqlSessionFactory sf = (SqlSessionFactory)getServletContext().getAttribute("sqlSessionFactory");
-		AssertionGroupDAO agDao = new AssertionGroupDAO(sf);
-		agDao.updateCommMedium(ag);
-	}*/
 
 	/**
 	 * Function which return primary key from assertion group table for given ruleName

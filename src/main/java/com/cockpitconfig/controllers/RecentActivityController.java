@@ -34,8 +34,16 @@ public class RecentActivityController extends AbstractController{
 	private void setResponse (HttpServletResponse response, int start, int limit, String fromDate, String toDate) throws Exception {
         HashMap param = new HashMap();
 
-        param.put("fromdate", "2010-09-22");
-        param.put("todate", "2010-09-22");
+        if (fromDate != null && fromDate.isEmpty()) {
+        	fromDate = null;
+        }
+
+        if (toDate != null && toDate.isEmpty()) {
+        	toDate = null;
+        }
+
+        param.put("fromdate", fromDate);
+        param.put("todate", toDate);
         param.put("start", start);
         param.put("limit", limit);
 
@@ -54,7 +62,7 @@ public class RecentActivityController extends AbstractController{
         }
 
         jsonResult.put("topics", jsonItems);
-        jsonResult.put("totalCount", Integer.toString(tempNotiOccu.getTotalCount()));
+        jsonResult.put("totalCount", Integer.toString(tempNotiOccu.getTotalCount(param)));
 
     	response.getWriter().write(jsonResult.toString());
         response.getWriter().close();
