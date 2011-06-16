@@ -56,17 +56,27 @@ insert into CRITERIA values (3, "Unsuccessful Transactions due to Payment failur
 insert into CRITERIA values (4, "Unsuccessful Transactions due to Techincal Glitch");
 insert into CRITERIA values (5, "Dropout Rate");
 
+drop table if exists SOURCES;
+create table SOURCES (
+		SOURCES_PK int not null AUTO_INCREMENT primary key,
+		SOURCE_URL text not null,
+		DESCRIPTION varchar(255)
+);
+
 drop table if exists ASSERTIONGROUP;
 create table ASSERTIONGROUP (
 		ASSERTION_PK int AUTO_INCREMENT primary key,
 		LABEL varchar(255),
+		SOURCE int not null,
 		COMMUNICATION_ID int not null,
+		foreign key (SOURCE) references SOURCES(SOURCES_PK),
 		foreign key (COMMUNICATION_ID) references COMMUNICATION(COMM_ID) on delete cascade
 );
 
 drop table if exists ASSERTIONCONDITION;
 create table ASSERTIONCONDITION (
 		ASSERTIONCOND_PK int not null AUTO_INCREMENT primary key,
+		STREAM text not null,
 		CRITERIA_ID int not null,
 		MIN_VALUE int default null,
 		MAX_VALUE int default null,
@@ -126,11 +136,4 @@ create table COMMUNICATIONVIAEMAIL (
 		ASSGROUP_ID int not null,
 		EMAILRECIPENTS varchar(255),
 		foreign key (ASSGROUP_ID) references ASSERTIONGROUP(ASSERTION_PK) on delete cascade
-);
-
-drop table if exists SOURCES;
-create table SOURCES (
-		SOURCES_PK int not null AUTO_INCREMENT primary key,
-		SOURCE_URL varchar(255) not null,
-		DESCRIPTION varchar(255)
 );

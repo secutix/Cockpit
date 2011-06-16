@@ -147,9 +147,10 @@ Ext.onReady(function(){
     var grid = new Ext.grid.GridPanel({
         renderTo			: Ext.getBody(),
         width				: 700,
+       // waitMsg				: 'Loading',
         height				: 500,
         frame				: true,
-        title				: 'Available Sources',
+        title				: 'Recent Activites',
         trackMouseOver		: true,
     	autoExpandColumn	: 'topic',
         store				: store,
@@ -158,21 +159,21 @@ Ext.onReady(function(){
             id			: 'topic',
             header		: "Date",
             dataIndex	: 'Date',
-            width		: 420,
-    //        renderer	: formatDate,
+            width		: 250,
+    //       renderer	: formatDate,
             sortable	: true
         },{
             header		: "Type",
             dataIndex	: 'Type',
-            width		: 70,
-            align		: 'right',
+            width		: 120,
+            //align		: 'right',
             renderer	: renderType,
             sortable	: true
         },{
             id			: 'last',
             header		: "Description",
             dataIndex	: 'Description',
-            width		: 150,
+            width		: 270,
             //renderer	: renderLast,
             sortable	: true
         }],

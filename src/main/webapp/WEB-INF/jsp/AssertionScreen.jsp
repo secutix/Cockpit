@@ -17,11 +17,7 @@ Ext.onReady(function(){
 
     var bd = Ext.getBody();
 
-    /*
-     * ================  Simple form  =======================
-     */
-    // bd.createChild({tag: 'h2', html: 'Form 1 - V kaery Simple'});
-
+    var streamBoxes = new Array();		// array to store streams comboBox for different rules
     var criteriaBoxes = new Array();		// array to store criteria comboBox for different rules
     var timeFrameBoxes = new Array();		// array to store timeframe comboBox for different rules
     var notificationBoxes = new Array();	// array to store notification comboBox for different rules
@@ -74,7 +70,7 @@ Ext.onReady(function(){
                         allowBlank 		: false,
                         fieldLabel		: 'Name',
                         name			: 'rules',
-                        anchor			: '85%',
+                        anchor			: '20%',
                         displayField	: 'ruleNames',
                         emptyText		: 'Enter Rule Name',
                         valueField		: 'id',
@@ -88,19 +84,60 @@ Ext.onReady(function(){
       return nameField;
     };
 
+    var dropDownSources = new Array();
+    var z = 0;
+
+    // Using JSTL, list of existing sources name is passed to display ir to user
+    <c:forEach items="${sources}" var="sources">
+      dropDownSources[z] = new Array();
+      dropDownSources[z][0] = z.toString();
+      dropDownSources[z][1] = "<c:out escapeXml='false' value="${sources}"/>";
+      z ++;
+    </c:forEach>
+
+    var sourceData = new Ext.data.SimpleStore({
+                    fields	: ['id', 'sources'],
+                    data	: dropDownSources 									// multi-dimensional array
+    });
+
+    // ComboBox which contains all the available sources
+    var SourceList = function()
+    {
+      sourceField = new Ext.form.ComboBox({
+    	  store				: sourceData,
+          mode				: 'local',
+          forceSelection 	: true,
+          allowBlank 		: false,
+          fieldLabel		: 'Sources',
+          resizable			: true,
+          name				: 'sources',
+          anchor			: '85%',
+          displayField		: 'sources',
+          emptyText			: 'Select a Source',
+          valueField		: 'id',
+         	listeners: {
+         		select: function(f,record,index){
+         			showAvailableStreams();
+           		}
+			}
+         });
+
+      return sourceField;
+    };
+
     // Number Field to store information about the rule
     var numberField = function()
     {
       numberBoxes[ruleCount] = new Ext.form.NumberField({
-                      fieldLabel		: '',
-                      name				: 'number',
-                      emptyText			: '',
-                      allowNegative		: false,
-                      //fieldLabel		: '%',
-                      anchor			: '50%',
-                      allowBlank		: false,
-                      valueField 		: 'number'
-                  });
+          fieldLabel		: '',
+          name				: 'number',
+          emptyText			: '',
+          allowNegative		: false,
+          //fieldLabel		: '%',
+          anchor			: '50%',
+          allowBlank		: false,
+          valueField 		: 'number'
+      });
 
       return numberBoxes[ruleCount];
     };
@@ -122,9 +159,9 @@ Ext.onReady(function(){
 	          var existingValues = Ext.util.JSON.decode(response.responseText);		// parameters are passed from controller as a JSON Object
 
 	          for (var i = ruleCount; i > 1; --i){
-	            ruleForms[i].ownerCt.remove(ruleForms[i]);
-	                ruleForms.splice(i,1);
-	                ruleCount--;
+	        	  ruleForms[i].ownerCt.remove(ruleForms[i]);
+	        	  ruleForms.splice(i,1);
+	        	  ruleCount--;
 	          }
 
 	          for (var i = 0; i < existingValues.existingCriteria.length; ++i) {
@@ -236,6 +273,42 @@ Ext.onReady(function(){
        });
    };
 
+
+   /**
+	 * Function to load available streams for a given source
+	 */
+   var showAvailableStreams = function () {
+
+	    Ext.Ajax.request({
+	        url						: 'assertion.htm',
+	        method					: 'POST',
+	        params: {
+	           selectedSource		: sourceField.getRawValue()
+	            },
+	        scope					: this,
+
+	        success: function (response) {
+	        	streamBoxes[ruleCount].setDisabled(false);
+	        	var availableStreams = Ext.util.JSON.decode(response.responseText);
+
+	        	var dropDownStream = new Array(availableStreams.streamCount);
+	        	for (var i = 0; i < availableStreams.streamCount; ++ i) {
+	        		dropDownStream[i] = new Array();
+	        		dropDownStream[i][0] = i.toString();
+	        		dropDownStream[i][1] = availableStreams.streams[i];
+	        	}
+
+	        	var streamStore = new Ext.data.SimpleStore({
+                    fields	: ['id', 'streams'],
+                    data	: dropDownStream 									// multi-dimensional array
+    			});
+
+	        	streamBoxes[ruleCount].bindStore(streamStore);
+	        }
+
+	    });
+	 };
+
 	// When Email as a communication mode is selected this field will be displayed for recipents address
     var emailTextField = new Ext.form.TextField({
     	border			: false,
@@ -258,14 +331,40 @@ Ext.onReady(function(){
             height  	  	: 42,
             defaultType 	: 'field',
             defaults    	: {
-	            anchor 	    	: '20%',
+	            //anchor 	    	: '80%',
 	            allowBlank 		: false,
 	            border			: 'false'
             },
             items : [
-          RuleList()
+          RuleList(), SourceList()
             ]
        };
+
+    var AvailableStreamsList = function()
+    {
+    	streamBoxes[ruleCount] = new Ext.form.ComboBox({
+    		//store			: levels,
+    		mode			: 'local',
+    		forceSelection 	: true,
+    		allowBlank 		: false,
+    		disabled		: true,
+    		//fieldLabel	: 'Generates',
+    		resizable		: true,
+    		name			: 'stream',
+    		emptyText		: 'Select Stream',
+    		anchor			: '70%',
+    		displayField	: 'streams',
+    		valueField		: 'id'
+    		/*listeners: {
+    		  select: function(f,record,index){
+    			  NotificationLevelListIndex = index;
+    			  //doNotificationUpdate(NotificationLevelListIndex);
+    			  }
+    	      }*/
+     	});
+
+      return streamBoxes[ruleCount];
+    };
 
     var dropDownCriteria = new Array();
     var i = 0;
@@ -296,6 +395,7 @@ Ext.onReady(function(){
     	  //fieldLabel	: 'Criterias',
     	  name			: 'criterias',
     	  anchor		: '85%',
+    	  resizable		: true,
     	  emptyText		: 'Select Your Criteria',
     	  displayField	: 'criteria',
     	  valueField	: 'id',
@@ -412,7 +512,7 @@ Ext.onReady(function(){
     	  valueField		: 'id',
     	  listeners: {
     		  select: function(f,record,index){
-    			  //Ext.Msg.alert('Title',i);
+
     			  }
 	      }
       });
@@ -440,7 +540,7 @@ Ext.onReady(function(){
     	  valueField	: 'id',
     	  listeners: {
     		  select: function(f,record,index){
-    			  //Ext.Msg.alert('Title',i);
+
     			  }
        	  }
       });
@@ -448,32 +548,6 @@ Ext.onReady(function(){
       return slopeBoxes[ruleCount];
     };
 
-    var param1 = new Ext.data.SimpleStore({
-        fields: ['id', 'value'],
-        data : [['1','stream 1'],['2','stream 2'],['3', 'stream 3']]
-    });
-
-
-    var streamCombo = function()
-    {
-      return new Ext.form.ComboBox({
-    	  store			: param1,
-    	  mode			: 'local',
-    	  forceSelection: true,
-    	  allowBlank 	: false,
-    	  //fieldLabel	: 'Frames',
-    	  name			: 'stream',
-    	  emptyText		: 'Select Stream',
-    	  anchor		: '70%',
-    	  displayField	: 'value',
-    	  valueField	: 'id',
-    	  listeners: {
-    		  select: function(f,record,index){
-    			  //Ext.Msg.alert('Title',i);
-    			  }
-       	  }
-      });
-    };
    /**
     * Handler to add new rule template when user clicks on '+' button
     */
@@ -555,7 +629,7 @@ Ext.onReady(function(){
                    items:[{
                 	   columnWidth		: .14,
                        layout			: 'form',
-                       items			: [streamCombo()]
+                       items			: [AvailableStreamsList()]
                    },{
                 	   columnWidth		: .25,
                        layout			: 'form',
@@ -748,27 +822,23 @@ Ext.onReady(function(){
       labelAlign	: 'top',
       frame			: true,
       height 		: 55,
-      //id			: 'id-frequency',
       bodyStyle		: 'padding-left:10px;',
       items: [{
         items: [{
           rowWidth		: .5,
           layout		: 'column',
           items	:[{
-            //bodyStyle	: 'padding-top:-50px;',
-            columnWidth	: 0.50,
-            layout		: 'form',
-            items		: [frequencyGroup()]
+              columnWidth	: 0.50,
+              layout		: 'form',
+              items		: [frequencyGroup()]
           },{
-            //bodyStyle	: 'padding-bottom:50px;',
-            columnWidth	: .20,
-            layout		: 'form',
-            items		: [fromTimeField()]
+	          columnWidth	: .20,
+	          layout		: 'form',
+	          items		: [fromTimeField()]
           },{
-            //sbodyStyle	: 'padding-left:50px;',
-            columnWidth	: .20,
-            layout		: 'form',
-            items		: [toTimeField()]
+        	  columnWidth	: .20,
+        	  layout		: 'form',
+        	  items		: [toTimeField()]
           },{
         	  columnWidth	: .05,
         	  layout		: 'form',
@@ -795,18 +865,18 @@ Ext.onReady(function(){
              {boxLabel: 'Nagios', name: 'communication', inputValue: 2}
         ],
         listeners:  {
-                 change: function (ct, val) {
-   	        	  var radiosValue = radios.getValue();
+        	change: function (ct, val) {
+        		var radiosValue = radios.getValue();
 
-                    if (ct.getValue().getRawValue() == 1) {
-                      emailTextField.setVisible(true);
-                      flagCommunication = 0;
-                    } else {
-                      flagCommunication = 1;
-                      emailTextField.setVisible(false);
-                    }
-                  }
-              }
+                if (ct.getValue().getRawValue() == 1) {
+                  emailTextField.setVisible(true);
+                  flagCommunication = 0;
+                } else {
+                  flagCommunication = 1;
+                  emailTextField.setVisible(false);
+                }
+             }
+        }
 
    });
 
@@ -824,12 +894,10 @@ Ext.onReady(function(){
         rowWidth		: .5,
         layout			: 'column',
         items	:[{
-          //bodyStyle	: 'padding-bottom:50px;',
           columnWidth	: 0.50,
           layout		: 'form',
           items			: [radios]
         },{
-          //bodyStyle	: 'padding-bottom:20px;',
           columnWidth	: .20,
           layout		: 'form',
           items			: [emailTextField]
@@ -843,11 +911,21 @@ Ext.onReady(function(){
     */
    function saveRules(btn) {
 
+	if (!nameField.validate()) {
+        Ext.Msg.alert('Missing Field', 'Please specify Rule Name');
+        return;
+	}
+
+	if (!sourceField.validate()) {
+        Ext.Msg.alert('Missing Field', 'Please specify a source to load streams');
+        return;
+	}
+
     for (var i = 1; i <= ruleCount; ++i) {
-       if ( (!criteriaBoxes[i].validate()) || (!timeFrameBoxes[i].validate()) || (!notificationBoxes[i].validate()) ||
-           (!isAreBoxes[i].validate()) || (!slopeBoxes[i].validate()) || (!numberBoxes[i].validate()) || (!nameField.validate()) ) {
-         Ext.Msg.alert('Missing Field', 'Please specify parameter for Rule');
-         return;
+       if ( (!streamBoxes[i].validate()) || (!criteriaBoxes[i].validate()) || (!timeFrameBoxes[i].validate()) || (!notificationBoxes[i].validate()) ||
+           (!isAreBoxes[i].validate()) || (!slopeBoxes[i].validate()) || (!numberBoxes[i].validate()) ) {
+		         Ext.Msg.alert('Missing Field', 'Please specify parameter for Rule');
+		         return;
        }
      }
 
@@ -877,11 +955,11 @@ Ext.onReady(function(){
      selectedDays = frequencyFields[1].getValue();
      var checkedDays = new Array();
      for (i = 0; i < selectedDays.length; ++ i) {
-       checkedDays[i] = selectedDays[i].getName();
+    	 checkedDays[i] = selectedDays[i].getName();
      }
 
-     if(selectedDays.length == 0) {
-       checkedDays = null;
+     if (selectedDays.length == 0) {
+    	 checkedDays = null;
      }
 
      if (flagCommunication == 0) {
@@ -898,6 +976,8 @@ Ext.onReady(function(){
         	  totalRule			: 1,
         	  numberValue		: numberBoxes[1].getValue(),
            	  ruleName			: nameField.getRawValue(),
+           	  source			: sourceField.getRawValue(),
+           	  stream			: streamBoxes[1].getValue(),
               selectedDays		: checkedDays,
 	          startHour			: fromFields[1].getValue(),
 	          endHour			: toFields[1].getValue(),
@@ -920,6 +1000,8 @@ Ext.onReady(function(){
               totalRule				: 1,
               numberValue			: numberBoxes[1].getValue(),
               ruleName				: nameField.getRawValue(),
+              source				: sourceField.getRawValue(),
+           	  stream				: streamBoxes[1].getValue(),
               selectedDays			: checkedDays,
               startHour				: fromFields[1].getValue(),
               endHour				: toFields[1].getValue(),
@@ -941,6 +1023,7 @@ Ext.onReady(function(){
              TimeFrameIndex		: timeFrameBoxes[i].getValue(),				// TimeFrameIndex is the selected option of the TimeFrameaList
              NotificationIndex	: notificationBoxes[i].getValue(),			// NotificationIndex is the selected option of the NotificationList
              isAreIndex			: isAreBoxes[i].getValue(),
+          	 stream				: streamBoxes[i].getValue(),
              slopeIndex			: slopeBoxes[i].getValue(),
              totalRule			: i,
              numberValue		: numberBoxes[i].getValue()
@@ -951,25 +1034,27 @@ Ext.onReady(function(){
      }
 
     for (var i = 2; i <= frequencyCount; ++i) {
-      var otherSelectedDays = new Array();
-      otherSelectedDays = frequencyFields[i].getValue();
-      var checkedOtherDays = new Array();
-       for (j = 0; j < otherSelectedDays.length; ++ j) {
-         checkedOtherDays[j] = otherSelectedDays[j].getName();
-       }
+    	var otherSelectedDays = new Array();
+    	otherSelectedDays = frequencyFields[i].getValue();
 
-       Ext.Ajax.request({
-           url		: 'assertion.htm',
-           method	: 'POST',
-           params	: {
-        	   selectedDays		: checkedOtherDays,
-        	   startHour		: fromFields[i].getValue(),
-        	   endHour			: toFields[i].getValue()
-       	   },
-           scope: this
+    	var checkedOtherDays = new Array();
+    	for (j = 0; j < otherSelectedDays.length; ++ j) {
+    		checkedOtherDays[j] = otherSelectedDays[j].getName();
+    	}
+
+    	Ext.Ajax.request({
+    		url		: 'assertion.htm',
+    		method	: 'POST',
+    		params	: {
+    			selectedDays	: checkedOtherDays,
+    			startHour		: fromFields[i].getValue(),
+    			endHour			: toFields[i].getValue()
+    		},
+    		scope: this
        });
     }
 
+    Ext.MessageBox.alert('Status', 'Screen saved successfully.');
   };
 
    function getNewLabel (text)
@@ -984,30 +1069,32 @@ Ext.onReady(function(){
    {
 	   win.close();
    }
-   var win = new Ext.Window({
-      title		: 'Cockpit',
-      width		: 1300,
-      border	: 'false',
-      height	: 770,
-      id		: 'win',
-      name		: 'win',
-      bodyStyle	: 'background-color:#fff;padding: 10px',
-      autoScroll  : true,
-      items: [{
-          items: [
-                  nameTextFieldContainer, getNewRuleForm(), getNewLabel('<br/><b><font size="3">Disabled on</font></b>'),
-                  getNewFrequencyForm(),getNewLabel('<br/><b><font size="3">Communication Via</font></b>'), communicationForm
-                 ]
 
-        }],
-      buttonAlign	: 'right', 											// buttons aligned to the right
-      buttons		:[{
-              text		: 'Save',
-              handler 	: saveRules
-            },{
-              text		: 'Cancel',
-              handler	: closeWindow
-            }] 													// buttons of the form
+   var win = new Ext.Window({
+	   title		: 'Cockpit',
+	   width		: 1300,
+	   border		: 'false',
+	   height		: 770,
+	   id			: 'win',
+	   name			: 'win',
+	   bodyStyle	: 'background-color:#fff;padding: 10px',
+	   autoScroll  : true,
+       items: [{
+    	   items: [
+    	           nameTextFieldContainer, getNewRuleForm(), getNewLabel('<br/><b><font size="3">Disabled on</font></b>'),
+    	           getNewFrequencyForm(),getNewLabel('<br/><b><font size="3">Communication Via</font></b>'), communicationForm
+    	           ]
+       }],
+       buttonAlign	: 'right', 											// buttons aligned to the right
+       buttons		:[{
+    	   text		: 'Save',
+    	   iconCls	: 'save',
+    	   handler 	: saveRules
+    	   },{
+    		   text		: 'Cancel',
+    		   iconCls	: 'cancel',
+    		   handler	: closeWindow
+       }] 													// buttons of the form
   });
 
    win.show();

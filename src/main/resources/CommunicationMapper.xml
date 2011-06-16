@@ -36,6 +36,7 @@
  	<id property="id" column="ASSERTION_PK" />
  	<result property="constraintName" column="LABEL" />
  	<result property="communicationID" column="COMMUNICATION_ID" />
+ 	<result property="source" column="SOURCE" />
  </resultMap>
 
  <resultMap id="CommunicationViaEmailResultMap" type="CommunicationViaEmail">
@@ -61,6 +62,7 @@
 	<result property="notificationID" column="NOTIFICATION_NAME" />
 	<result property="assertionGroupID" column="ASSERTIONGROUP_ID" />
 	<result property="assertionIndex" column="ASSERTION_INDEX" />
+	<result property="stream" column="STREAM" />
  </resultMap>
 
  <resultMap id="MyInteger" type="_integer">
@@ -138,9 +140,17 @@
  	  select * from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
  </select>
 
- <select id="getSources" parameterType="Sources" resultMap="SourcesResultMap">
- 	  select * from sources
+ <select id="getSources" parameterType="map" resultMap="SourcesResultMap">
+ 	  select * from sources LIMIT #{start},#{limit}
  </select>
+
+ <select id="getPKForGivenSource" parameterType="String" resultMap="SourcesResultMap">
+ 	  select * from sources where SOURCE_URL = (#{url})
+ </select>
+
+<select id="getCompleteSourceList" resultMap="SourcesResultMap">
+ 	  select * from sources
+</select>
 
 <select id="getSourceCount" resultMap="MyInteger">
  	  select COUNT(*) from sources
@@ -168,14 +178,14 @@
  </select>
 
  <select id="setRuleName" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">
- 	  insert into assertiongroup (LABEL, COMMUNICATION_ID) VALUES (#{constraintName}, #{communicationID})
+ 	  insert into assertiongroup (LABEL, SOURCE, COMMUNICATION_ID) VALUES (#{constraintName}, #{source}, #{communicationID})
  </select>
 
  <select id="addRule" parameterType="AssertionCondition" resultMap="AssertionConditionResultMap">
-	insert into assertioncondition (CRITERIA_ID, MIN_VALUE, MAX_VALUE, MIN_DELTA, MAX_DELTA, TIMEFRAME_ID,
+	insert into assertioncondition (STREAM, CRITERIA_ID, MIN_VALUE, MAX_VALUE, MIN_DELTA, MAX_DELTA, TIMEFRAME_ID,
 	NOTIFICATION_ID, ASSERTIONGROUP_ID, ASSERTION_INDEX)
 	VALUES
-	(#{criteriaID}, #{minVal}, #{maxVal}, #{minDelta}, #{maxDelta}, #{timeFrameID}, #{notificationID},
+	(#{stream}, #{criteriaID}, #{minVal}, #{maxVal}, #{minDelta}, #{maxDelta}, #{timeFrameID}, #{notificationID},
 	 #{assertionGroupID}, #{assertionIndex})
  </select>
 
@@ -192,6 +202,10 @@
  	  VALUES
  	  (#{assertionGroupID}, #{recipents})
  </select>
+
+ <insert id="addNewSource" parameterType="Sources">
+ 	  insert into sources (SOURCE_URL, DESCRIPTION) VALUES (#{url}, #{description})
+ </insert>
 
  <select id="updateCommID" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">
  	  update assertiongroup set COMMUNICATION_ID = (#{communicationID}) where ASSERTION_PK = (#{id})

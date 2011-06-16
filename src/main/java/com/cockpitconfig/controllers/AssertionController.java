@@ -1,5 +1,9 @@
 package com.cockpitconfig.controllers;
 
+import java.awt.List;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -15,6 +19,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import com.cockpitconfig.db.AssertionGroupDAO;
 import com.cockpitconfig.db.AssertionConditionDAO;
 import com.cockpitconfig.db.CommunicationViaEmailDAO;
+import com.cockpitconfig.db.SourcesDAO;
 import com.cockpitconfig.db.TimeConstraintsDAO;
 import com.cockpitconfig.db.TimeFrameDAO;
 import com.cockpitconfig.db.NotificationLevelDAO;
@@ -23,6 +28,7 @@ import com.cockpitconfig.db.CriteriaDAO;
 import com.cockpitconfig.objects.AssertionGroup;
 import com.cockpitconfig.objects.AssertionCondition;
 import com.cockpitconfig.objects.CommunicationViaEmail;
+import com.cockpitconfig.objects.Sources;
 import com.cockpitconfig.objects.TimeConstraints;
 import com.cockpitconfig.objects.TimeFrame;
 import com.cockpitconfig.objects.NotificationLevel;
@@ -41,6 +47,7 @@ public class AssertionController extends AbstractController {
 
         // Following parameters would be received by AJAX Request when user saves current Assertoin Screen
         String existingRule = request.getParameter("existingRule");
+        String selectedSource = request.getParameter("selectedSource");
         String CriteriaIndex = request.getParameter("CriteriaIndex");
         String TimeFrameIndex = request.getParameter("TimeFrameIndex");
         String NotificationIndex = request.getParameter("NotificationIndex");
@@ -53,9 +60,10 @@ public class AssertionController extends AbstractController {
         String endTime = request.getParameter("endHour");
         String communicationVia = request.getParameter("communicationVia");
         String recipents = request.getParameter("recipents");
+        String source = request.getParameter("source");
+        String stream = request.getParameter("stream");
 
         String[] selectedDays = request.getParameterValues("selectedDays");
-
 
         if (existingRule != null) {
 	        updateScreen(existingRule, response);		// If user selects an existing rule then load the screen
@@ -65,12 +73,19 @@ public class AssertionController extends AbstractController {
 	        return mav;
         }
 
-	    int ifExists = INITIAL_VALUE;
+        if (selectedSource != null) {					// To load stream for a given source
+	        updateStreams(selectedSource, response);
+	        return mav;
+        }
 
-	    if (ruleName != null && communicationVia != null) {
+        int ifExists = INITIAL_VALUE;
+        int pkForSourceUrl = INITIAL_VALUE;
+
+	    if (ruleName != null && communicationVia != null && source != null) {
+	    	pkForSourceUrl = getPKForSourceUrl(source);			// PK from Source table to insert it into AssertionGroup table
 	    	ifExists = getPKForRule (ruleName);					// Whether rule exists or not, if yes then return PK else -1
 	    	if (ifExists == -1) {
-	    		lastInsertedGroupIndex = setAssertionGroupID(ruleName, communicationVia);
+	    		lastInsertedGroupIndex = setAssertionGroupID(ruleName, pkForSourceUrl, communicationVia);
 	    	} else {
 	    		lastInsertedGroupIndex = ifExists;				// When updated screen is 'saved'
 	        	removeExistingRules(lastInsertedGroupIndex);	// Before saving new screen remove all rules from assertionCondition Table
@@ -83,8 +98,8 @@ public class AssertionController extends AbstractController {
 
 	    // If all parameters are defined insert a row into assertionCondition Table
 	    if ( (CriteriaIndex != null) && (TimeFrameIndex != null) && (NotificationIndex != null) &&
-    		(isAreIndex != null) && (slopeIndex != null) && (ruleIndex != null) && (numberField != null)) {
-    			setAssertionCondition(Integer.parseInt(CriteriaIndex), Integer.parseInt(isAreIndex), Integer.parseInt(slopeIndex),
+    		(isAreIndex != null) && (slopeIndex != null) && (ruleIndex != null) && (numberField != null) && (stream != null)) {
+    			setAssertionCondition(stream, Integer.parseInt(CriteriaIndex), Integer.parseInt(isAreIndex), Integer.parseInt(slopeIndex),
 	    					Integer.parseInt(numberField), Integer.parseInt(TimeFrameIndex), Integer.parseInt(NotificationIndex),
 	    						Integer.parseInt(ruleIndex), lastInsertedGroupIndex);
 	    }
@@ -125,6 +140,12 @@ public class AssertionController extends AbstractController {
 		tcDao.removeTimeConstraintsWithID(grpID);
 	}
 
+	private int getPKForSourceUrl (String source) {
+		SqlSessionFactory sf = (SqlSessionFactory)getServletContext().getAttribute("sqlSessionFactory");
+		SourcesDAO sourceDao = new SourcesDAO(sf);
+
+		return(sourceDao.getPKForSource(source));
+	}
 	/**
 	 * Function which removes row of existing rules from communicationViaEmail with id = grpID when user modifies the rule
 	 * @param grpID	ID corresponding to existing rule
@@ -226,10 +247,11 @@ public class AssertionController extends AbstractController {
 	 * @param communicationVia communication Medium
 	 * @return
 	 */
-	public int setAssertionGroupID (String ruleName, String communicationVia) {
+	public int setAssertionGroupID (String ruleName, int source, String communicationVia) {
 
 		AssertionGroup ag = new AssertionGroup();
 		ag.setConstraintName(ruleName);
+		ag.setSource(source);
 		ag.setCommunicationID(Integer.parseInt(communicationVia));
 
 		SqlSessionFactory sf = (SqlSessionFactory)getServletContext().getAttribute("sqlSessionFactory");
@@ -250,10 +272,11 @@ public class AssertionController extends AbstractController {
 	 * @param ruleIndex			Index of the row in the rule
 	 * @param groupID			Group ID of the rule(as stored in ASSERTIONGROUP table)
 	 */
-	public void setAssertionCondition (int CriteriaIndex, int isAreIndex, int slopeIndex, int numberField, int TimeFrameIndex,
+	public void setAssertionCondition (String stream, int CriteriaIndex, int isAreIndex, int slopeIndex, int numberField, int TimeFrameIndex,
 									   int NotificationIndex,int ruleIndex, int groupID) {
 
 		AssertionCondition ac = new AssertionCondition();
+		ac.setStream(stream);
 		ac.setCriteriaID(CriteriaIndex);
 
 		if (isAreIndex == 1) {
@@ -319,6 +342,14 @@ public class AssertionController extends AbstractController {
     	}
     	mav.addObject("ruleNames", rulesTemp);
 
+    	SourcesDAO sourcesDao = new SourcesDAO(sf);
+    	ArrayList<Sources> sourceList = sourcesDao.getTotalSources();
+    	String[] tempSources = new String [sourceList.size()];
+    	for (int i = 0; i < sourceList.size(); ++i) {
+    		tempSources[i] = sourceList.get(i).getUrl();
+    	}
+    	mav.addObject("sources", tempSources);
+
     	CriteriaDAO criteriaDao = new CriteriaDAO(sf);
     	ArrayList<Criteria> criteriaConditions = criteriaDao.getAllCriterias();
     	String[] criteriaTemp = new String [criteriaConditions.size()];
@@ -342,6 +373,31 @@ public class AssertionController extends AbstractController {
     		notificationLevelTemp[i] = notificationlevelLevels.get(i).getLevel();
     	}
     	mav.addObject("levels", notificationLevelTemp);
+
+    }
+
+    private void updateStreams (String selectedSource, HttpServletResponse response) throws Exception {
+    	URL sources = new URL(selectedSource);
+    	BufferedReader availableStreams = new BufferedReader(new InputStreamReader(sources.openStream()));
+    	String inputStream;
+
+    	ArrayList<String> streamList = new ArrayList<String>();
+    	Integer streamCount = 0;
+    	while ((inputStream = availableStreams.readLine()) != null) {
+    		streamList.add(inputStream.substring(0, inputStream.indexOf(',')));
+    		streamCount ++;
+    	}
+
+    	availableStreams.close();
+    	response.setContentType("application/json;charset=UTF-8");
+        response.setHeader("Cache-Control", "no-cache");
+        JSONObject jsonResult = new JSONObject();
+
+        jsonResult.put("streams", streamList);
+        jsonResult.put("streamCount", streamCount);
+
+        response.getWriter().write(jsonResult.toString());
+        response.getWriter().close();
 
     }
 

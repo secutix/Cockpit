@@ -16,25 +16,25 @@ Ext.onReady(function(){
     var bd = Ext.getBody();
     var AddURLWindow = null;
 
-    var nameTextField = function (){
+    var getUrlTextField = function (){
     	return new Ext.form.TextField({
 			border			: false,
 			fieldLabel		: 'Name',
 			name			: 'first',
-			//    id				: 'id-name',
-			emptyText		: 'Entesr URL',
+			//id			: 'id-name',
+			emptyText		: 'Enter URL',
 			anchor			: '100%',
 			width			: '400',
 			allowBlank		:  false
 		});
     };
 
-    var descritptionTextField = function() {
+    var getDescritptionTextField = function() {
     	return new Ext.form.TextField({
 			border			: false,
 			fieldLabel		: 'Descritption',
 			name			: 'first',
-			//    id				: 'id-name',
+			//id			: 'id-name',
 			emptyText		: 'Remark',
 			anchor			: '100%',
 			width			: '400',
@@ -42,13 +42,17 @@ Ext.onReady(function(){
 		});
     };
 
+    var descritptionTextField, urlTextField;
     var urlContainer = function() {
+    	descritptionTextField = getDescritptionTextField();
+    	urlTextField = getUrlTextField();
+
     	return new Ext.form.FieldSet ({
     		xtype			: 'fieldset',
     		flex        	: 1,
     		border      	: false,
     		hideBorders 	: false,
-    		autoHeight 	: true,
+    		autoHeight 		: true,
     		labelWidth  	: 70,
     		height  	  	: 42,
     		defaultType 	: 'field',
@@ -58,46 +62,68 @@ Ext.onReady(function(){
     			border		: 'false'
 	  	      },
 	  	      items : [
-	  	               nameTextField(), descritptionTextField()
+	  	               urlTextField, descritptionTextField
 	  	              ]
   	      });
     };
 
     var getNewAddURLWindow = function() {
     	var win =  new Ext.Window ({
-	    	title		: 'Monitoring URL',
-	    	width		: 550,
-	    	border		: 'false',
-	    	height		: 160,
-	    	bodyStyle	: 'background-color:#fff;padding: 5px',
-	    	autoScroll  : true,
-	    	closable: false,
-	    	items: [
+	    	title			: 'Monitoring URL',
+	    	width			: 550,
+	    	border			: 'false',
+	    	height			: 160,
+	    	bodyStyle		: 'background-color:#fff;padding: 5px',
+	    	autoScroll  	: true,
+	    	closable		: false,
+	    	items			: [
 	    		urlContainer()
-	    		],
+	    	],
 			buttonAlign	: 'right', 											// buttons aligned to the right
 			buttons		:[{
-	      		text		: 'Add URL'
-	           //handler 	: saveRules
+				text		: 'Save',
+				iconCls		: 'save',
+	            handler 	: saveRules
 	        },{
-	          text		: 'Cancel',
-	          handler	: closeWindow
-	        }] 													// buttons of the form
+	        	text		: 'Cancel',
+	        	iconCls		: 'cancel',
+	        	handler		: closeWindow
+	        }] 																// buttons of the form
 		});
+
     	return win;
     };
 
 
-    /*function saveRules (btn)
-    {
+    function saveRules (btn) {
     	if (AddURLWindow != null) {
 
-    		//Save Rules here
+    		if (!urlTextField.validate()) {
+  		         Ext.Msg.alert('Missing Field', 'Please specify source url');
+  		         return;
+ 		    }
 
+    		if (!descritptionTextField.validate()) {
+   		         Ext.Msg.alert('Missing Field', 'Please specify source description');
+   		         return;
+  		    }
+
+    		Ext.Ajax.request({
+                url					: 'manageSourceInfo.htm',
+                method				: 'POST',
+                params: {
+              	  sourceUrl			: urlTextField.getValue(),
+              	  sourceDescription : descritptionTextField.getValue()
+               },
+               scope	: this,
+               callback				:  function () {
+						               		paging.doRefresh();
+						               }
+            });
     		AddURLWindow.hide();
     	}
-    	//AddURLWindow = null;
-    }*/
+    	AddURLWindow = null;
+    }
 
     function closeWindow (btn) {
     	if (AddURLWindow != null) {
@@ -118,8 +144,8 @@ Ext.onReady(function(){
         					{start:0, limit:10}
         			  },
 
-        proxy	: new Ext.data.HttpProxy({
-        	url: 'manageSource.htm'
+        proxy	: new Ext.data.HttpProxy ({
+        	url	: 'manageSource.htm'
         }),
 
         reader	: new Ext.data.JsonReader({
@@ -127,8 +153,8 @@ Ext.onReady(function(){
             totalProperty	: 'totalCount',
             idProperty		: 'threadid',
             fields: [
-				{name: 'url', type:'string'},
-                {name: 'description', type: 'string'}
+				{name: 'url', type	: 'string'},
+                {name: 'description', type	: 'string'}
             ]
         })
     });
@@ -142,12 +168,43 @@ Ext.onReady(function(){
         }
     });
 
+    var removeSource = function(btn) {
+    	 var selectedRow = grid.getSelectionModel().getSelected();
+         if (selectedRow == undefined) {
+        	 Ext.MessageBox.show ({
+        		 title		: 'Warning!',
+        		 msg		: 'Please select a source to delete!',
+        		 width		: 275,
+        		 buttons	: Ext.MessageBox.OK,
+        		 icon		: Ext.MessageBox.WARNING
+        	});
+         } else {
+             Ext.Ajax.request({
+                 url				: 'manageSourceInfo.htm',
+                 method				: 'POST',
+                 params: {
+                	 selectedSource	: selectedRow.get('url')
+                },
+                scope	: this,
+                callback				:  function () {
+                	paging.doRefresh();
+                }
+         	});
+          }
+     };
+
+     var paging = new Ext.PagingToolbar({
+	  store			: store,
+	  pageSize		: 10,
+	  displayInfo	: true
+     });
+
     var grid = new Ext.grid.GridPanel({
         renderTo			: Ext.getBody(),
         width				: 700,
         height				: 500,
         frame				: true,
-        title				: 'Manage',
+        title				: 'Available Sources',
         trackMouseOver		: true,
     	autoExpandColumn	: 'topic',
         store				: store,
@@ -156,46 +213,32 @@ Ext.onReady(function(){
             id			: 'topic',
             header		: "URL",
             dataIndex	: 'url',
-            width		: 420,
+            width		: 300,
             //renderer	: renderTopic,
             sortable	: true
         },{
-            header		: "des",
+            header		: "Description",
             dataIndex	: 'description',
-            width		: 70,
-            align		: 'right',
+            width		: 200,
+            //align		: 'right',
 			//renderer	: renderType,
             sortable	: true
         }],
 
         tbar:[{
-        	text		: 'Add Something',
-            tooltip		: 'Add a new source',
+        	text		: 'Add Source',
+            //tooltip	: 'Add a new source',
             handler 	: getURL,
             iconCls		: 'add'
         }, '-', {
             text		: 'Remove Source',
-            tooltip		: 'Remove the selected source',
+            handler 	: removeSource,
+            //tooltip	: 'Remove the selected source',
             iconCls		: 'remove'
         }],
 
-      bbar: new Ext.PagingToolbar({
-        store			: store,
-        pageSize		: 10,
-        displayInfo		: true
-      }),
+      bbar: paging
 
-    });
-
-    grid.getSelectionModel().on('rowselect', function(grid, rowIndex, r) {
-    	Ext.Ajax.request({
-            url						: 'manageSourceInfo.htm',
-            method					: 'POST',
-            params: {
-          	  selectedUrl		 	: r.get('url')
-           },
-           scope	: this
-    	});
     });
 
     grid.render(Ext.getBody());

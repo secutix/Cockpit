@@ -12,16 +12,7 @@ public class AssertionCondition {
 	private int notificationID;
 	private int assertionGroupID;
 	private int assertionIndex;
-
-	/*final int MAX_INTIALIZE = Integer.MAX_VALUE;
-	final int MIN_INTIALIZE = Integer.MIN_VALUE;
-
-	public AssertionCondition() {
-		this.maxDelta = MAX_INTIALIZE;
-		this.maxVal = MAX_INTIALIZE;
-		this.minDelta = MIN_INTIALIZE;
-		this.minVal = MIN_INTIALIZE;
-	}*/
+	private String stream;
 
 	public int getId() {
 		return id;
@@ -101,5 +92,13 @@ public class AssertionCondition {
 
 	public void setMaxDelta(Integer maxDelta) {
 		this.maxDelta = maxDelta;
+	}
+
+	public String getStream() {
+		return stream;
+	}
+
+	public void setStream(String stream) {
+		this.stream = stream;
 	}
 }
