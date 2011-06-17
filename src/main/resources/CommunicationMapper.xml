@@ -8,11 +8,6 @@
 	 <result property="medium" column="LABEL" />
  </resultMap>
 
- <resultMap id="CriteriaResultMap" type="Criteria">
- 	<id property="id" column="CRI_ID" />
- 	<result property="condition" column="LABEL" />
- </resultMap>
-
  <resultMap id="TimeFrameResultMap" type="TimeFrame">
  	<id property="id" column="TIME_ID" />
  	<result property="frame" column="LABEL" />
@@ -53,7 +48,6 @@
 
  <resultMap id="AssertionConditionResultMap" type="AssertionCondition">
  	<id property="id" column="ASSERTIONCOND_PK" />
-	<result property="criteriaID" column="CRITERIA_ID" />
 	<result property="minVal" column="MIN_VALUE" />
 	<result property="maxVal" column="MAX_VALUE" />
 	<result property="minDelta" column="MIN_DELTA" />
@@ -66,6 +60,9 @@
  </resultMap>
 
  <resultMap id="MyInteger" type="_integer">
+ </resultMap>
+
+ <resultMap id="MyString" type="string">
  </resultMap>
 
  <resultMap id="TimeConstraintsResultMap" type="TimeConstraints">
@@ -86,14 +83,6 @@
 
  <select id="getMediumByID" parameterType="int" resultMap="CommunicationResultMap">
 	  select * from communication where COMM_ID = (#{id})
- </select>
-
- <select id="getAllConditions" resultMap="CriteriaResultMap">
- 	  select * from criteria
- </select>
-
- <select id="getConditionByID" parameterType="int" resultMap="CriteriaResultMap">
- 	  select * from criteria where CRI_ID = (#{id})
  </select>
 
  <select id="getAllFrames"  resultMap="TimeFrameResultMap">
@@ -136,6 +125,14 @@
  	  select * from assertiongroup where ASSERTION_PK = (#{id})
  </select>
 
+ <select id="checkForGivenSource" parameterType="int" resultMap="AssertionGroupResultMap">
+ 	  SELECT * FROM assertiongroup WHERE SOURCE = (#{source}) LIMIT 1
+ </select>
+
+ <select id="getSourceKeyForGivenConstraint" parameterType="String" resultMap="MyInteger">
+ 	  SELECT SOURCE FROM assertiongroup WHERE LABEL = (#{constraintName})
+ </select>
+
  <select id="getEmailRowInfo" parameterType="CommunicationViaEmail" resultMap="CommunicationViaEmailResultMap">
  	  select * from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
  </select>
@@ -146,6 +143,10 @@
 
  <select id="getPKForGivenSource" parameterType="String" resultMap="SourcesResultMap">
  	  select * from sources where SOURCE_URL = (#{url})
+ </select>
+
+ <select id="getSourceUrlForPK" parameterType="int" resultMap="MyString">
+ 	  select SOURCE_URL from sources where SOURCES_PK = (#{id})
  </select>
 
 <select id="getCompleteSourceList" resultMap="SourcesResultMap">
@@ -182,10 +183,10 @@
  </select>
 
  <select id="addRule" parameterType="AssertionCondition" resultMap="AssertionConditionResultMap">
-	insert into assertioncondition (STREAM, CRITERIA_ID, MIN_VALUE, MAX_VALUE, MIN_DELTA, MAX_DELTA, TIMEFRAME_ID,
+	insert into assertioncondition (STREAM, MIN_VALUE, MAX_VALUE, MIN_DELTA, MAX_DELTA, TIMEFRAME_ID,
 	NOTIFICATION_ID, ASSERTIONGROUP_ID, ASSERTION_INDEX)
 	VALUES
-	(#{stream}, #{criteriaID}, #{minVal}, #{maxVal}, #{minDelta}, #{maxDelta}, #{timeFrameID}, #{notificationID},
+	(#{stream}, #{minVal}, #{maxVal}, #{minDelta}, #{maxDelta}, #{timeFrameID}, #{notificationID},
 	 #{assertionGroupID}, #{assertionIndex})
  </select>
 

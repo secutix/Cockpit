@@ -3,7 +3,6 @@ package com.cockpitconfig.objects;
 public class AssertionCondition {
 
 	private int id;
-	private int criteriaID;
 	private Integer minVal;
 	private Integer maxVal;
 	private Integer minDelta;
@@ -20,14 +19,6 @@ public class AssertionCondition {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getCriteriaID() {
-		return criteriaID;
-	}
-
-	public void setCriteriaID(int criteriaID) {
-		this.criteriaID = criteriaID;
 	}
 
 	public int getTimeFrameID() {

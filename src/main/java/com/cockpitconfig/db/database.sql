@@ -42,20 +42,6 @@ insert into TIMEFRAME values (2, "Per hour");
 insert into TIMEFRAME values (3, "Per Day");
 insert into TIMEFRAME values (4, "Per Month");
 
-
-drop table if exists CRITERIA;
-create table CRITERIA (
-        CRI_ID int primary key,
-        LABEL varchar(255) not null
-);
-
-insert into CRITERIA values (0, "Total no. of Transactions");
-insert into CRITERIA values (1, "Total no. of Successful Transactions");
-insert into CRITERIA values (2, "Total no. of Unsuccessful Transactions");
-insert into CRITERIA values (3, "Unsuccessful Transactions due to Payment failure");
-insert into CRITERIA values (4, "Unsuccessful Transactions due to Techincal Glitch");
-insert into CRITERIA values (5, "Dropout Rate");
-
 drop table if exists SOURCES;
 create table SOURCES (
 		SOURCES_PK int not null AUTO_INCREMENT primary key,
@@ -77,7 +63,6 @@ drop table if exists ASSERTIONCONDITION;
 create table ASSERTIONCONDITION (
 		ASSERTIONCOND_PK int not null AUTO_INCREMENT primary key,
 		STREAM text not null,
-		CRITERIA_ID int not null,
 		MIN_VALUE int default null,
 		MAX_VALUE int default null,
 		MIN_DELTA int default null,
@@ -86,7 +71,6 @@ create table ASSERTIONCONDITION (
 		NOTIFICATION_ID int not null,
 		ASSERTIONGROUP_ID int not null,
 		ASSERTION_INDEX int not null,
-		foreign key (CRITERIA_ID) references CRITERIA(CRI_ID) on delete cascade,
 		foreign key (TIMEFRAME_ID) references TIMEFRAME(TIME_ID) on delete cascade,
 		foreign key (NOTIFICATION_ID) references NOTIFICATIONLEVEL(NOTI_ID) on delete cascade,
 		foreign key (ASSERTIONGROUP_ID) references ASSERTIONGROUP(ASSERTION_PK) on delete cascade

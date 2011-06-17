@@ -12,7 +12,6 @@
 
  <typeAliases>
  	<typeAlias alias="Communication" type="com.cockpitconfig.objects.Communication"/>
- 	<typeAlias alias="Criteria" type="com.cockpitconfig.objects.Criteria"/>
  	<typeAlias alias="TimeFrame" type="com.cockpitconfig.objects.TimeFrame"/>
  	<typeAlias alias="NotificationLevel" type="com.cockpitconfig.objects.NotificationLevel"/>
  	<typeAlias alias="NotificationOccurrence" type="com.cockpitconfig.objects.NotificationOccurrence"/>

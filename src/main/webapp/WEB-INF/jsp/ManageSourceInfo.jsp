@@ -115,13 +115,18 @@ Ext.onReady(function(){
               	  sourceUrl			: urlTextField.getValue(),
               	  sourceDescription : descritptionTextField.getValue()
                },
+               failure: function( r, o ) {
+            	   alert( "fail: " + r.responseText );
+               },
                scope	: this,
-               callback				:  function () {
-						               		paging.doRefresh();
-						               }
+               callback	:  function () {
+            	   paging.doRefresh();
+               }
             });
+
     		AddURLWindow.hide();
     	}
+
     	AddURLWindow = null;
     }
 
@@ -185,6 +190,22 @@ Ext.onReady(function(){
                  params: {
                 	 selectedSource	: selectedRow.get('url')
                 },
+
+                success: function (response) {
+      	          var existRule = Ext.util.JSON.decode(response.responseText);
+	      	      Ext.MessageBox.show ({
+	      	    	  title		: 'Warning!',
+	      	    	  msg		: 'Cannot delete selected source. It is already being used by ' + existRule.ruleName + '.',
+	      	    	  width		: 260,
+	      	    	  buttons	: Ext.MessageBox.OK,
+	      	    	  icon		: Ext.MessageBox.WARNING
+           		  });
+                },
+
+    			failure: function( r, o ) {
+    				alert( "fail: " + r.responseText );
+    			},
+
                 scope	: this,
                 callback				:  function () {
                 	paging.doRefresh();
@@ -208,6 +229,7 @@ Ext.onReady(function(){
         trackMouseOver		: true,
     	autoExpandColumn	: 'topic',
         store				: store,
+        selModel         : new Ext.grid.RowSelectionModel({singleSelect : true}),
 
         columns: [new Ext.grid.RowNumberer({width: 30}),{
             id			: 'topic',
@@ -219,6 +241,7 @@ Ext.onReady(function(){
         },{
             header		: "Description",
             dataIndex	: 'description',
+            height		: 50,
             width		: 200,
             //align		: 'right',
 			//renderer	: renderType,

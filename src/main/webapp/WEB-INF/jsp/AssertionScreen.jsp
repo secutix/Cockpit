@@ -18,7 +18,6 @@ Ext.onReady(function(){
     var bd = Ext.getBody();
 
     var streamBoxes = new Array();		// array to store streams comboBox for different rules
-    var criteriaBoxes = new Array();		// array to store criteria comboBox for different rules
     var timeFrameBoxes = new Array();		// array to store timeframe comboBox for different rules
     var notificationBoxes = new Array();	// array to store notification comboBox for different rules
     var isAreBoxes = new Array();			// array to store isAre comboBox for different rules
@@ -28,21 +27,13 @@ Ext.onReady(function(){
     var ruleForms = new Array();
 
     var ruleCount = 0;
-
+    var sourceSelected = false;
+    var streamStore;
     var fromFields = new Array();
     var toFields = new Array();
     var frequencyFields = new Array();
 
     var frequencyCount = 0;
-
-    /*var nameTextField = new Ext.form.TextField({
-      border			: false,
-      fieldLabel		: 'Name',
-        name			: 'first',
-        id				: 'id-name',
-        emptyText		: 'Enter Rule Name',
-        allowBlank		:  false
-    });*/
 
     var dropDownRules = new Array();
     var r = 0;
@@ -51,7 +42,7 @@ Ext.onReady(function(){
     <c:forEach items="${ruleNames}" var="ruleNames">
       dropDownRules[r] = new Array();
       dropDownRules[r][0] = r.toString();
-      dropDownRules[r][1] = "<c:out value="${ruleNames}"/>";
+      dropDownRules[r][1] = "<c:out escapeXml='false' value="${ruleNames}"/>";
       r ++;
    </c:forEach>
 
@@ -61,8 +52,7 @@ Ext.onReady(function(){
     });
 
     // ComboBox which contains all the available rules as well as able to store new rule name.
-    var RuleList = function()
-    {
+    var RuleList = function() {
       nameField = new Ext.form.ComboBox({
                         store			: rules,
                         mode			: 'local',
@@ -101,8 +91,7 @@ Ext.onReady(function(){
     });
 
     // ComboBox which contains all the available sources
-    var SourceList = function()
-    {
+    var SourceList = function() {
       sourceField = new Ext.form.ComboBox({
     	  store				: sourceData,
           mode				: 'local',
@@ -126,18 +115,17 @@ Ext.onReady(function(){
     };
 
     // Number Field to store information about the rule
-    var numberField = function()
-    {
-      numberBoxes[ruleCount] = new Ext.form.NumberField({
-          fieldLabel		: '',
-          name				: 'number',
-          emptyText			: '',
-          allowNegative		: false,
-          //fieldLabel		: '%',
-          anchor			: '50%',
-          allowBlank		: false,
-          valueField 		: 'number'
-      });
+    var numberField = function() {
+    	numberBoxes[ruleCount] = new Ext.form.NumberField({
+    		fieldLabel		: '',
+    		name			: 'number',
+    		emptyText		: '',
+    		allowNegative	: false,
+    		//fieldLabel	: '%',
+    		anchor			: '50%',
+    		allowBlank		: false,
+    		valueField 		: 'number'
+    	});
 
       return numberBoxes[ruleCount];
     };
@@ -146,7 +134,6 @@ Ext.onReady(function(){
 	 * Function to load the existing screen when user selects existing rule
 	 */
     var showExistingScreen = function () {
-
 	    Ext.Ajax.request({
 	        url						: 'assertion.htm',
 	        method					: 'POST',
@@ -164,12 +151,15 @@ Ext.onReady(function(){
 	        	  ruleCount--;
 	          }
 
-	          for (var i = 0; i < existingValues.existingCriteria.length; ++i) {
+	          sourceField.setValue(existingValues.existSource);
+	          showAvailableStreams();
+
+	          for (var i = 0; i < existingValues.existingStreams.length; ++i) {
 	        	  if (ruleCount < i+1) {
 	        		  addRuleTemplate(null);
         		  }
 
-	        	  criteriaBoxes[i+1].setValue(existingValues.existingCriteria[i]);
+	        	  streamBoxes[i+1].setValue(existingValues.existingStreams[i]);
 	        	  timeFrameBoxes[i+1].setValue(existingValues.existingTimeFrame[i]);
 	        	  notificationBoxes[i+1].setValue(existingValues.existingNotification[i]);
 
@@ -273,12 +263,15 @@ Ext.onReady(function(){
        });
    };
 
+   streamStore = new Ext.data.SimpleStore({
+       fields	: ['id', 'streams'],
+       data	: []									// multi-dimensional array
+	});
 
    /**
 	 * Function to load available streams for a given source
 	 */
    var showAvailableStreams = function () {
-
 	    Ext.Ajax.request({
 	        url						: 'assertion.htm',
 	        method					: 'POST',
@@ -288,7 +281,7 @@ Ext.onReady(function(){
 	        scope					: this,
 
 	        success: function (response) {
-	        	streamBoxes[ruleCount].setDisabled(false);
+	        	//streamBoxes[ruleCount].setDisabled(false);
 	        	var availableStreams = Ext.util.JSON.decode(response.responseText);
 
 	        	var dropDownStream = new Array(availableStreams.streamCount);
@@ -298,16 +291,17 @@ Ext.onReady(function(){
 	        		dropDownStream[i][1] = availableStreams.streams[i];
 	        	}
 
-	        	var streamStore = new Ext.data.SimpleStore({
-                    fields	: ['id', 'streams'],
-                    data	: dropDownStream 									// multi-dimensional array
-    			});
+				streamStore.removeAll();
+				streamStore.loadData(dropDownStream);
 
-	        	streamBoxes[ruleCount].bindStore(streamStore);
-	        }
+				sourceSelected = true;
 
-	    });
-	 };
+				for (var i = 1; i <= ruleCount; ++i) {
+					streamBoxes[i].setDisabled(false);
+				}
+	    	}
+	 	});
+	};
 
 	// When Email as a communication mode is selected this field will be displayed for recipents address
     var emailTextField = new Ext.form.TextField({
@@ -340,19 +334,18 @@ Ext.onReady(function(){
             ]
        };
 
-    var AvailableStreamsList = function()
-    {
+    var AvailableStreamsList = function() {
     	streamBoxes[ruleCount] = new Ext.form.ComboBox({
-    		//store			: levels,
+    		store			: streamStore,
     		mode			: 'local',
     		forceSelection 	: true,
     		allowBlank 		: false,
-    		disabled		: true,
+    		disabled		: !sourceSelected,
     		//fieldLabel	: 'Generates',
     		resizable		: true,
     		name			: 'stream',
-    		emptyText		: 'Select Stream',
-    		anchor			: '70%',
+    		emptyText		: 'Select a source first',
+    		anchor			: '90%',
     		displayField	: 'streams',
     		valueField		: 'id'
     		/*listeners: {
@@ -363,59 +356,17 @@ Ext.onReady(function(){
     	      }*/
      	});
 
-      return streamBoxes[ruleCount];
-    };
-
-    var dropDownCriteria = new Array();
-    var i = 0;
-
-    // Existing criteria values are passed after fetching their values from database
-   <c:forEach items="${criterias}" var="criterias">
-   	dropDownCriteria[i] = new Array();
-    dropDownCriteria[i][0] = i.toString();
-    dropDownCriteria[i][1] = "<c:out value="${criterias}"/>";
-    i ++;
-   </c:forEach>
-
-    var criterias = new Ext.data.SimpleStore({
-                    fields	: ['id', 'criteria'],
-                    data	: dropDownCriteria 									// multi-dimensional array
-    });
-
-    /**
-     * Function to create comboBox for criteria
-     */
-    var CriteriaList = function()
-    {
-      criteriaBoxes[ruleCount] = new Ext.form.ComboBox({
-    	  store			: criterias,
-    	  mode			: 'local',
-    	  forceSelection: true,
-    	  allowBlank 	: false,
-    	  //fieldLabel	: 'Criterias',
-    	  name			: 'criterias',
-    	  anchor		: '85%',
-    	  resizable		: true,
-    	  emptyText		: 'Select Your Criteria',
-    	  displayField	: 'criteria',
-    	  valueField	: 'id',
-    	  listeners: {
-    		  select: function(f,record,index){
-    			  //CriteriaListIndex = index;
-    			  }
-      		}
-      });
-
-      return criteriaBoxes[ruleCount];
+    	return streamBoxes[ruleCount];
     };
 
     var dropDownTimeFrame = new Array();
     var j = 0;
 
+
    <c:forEach items="${frames}" var="frames">
       dropDownTimeFrame[j] = new Array();
       dropDownTimeFrame[j][0] = j.toString();
-      dropDownTimeFrame[j][1] = "<c:out value="${frames}"/>";
+      dropDownTimeFrame[j][1] = "<c:out escapeXml='false' value="${frames}"/>";
       j ++;
    </c:forEach>
 
@@ -427,25 +378,24 @@ Ext.onReady(function(){
     /**
      * Function to create comboBox for timeFrame
      */
-    var TimeFrameList = function()
-    {
-      timeFrameBoxes[ruleCount] = new Ext.form.ComboBox({
-    	  store				: frames,
-    	  mode				: 'local',
-    	  forceSelection 	: true,
-    	  allowBlank 		: false,
-    	  //fieldLabel		: 'Frames',
-    	  name				: 'frames',
-    	  emptyText			: 'Select Time Frame',
-    	  anchor			: '70%',
-    	  displayField		: 'frame',
-    	  valueField		: 'id',
-    	  listeners: {
-    		  select: function(f,record,index){
-    			  TimeFrameListIndex = index;
-    			  //doTimeFrameUpdate(TimeFrameListIndex);
-    			  }
-      	   }
+    var TimeFrameList = function() {
+    	 timeFrameBoxes[ruleCount] = new Ext.form.ComboBox({
+    		 store				: frames,
+    		 mode				: 'local',
+    		 forceSelection 	: true,
+    		 allowBlank 		: false,
+    		 //fieldLabel		: 'Frames',
+    		 name				: 'frames',
+    		 emptyText			: 'Select Time Frame',
+    		 anchor				: '70%',
+    		 displayField		: 'frame',
+    		 valueField			: 'id',
+    		 listeners: {
+    			 select: function(f,record,index){
+    				 TimeFrameListIndex = index;
+    				 //doTimeFrameUpdate(TimeFrameListIndex);
+    			 }
+    	 	 }
       });
 
       return timeFrameBoxes[ruleCount];
@@ -457,7 +407,7 @@ Ext.onReady(function(){
     <c:forEach items="${levels}" var="levels">
       dropDownNotificationLevel[k] = new Array();
       dropDownNotificationLevel[k][0] = k.toString();
-      dropDownNotificationLevel[k][1] = "<c:out value="${levels}"/>";
+      dropDownNotificationLevel[k][1] = "<c:out escapeXml='false' value="${levels}"/>";
       k ++;
     </c:forEach>
 
@@ -469,28 +419,27 @@ Ext.onReady(function(){
     /**
      * Function to create comboBox for notificationLevel
      */
-    var NotificationLevelList = function()
-    {
-      notificationBoxes[ruleCount] = new Ext.form.ComboBox({
-    	  store				: levels,
-    	  mode				: 'local',
-    	  forceSelection 	: true,
-    	  allowBlank 		: false,
-    	  //fieldLabel		: 'Generates',
-    	  name				: 'levels',
-    	  emptyText			: 'Generates',
-    	  anchor			: '70%',
-    	  displayField		: 'level',
-    	  valueField		: 'id',
-    	  listeners: {
-    		  select: function(f,record,index){
-    			  NotificationLevelListIndex = index;
-    			  //doNotificationUpdate(NotificationLevelListIndex);
+    var NotificationLevelList = function() {
+    	 notificationBoxes[ruleCount] = new Ext.form.ComboBox({
+    		 store				: levels,
+    		 mode				: 'local',
+    		 forceSelection 	: true,
+    		 allowBlank 		: false,
+    		 //fieldLabel		: 'Generates',
+    		 name				: 'levels',
+    		 emptyText			: 'Generates',
+    		 anchor				: '70%',
+    		 displayField		: 'level',
+    		 valueField			: 'id',
+    		 listeners: {
+    			 select: function(f,record,index){
+    				 NotificationLevelListIndex = index;
+    				 //doNotificationUpdate(NotificationLevelListIndex);
     			  }
-    	  }
-       });
+    	  	 }
+       	 });
 
-      return notificationBoxes[ruleCount];
+    	 return notificationBoxes[ruleCount];
     };
 
     var isAre = new Ext.data.SimpleStore({
@@ -498,26 +447,24 @@ Ext.onReady(function(){
         data : [['1','is/are'],['2','has slope']]
     });
 
-    var isAreCombo = function()
-    {
-      isAreBoxes[ruleCount] = new Ext.form.ComboBox({
-    	  store				: isAre,
-    	  mode				: 'local',
-    	  forceSelection 	: true,
-    	  allowBlank 		: false,
-    	  //fieldLabel		: 'Frames',
-    	  name				: 'isAre',
-    	  anchor			: '70%',
-    	  displayField		: 'value',
-    	  valueField		: 'id',
-    	  listeners: {
-    		  select: function(f,record,index){
+    var isAreCombo = function() {
+    	isAreBoxes[ruleCount] = new Ext.form.ComboBox({
+    		store				: isAre,
+    		mode				: 'local',
+    		forceSelection	 	: true,
+    		allowBlank 			: false,
+    		//fieldLabel		: 'Frames',
+    		name				: 'isAre',
+    		anchor				: '70%',
+    		displayField		: 'value',
+    		valueField			: 'id',
+    		listeners: {
+    			select: function(f,record,index){
+    			}
+	      	}
+	    });
 
-    			  }
-	      }
-      });
-
-      return isAreBoxes[ruleCount];
+    	return isAreBoxes[ruleCount];
     };
 
     var param = new Ext.data.SimpleStore({
@@ -526,26 +473,24 @@ Ext.onReady(function(){
     });
 
 
-    var slopeCombo = function()
-    {
-      slopeBoxes[ruleCount] = new Ext.form.ComboBox({
-    	  store			: param,
-    	  mode			: 'local',
-    	  forceSelection: true,
-    	  allowBlank 	: false,
-    	  //fieldLabel	: 'Frames',
-    	  name			: 'slope',
-    	  anchor		: '70%',
-    	  displayField	: 'value',
-    	  valueField	: 'id',
-    	  listeners: {
-    		  select: function(f,record,index){
+    var slopeCombo = function() {
+    	slopeBoxes[ruleCount] = new Ext.form.ComboBox({
+    		store			: param,
+    		mode			: 'local',
+    		forceSelection	: true,
+    		allowBlank	 	: false,
+    		//fieldLabel	: 'Frames',
+    		name			: 'slope',
+    		anchor			: '70%',
+    		displayField	: 'value',
+    		valueField		: 'id',
+    		listeners: {
+    			select: function(f,record,index){
+    			}
+    		}
+    	});
 
-    			  }
-       	  }
-      });
-
-      return slopeBoxes[ruleCount];
+    	return slopeBoxes[ruleCount];
     };
 
    /**
@@ -566,12 +511,6 @@ Ext.onReady(function(){
    var removeWarning = function(btn) {
 	   indexToRemove = ruleForms.indexOf(btn.ownerCt.ownerCt.ownerCt.ownerCt);
 	   Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete this rule?', removeRuleTemplate);
-	   /*Ext.Msg.show({
-		   title			: 'Delete Rule',
-		   msg				: 'Are you sure you want to delete this rule?',
-		   buttons			: Ext.Msg.YESNO,
-		   fn				: removeRuleTemplate
-     });*/
    };
 
    /**
@@ -627,19 +566,15 @@ Ext.onReady(function(){
                rowWidth: .5,
                layout:'column',
                    items:[{
-                	   columnWidth		: .14,
+                	   columnWidth		: .30,
                        layout			: 'form',
                        items			: [AvailableStreamsList()]
                    },{
-                	   columnWidth		: .25,
-                       layout			: 'form',
-                       items			: [CriteriaList()]
-                   },{
-                	   columnWidth		: .10,
+                	   columnWidth		: .14,
                        layout			: 'form',
                        items			: [isAreCombo()]
                    },{
-                	   columnWidth		: .10,
+                	   columnWidth		: .15,
                        layout			: 'form',
                        items			: [slopeCombo()]
                    },{
@@ -773,43 +708,34 @@ Ext.onReady(function(){
    /*
     * Function which display warning message whenever user tries to delete a row from "disable on" option
     */
-   var removeFrequencyWarning = function(btn)
-   {
-     indexToRemoveFrequency = frequencyForms.indexOf(btn.ownerCt.ownerCt.ownerCt.ownerCt);
-     Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this time constraint?', removeFrequencyTemplate);
-     /*Ext.Msg.show({
-          title		: 'Delete Time Constraint',
-          msg		: 'Are you sure you want to delete this row?',
-          buttons	: Ext.Msg.YESNO,
-          fn		: removeFrequencyTemplate
-     });*/
+   var removeFrequencyWarning = function(btn) {
+	   indexToRemoveFrequency = frequencyForms.indexOf(btn.ownerCt.ownerCt.ownerCt.ownerCt);
+	   Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this time constraint?', removeFrequencyTemplate);
    };
 
    /**
     * Handler to remove template for "disable on" option
     */
-   var removeFrequencyTemplate = function (btn)
-   {
-     if(btn == 'yes') {
-    	 var index = indexToRemoveFrequency;
-    	 frequencyForms[index].ownerCt.remove(frequencyForms[index]);
-    	 frequencyForms.splice(index,1);
-    	 ruleCount--;
-    	 win.doLayout();
-     }
+   var removeFrequencyTemplate = function (btn) {
+    	if(btn == 'yes') {
+    		var index = indexToRemoveFrequency;
+    		frequencyForms[index].ownerCt.remove(frequencyForms[index]);
+    		frequencyForms.splice(index,1);
+    		ruleCount--;
+    		win.doLayout();
+    	}
    };
 
    /**
     * Function which displays '-' button in "disable on" option
     */
-   var minusFrequencyButton = function()
-   {
-     return new Ext.Button ({
-       text		: '-',
-       width	: 20,
-       height	: 20,
-       handler 	: removeFrequencyWarning
-     });
+   var minusFrequencyButton = function() {
+	   return new Ext.Button ({
+		   text		: '-',
+		   width	: 20,
+		   height	: 20,
+		   handler 	: removeFrequencyWarning
+		});
    };
 
   /*
@@ -922,7 +848,7 @@ Ext.onReady(function(){
 	}
 
     for (var i = 1; i <= ruleCount; ++i) {
-       if ( (!streamBoxes[i].validate()) || (!criteriaBoxes[i].validate()) || (!timeFrameBoxes[i].validate()) || (!notificationBoxes[i].validate()) ||
+       if ( (!streamBoxes[i].validate()) || (!timeFrameBoxes[i].validate()) || (!notificationBoxes[i].validate()) ||
            (!isAreBoxes[i].validate()) || (!slopeBoxes[i].validate()) || (!numberBoxes[i].validate()) ) {
 		         Ext.Msg.alert('Missing Field', 'Please specify parameter for Rule');
 		         return;
@@ -968,7 +894,6 @@ Ext.onReady(function(){
           url						: 'assertion.htm',
           method					: 'POST',
           params: {
-        	  CriteriaIndex		: criteriaBoxes[1].getValue(),				// CriteriaListIndex is the selected option of the CriteriaList
        	      TimeFrameIndex	: timeFrameBoxes[1].getValue(),				// TimeFrameIndex is the selected option of the TimeFrameaList
         	  NotificationIndex	: notificationBoxes[1].getValue(),			// NotificationIndex is the selected option of the NotificationList
         	  isAreIndex		: isAreBoxes[1].getValue(),
@@ -976,8 +901,8 @@ Ext.onReady(function(){
         	  totalRule			: 1,
         	  numberValue		: numberBoxes[1].getValue(),
            	  ruleName			: nameField.getRawValue(),
-           	  source			: sourceField.getRawValue(),
-           	  stream			: streamBoxes[1].getValue(),
+           	  source			: sourceField.getValue(),
+           	  stream			: streamBoxes[1].getRawValue(),
               selectedDays		: checkedDays,
 	          startHour			: fromFields[1].getValue(),
 	          endHour			: toFields[1].getValue(),
@@ -992,7 +917,6 @@ Ext.onReady(function(){
           url						: 'assertion.htm',
           method					: 'POST',
           params: {
-        	  CriteriaIndex			: criteriaBoxes[1].getValue(),				// CriteriaListIndex is the selected option of the CriteriaList
               TimeFrameIndex		: timeFrameBoxes[1].getValue(),				// TimeFrameIndex is the selected option of the TimeFrameaList
               NotificationIndex		: notificationBoxes[1].getValue(),			// NotificationIndex is the selected option of the NotificationList
               isAreIndex			: isAreBoxes[1].getValue(),
@@ -1000,8 +924,8 @@ Ext.onReady(function(){
               totalRule				: 1,
               numberValue			: numberBoxes[1].getValue(),
               ruleName				: nameField.getRawValue(),
-              source				: sourceField.getRawValue(),
-           	  stream				: streamBoxes[1].getValue(),
+              source				: sourceField.getValue(),
+           	  stream				: streamBoxes[1].getRawValue(),
               selectedDays			: checkedDays,
               startHour				: fromFields[1].getValue(),
               endHour				: toFields[1].getValue(),
@@ -1019,11 +943,10 @@ Ext.onReady(function(){
            url: 'assertion.htm',
            method: 'POST',
            params: {
-             CriteriaIndex		: criteriaBoxes[i].getValue(),				// CriteriaListIndex is the selected option of the CriteriaList
              TimeFrameIndex		: timeFrameBoxes[i].getValue(),				// TimeFrameIndex is the selected option of the TimeFrameaList
              NotificationIndex	: notificationBoxes[i].getValue(),			// NotificationIndex is the selected option of the NotificationList
              isAreIndex			: isAreBoxes[i].getValue(),
-          	 stream				: streamBoxes[i].getValue(),
+          	 stream				: streamBoxes[i].getRawValue(),
              slopeIndex			: slopeBoxes[i].getValue(),
              totalRule			: i,
              numberValue		: numberBoxes[i].getValue()

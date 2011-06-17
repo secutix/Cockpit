@@ -1,7 +1,6 @@
 package com.cockpitconfig.objects;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -67,7 +66,7 @@ public class NotificationOccurrence {
 
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
-		DateFormat formatter ;
+		DateFormat formatter;
 		formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String s = formatter.format(this.dateOccur);
 		json.put("Date", s);
