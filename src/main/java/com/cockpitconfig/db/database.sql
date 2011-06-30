@@ -36,11 +36,11 @@ create table TIMEFRAME (
         LABEL varchar(255) not null
 );
 
-insert into TIMEFRAME values (0, "Per Minute");
-insert into TIMEFRAME values (1, "Per 2 Minute");
-insert into TIMEFRAME values (2, "Per hour");
-insert into TIMEFRAME values (3, "Per Day");
-insert into TIMEFRAME values (4, "Per Month");
+insert into TIMEFRAME values (0, "per step");
+insert into TIMEFRAME values (1, "per 5 step");
+insert into TIMEFRAME values (2, "per 10 step");
+insert into TIMEFRAME values (3, "per 25 step");
+insert into TIMEFRAME values (4, "per 50 step");
 
 drop table if exists SOURCES;
 create table SOURCES (
@@ -63,10 +63,10 @@ drop table if exists ASSERTIONCONDITION;
 create table ASSERTIONCONDITION (
 		ASSERTIONCOND_PK int not null AUTO_INCREMENT primary key,
 		STREAM text not null,
-		MIN_VALUE int default null,
-		MAX_VALUE int default null,
-		MIN_DELTA int default null,
-		MAX_DELTA int default null,
+		MIN_VALUE BIGINT default null,
+		MAX_VALUE BIGINT default null,
+		MIN_DELTA BIGINT default null,
+		MAX_DELTA BIGINT default null,
 		TIMEFRAME_ID int not null,
 		NOTIFICATION_ID int not null,
 		ASSERTIONGROUP_ID int not null,

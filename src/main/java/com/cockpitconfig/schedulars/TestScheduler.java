@@ -1,51 +1,28 @@
 package com.cockpitconfig.schedulars;
 
-//import java.util.Date;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerFactory;
-import org.quartz.Trigger;
-import org.quartz.impl.StdSchedulerFactory;
-import static org.quartz.TriggerBuilder.*;
-import static org.quartz.JobBuilder.*;
-import static org.quartz.DateBuilder.*;
-import static org.quartz.SimpleScheduleBuilder.*;
+import org.apache.camel.CamelContext;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.impl.DefaultCamelContext;
 
 public class TestScheduler {
 
-	public TestScheduler()throws Exception{
+	public static void main(String args[]) throws Exception {
+		// create CamelContext
+		CamelContext context = new DefaultCamelContext();
+		context.disableJMX();
+		// add our route to the CamelContext
+		context.addRoutes(new RouteBuilder() {
+			@Override
+			public void configure() {
+				from("timer://myTimer?period=2000").setBody()
+						.simple("Current time is ${header.firedTime}")
+						.to("stream:out");
+			}
+		});
 
-		SchedulerFactory sf = new StdSchedulerFactory();
-		Scheduler sched = sf.getScheduler();
-		sched.start();
+		context.start();
+		Thread.sleep(10000);
 
-		JobDetail job = newJob(TestClass.class)
-							.withIdentity("myJob", "myGroup")
-							.storeDurably()
-							.requestRecovery()
-							.usingJobData("someKey", "someValue")
-							.build();
-
-		Trigger trg = newTrigger()
-						.withIdentity("myTrigger")
-						.startAt(futureDate(10, IntervalUnit.SECOND))
-						.withPriority(6)
-						.forJob(job)
-						.withSchedule(simpleSchedule()
-							.withIntervalInHours(5)
-							.repeatForever())
-						.endAt(dateOf(22,0,0))
-						.build();
-
-		sched.scheduleJob(job, trg);
-    }
-
-  public static void main (String args[]) {
-	  try {
-		  //CommunicationEmail email = new CommunicationEmail();
-		  //email.sendEmail("pulkit110@gmail.com", "Ye ho gaya");
-	  } catch (Exception e) {
-
-	  }
-  }
+		context.stop();
+	}
 }

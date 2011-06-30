@@ -1,19 +1,14 @@
 package com.cockpitconfig.objects;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import net.sf.json.JSONObject;
 
 public class NotificationOccurrence {
 
 	private int id;
-	private Date dateOccur;
+	private String dateOccur;
 	private String type;
 	private String description;
-	private Calendar timeOccur;
+	private String timeOccur;
 	private int assertionConditionID;
 
 	public int getId() {
@@ -24,11 +19,11 @@ public class NotificationOccurrence {
 		this.id = id;
 	}
 
-	public Date getDateOccur() {
+	public String getDateOccur() {
 		return dateOccur;
 	}
 
-	public void setDateOccur(Date dateOccur) {
+	public void setDateOccur(String dateOccur) {
 		this.dateOccur = dateOccur;
 	}
 
@@ -48,11 +43,11 @@ public class NotificationOccurrence {
 		this.description = description;
 	}
 
-	public Calendar getTimeOccur() {
+	public String getTimeOccur() {
 		return timeOccur;
 	}
 
-	public void setTimeOccur(Calendar timeOccur) {
+	public void setTimeOccur(String timeOccur) {
 		this.timeOccur = timeOccur;
 	}
 
@@ -66,10 +61,10 @@ public class NotificationOccurrence {
 
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
-		DateFormat formatter;
-		formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String s = formatter.format(this.dateOccur);
-		json.put("Date", s);
+		// DateFormat formatter;
+		// formatter = new SimpleDateFormat("yyyy-MM-dd");
+		// String s = formatter.format(this.dateOccur);
+		json.put("Date", this.dateOccur);
 		json.put("Type", this.type);
 		json.put("Description", this.description);
 		return json;

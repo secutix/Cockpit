@@ -1,6 +1,7 @@
 package com.cockpitconfig.db;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
@@ -159,6 +160,50 @@ public class AssertionGroupDAO {
 			session.close();
 		}
 		return source.intValue();
+	}
+
+	/**
+	 * Not used
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public int getTotalNumberOfRules() throws PersistenceException {
+		Integer source = null;
+		SqlSession session = sf.openSession();
+		try {
+			source = (Integer) session
+					.selectOne("com.cockpitconfig.objects.CommunicationMapper.getTotalCountofRules");
+			if (source == null) {
+				throw new PersistenceException();
+			}
+		} finally {
+			session.close();
+		}
+		return source.intValue();
+	}
+
+	/**
+	 * Return list of integer containing PK for all rules
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public HashMap getAllPKandSource() throws PersistenceException {
+		HashMap hMap = new HashMap();
+		SqlSession session = sf.openSession();
+		try {
+			hMap = (HashMap) session
+					.selectMap(
+							"com.cockpitconfig.objects.CommunicationMapper.getAllPKAndSources",
+							"id");
+			if (hMap == null) {
+				throw new PersistenceException();
+			}
+		} finally {
+			session.close();
+		}
+		return hMap;
 	}
 
 }

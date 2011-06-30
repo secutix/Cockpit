@@ -21,7 +21,7 @@ var showSystemInfo = function () {
 Ext.onReady(function() {
 	var masterPanel = new Ext.Panel({
 		renderTo	: document.getElementById('header-div'),
-		title    	: 'Header',
+		title    	: 'Monitoring Tool',
 		width  	  	: document.getElementById("header-div").offsetWidth,
 		height  	: document.getElementById("header-div").offsetHeight,
 		border		: false,

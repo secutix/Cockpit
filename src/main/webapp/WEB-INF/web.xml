@@ -37,7 +37,7 @@
 
   <listener>
   	<listener-class>
-  	  com.cockpitconfig.listeners.CustomServletContextListener
+  	  com.cockpitconfig.listeners.MyBatisContextListener
     </listener-class>
   </listener>
 

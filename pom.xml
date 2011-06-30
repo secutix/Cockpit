@@ -4,7 +4,9 @@
   <artifactId>Cockpit</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
+
   <dependencies>
+
   	<dependency>
   		<groupId>javax.servlet</groupId>
   		<artifactId>servlet-api</artifactId>
@@ -12,18 +14,13 @@
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
+
   	<dependency>
   		<groupId>org.mybatis</groupId>
   		<artifactId>mybatis</artifactId>
   		<version>3.0.4</version>
   	</dependency>
-  	<dependency>
-  		<groupId>org.quartz</groupId>
-  		<artifactId>quartz-all</artifactId>
-  		<version>1.6.5</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
+
   	<dependency>
   		<groupId>javax.mail</groupId>
   		<artifactId>javamail</artifactId>
@@ -31,6 +28,7 @@
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
+
   	<dependency>
   		<groupId>net.sf.json-lib</groupId>
   		<artifactId>json-lib</artifactId>
@@ -39,6 +37,7 @@
   		<classifier>jdk15</classifier>
   		<scope>compile</scope>
   	</dependency>
+
   	<dependency>
   		<groupId>org.quartz-scheduler</groupId>
   		<artifactId>quartz</artifactId>
@@ -46,6 +45,7 @@
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
+
   	<dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-webmvc</artifactId>
@@ -53,6 +53,7 @@
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
+
   	<dependency>
   		<groupId>javax.servlet</groupId>
   		<artifactId>jstl</artifactId>
@@ -60,6 +61,55 @@
   		<type>jar</type>
   		<scope>runtime</scope>
   	</dependency>
+
+  	<dependency>
+	    <groupId>junit</groupId>
+	    <artifactId>junit</artifactId>
+	    <version>4.4</version>
+	</dependency>
+
+	<!--  Camel Dependencies -->
+  	<dependency>
+	    <groupId>org.apache.camel</groupId>
+	    <artifactId>camel-core</artifactId>
+	    <version>2.5.0</version>
+	</dependency>
+
+    <dependency>
+		<groupId>org.apache.camel</groupId>
+		<artifactId>camel-quartz</artifactId>
+		<version>2.5.0</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.apache.camel</groupId>
+		<artifactId>camel-stream</artifactId>
+		<version>2.5.0</version>
+	</dependency>
+
+    <dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-log4j12</artifactId>
+    	<version>1.6.1</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+
+    <dependency>
+    	<groupId>biz.minaret.log4j</groupId>
+    	<artifactId>datedFileAppender</artifactId>
+    	<version>1.0.2</version>
+    	<type>jar</type>
+    </dependency>
+
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-aop</artifactId>
+		<version>3.0.5.RELEASE</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	</dependency>
+
   </dependencies>
   <build>
 		<pluginManagement>

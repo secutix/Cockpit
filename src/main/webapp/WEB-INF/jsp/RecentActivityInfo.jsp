@@ -54,20 +54,6 @@ Ext.onReady(function(){
     	var temp = Ext.getCmp('id-to').getValue().format('Y-m-d');
     }
 
-/*    var addButton = function() {
-    	return	new Ext.Button ({
-    		text		: 'OK',
-    		//bodyStyle	: 'padding-bottom:1110px;',
-    		width		: 80,
-        	id			: 'add',
-        	listeners: {
-        		click: function() {
-        			getURL();
-        		}
-        	}
-        });
-    };*/
-
     var durationForm = new Ext.FormPanel({
     	border		: false,
     	labelAlign	: 'top',
@@ -97,9 +83,6 @@ Ext.onReady(function(){
     durationForm.render(Ext.getBody());
 
     var store = new Ext.data.Store ({
-        //remoteSort	: true,
-        //baseParams	: {fromDate:Ext.getCmp('id-to').getValue().format('Y-m-d'), toDate:Ext.getCmp('id-to').getValue().format('Y-m-d')},
-        //sortInfo	: {field:'lastpost', direction:'DESC'},
         autoLoad	: { params:
         					{start:0, limit:10}
         			  },
@@ -144,10 +127,10 @@ Ext.onReady(function(){
         return val;
     }
 
-    var grid = new Ext.grid.GridPanel({
+    var grid = new Ext.grid.GridPanel ({
         renderTo			: Ext.getBody(),
         width				: 700,
-       // waitMsg				: 'Loading',
+       // waitMsg			: 'Loading',
         height				: 500,
         frame				: true,
         title				: 'Recent Activites',
@@ -159,8 +142,8 @@ Ext.onReady(function(){
             id			: 'topic',
             header		: "Date",
             dataIndex	: 'Date',
-            width		: 250,
-    //       renderer	: formatDate,
+            width		: 200,
+    		//renderer	: formatDate,
             sortable	: true
         },{
             header		: "Type",
@@ -171,9 +154,9 @@ Ext.onReady(function(){
             sortable	: true
         },{
             id			: 'last',
-            header		: "Description",
+            header		: "Description:  [RuleName] | Cause",
             dataIndex	: 'Description',
-            width		: 270,
+            width		: 320,
             //renderer	: renderLast,
             sortable	: true
         }],

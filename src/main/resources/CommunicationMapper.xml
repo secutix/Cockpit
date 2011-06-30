@@ -65,6 +65,9 @@
  <resultMap id="MyString" type="string">
  </resultMap>
 
+ <resultMap id="MyMap" type="hashmap">
+ </resultMap>
+
  <resultMap id="TimeConstraintsResultMap" type="TimeConstraints">
  	<id property="id" column="TIME_PK" />
 	<result property="assertionGroupID" column="ASSGRP_ID" />
@@ -133,6 +136,14 @@
  	  SELECT SOURCE FROM assertiongroup WHERE LABEL = (#{constraintName})
  </select>
 
+ <select id="getTotalCountofRules" resultMap="MyInteger">
+ 	  SELECT COUNT(*) FROM assertiongroup
+ </select>
+
+ <select id="getAllPKAndSources" resultMap="AssertionGroupResultMap">
+ 	  SELECT ASSERTION_PK, SOURCE FROM assertiongroup
+ </select>
+
  <select id="getEmailRowInfo" parameterType="CommunicationViaEmail" resultMap="CommunicationViaEmailResultMap">
  	  select * from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
  </select>
@@ -149,11 +160,11 @@
  	  select SOURCE_URL from sources where SOURCES_PK = (#{id})
  </select>
 
-<select id="getCompleteSourceList" resultMap="SourcesResultMap">
+ <select id="getCompleteSourceList" resultMap="SourcesResultMap">
  	  select * from sources
-</select>
+ </select>
 
-<select id="getSourceCount" resultMap="MyInteger">
+ <select id="getSourceCount" resultMap="MyInteger">
  	  select COUNT(*) from sources
  </select>
 
@@ -206,6 +217,12 @@
 
  <insert id="addNewSource" parameterType="Sources">
  	  insert into sources (SOURCE_URL, DESCRIPTION) VALUES (#{url}, #{description})
+ </insert>
+
+ <insert id="setNotifications" parameterType="NotificationOccurrence" >
+	insert into notificationoccurrence (TIMEOCCUR, DATEOCCUR, ASSERTIONCONDITION_PK, ALERTTYPE, DESCRIPTION)
+	VALUES
+	(#{timeOccur}, #{dateOccur}, #{assertionConditionID}, #{type}, #{description})
  </insert>
 
  <select id="updateCommID" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">

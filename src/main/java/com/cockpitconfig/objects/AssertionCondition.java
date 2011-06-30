@@ -1,12 +1,14 @@
 package com.cockpitconfig.objects;
 
+import java.math.BigInteger;
+
 public class AssertionCondition {
 
 	private int id;
-	private Integer minVal;
-	private Integer maxVal;
-	private Integer minDelta;
-	private Integer maxDelta;
+	private BigInteger minVal;
+	private BigInteger maxVal;
+	private BigInteger minDelta;
+	private BigInteger maxDelta;
 	private int timeFrameID;
 	private int notificationID;
 	private int assertionGroupID;
@@ -53,43 +55,43 @@ public class AssertionCondition {
 		this.assertionIndex = assertionIndex;
 	}
 
-	public Integer getMinVal() {
-		return minVal;
-	}
-
-	public void setMinVal(Integer minVal) {
-		this.minVal = minVal;
-	}
-
-	public Integer getMaxVal() {
-		return maxVal;
-	}
-
-	public void setMaxVal(Integer maxVal) {
-		this.maxVal = maxVal;
-	}
-
-	public Integer getMinDelta() {
-		return minDelta;
-	}
-
-	public void setMinDelta(Integer minDelta) {
-		this.minDelta = minDelta;
-	}
-
-	public Integer getMaxDelta() {
-		return maxDelta;
-	}
-
-	public void setMaxDelta(Integer maxDelta) {
-		this.maxDelta = maxDelta;
-	}
-
 	public String getStream() {
 		return stream;
 	}
 
 	public void setStream(String stream) {
 		this.stream = stream;
+	}
+
+	public BigInteger getMinVal() {
+		return minVal;
+	}
+
+	public void setMinVal(BigInteger minVal) {
+		this.minVal = minVal;
+	}
+
+	public BigInteger getMaxVal() {
+		return maxVal;
+	}
+
+	public void setMaxVal(BigInteger maxVal) {
+		this.maxVal = maxVal;
+	}
+
+	public BigInteger getMinDelta() {
+		return minDelta;
+	}
+
+	public void setMinDelta(BigInteger minDelta) {
+		this.minDelta = minDelta;
+	}
+
+	public BigInteger getMaxDelta() {
+		return maxDelta;
+	}
+
+	public void setMaxDelta(BigInteger maxDelta) {
+		this.maxDelta = maxDelta;
 	}
 }
