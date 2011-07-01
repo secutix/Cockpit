@@ -6,27 +6,35 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.cockpitconfig.objects.CommunicationViaEmail;;
+import com.cockpitconfig.objects.CommunicationViaEmail;
 
 public class CommunicationViaEmailDAO {
 	private SqlSessionFactory sf;
 
-	//constructor will receive a myBatis sessionFactory object
-	public CommunicationViaEmailDAO (SqlSessionFactory containerSessionFactory) {
-		if(containerSessionFactory==null) {
+	// constructor will receive a myBatis sessionFactory object
+	public CommunicationViaEmailDAO(SqlSessionFactory containerSessionFactory) {
+		if (containerSessionFactory == null) {
 			System.err.println("Error: could not load myBatis sessionFactory");
 		}
 
 		sf = containerSessionFactory;
 	}
 
-	public ArrayList<CommunicationViaEmail> getEmailRow (int grpID) throws PersistenceException {
+	/**
+	 * Get the communication data for a given ruleName
+	 * 
+	 * @param grpID
+	 *            PK of the rule
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public ArrayList<CommunicationViaEmail> getEmailRow(int grpID) throws PersistenceException {
 		ArrayList<CommunicationViaEmail> recipents = null;
 		SqlSession session = sf.openSession();
 		try {
 			recipents = (ArrayList<CommunicationViaEmail>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getEmailRowInfo", grpID);
 			if (recipents == null) {
-				throw new PersistenceException();		//TODO: Do Better Error handling
+				throw new PersistenceException(); // TODO: Do Better Error handling
 			}
 		} finally {
 			session.close();
@@ -35,7 +43,14 @@ public class CommunicationViaEmailDAO {
 		return recipents;
 	}
 
-	public void removeEmailRecipentWithID (int grpID) throws PersistenceException {
+	/**
+	 * Remove the communication medium for the given id
+	 * 
+	 * @param grpID
+	 *            PK of the rule
+	 * @throws PersistenceException
+	 */
+	public void removeEmailRecipentWithID(int grpID) throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
 			session.selectList("com.cockpitconfig.objects.CommunicationMapper.removeEmailRecipentWithGivenID", grpID);
@@ -44,11 +59,18 @@ public class CommunicationViaEmailDAO {
 		}
 	}
 
-	public void addEmailRecipents (CommunicationViaEmail viaEmail) throws PersistenceException {
+	/**
+	 * Adds email recipient in the table
+	 * 
+	 * @param viaEmail
+	 * @throws PersistenceException
+	 */
+	public void addEmailRecipients(CommunicationViaEmail viaEmail) throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.selectList("com.cockpitconfig.objects.CommunicationMapper.addRecipents", viaEmail);
+			session.insert("com.cockpitconfig.objects.CommunicationMapper.addRecipients", viaEmail);
 		} finally {
+			session.commit();
 			session.close();
 		}
 	}

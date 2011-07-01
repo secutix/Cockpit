@@ -104,16 +104,20 @@
  	  select * from notificationlevel where NOTI_ID = (#{id})
  </select>
 
- <select id="getLastInsertedID" parameterType="int" resultMap="AssertionGroupResultMap">
- 	  select * from assertiongroup where ASSERTION_PK = (SELECT max(ASSERTION_PK) from assertiongroup)
+ <select id="getLastInsertedID" resultMap="MyInteger">
+ 	  select ASSERTION_PK from assertiongroup where ASSERTION_PK = (SELECT max(ASSERTION_PK) from assertiongroup)
  </select>
 
- <select id="getPKForConstraint" parameterType="String" resultMap="AssertionGroupResultMap">
- 	   select * from assertiongroup where LABEL=(#{constraintName})
+ <select id="getPKForConstraint" parameterType="String" resultMap="MyInteger">
+ 	   select ASSERTION_PK from assertiongroup where LABEL=(#{constraintName})
  </select>
 
- <select id="getAllRuleName" resultMap="AssertionGroupResultMap">
+ <select id="getAllRules" resultMap="AssertionGroupResultMap">
  	   select * from assertiongroup
+ </select>
+
+ <select id="getAllRuleNames" resultMap="MyString">
+ 	   select LABEL from assertiongroup
  </select>
 
   <select id="getRuleInfo" parameterType="AssertionCondition" resultMap="AssertionConditionResultMap">
@@ -152,8 +156,8 @@
  	  select * from sources LIMIT #{start},#{limit}
  </select>
 
- <select id="getPKForGivenSource" parameterType="String" resultMap="SourcesResultMap">
- 	  select * from sources where SOURCE_URL = (#{url})
+ <select id="getPKForGivenSource" parameterType="String" resultMap="MyInteger">
+ 	  select SOURCES_PK from sources where SOURCE_URL = (#{url})
  </select>
 
  <select id="getSourceUrlForPK" parameterType="int" resultMap="MyString">
@@ -189,31 +193,31 @@
 	</if>
  </select>
 
- <select id="setRuleName" parameterType="AssertionGroup" resultMap="AssertionGroupResultMap">
+ <insert id="setRuleName" parameterType="AssertionGroup">
  	  insert into assertiongroup (LABEL, SOURCE, COMMUNICATION_ID) VALUES (#{constraintName}, #{source}, #{communicationID})
- </select>
+ </insert>
 
- <select id="addRule" parameterType="AssertionCondition" resultMap="AssertionConditionResultMap">
+ <insert id="addRule" parameterType="AssertionCondition">
 	insert into assertioncondition (STREAM, MIN_VALUE, MAX_VALUE, MIN_DELTA, MAX_DELTA, TIMEFRAME_ID,
 	NOTIFICATION_ID, ASSERTIONGROUP_ID, ASSERTION_INDEX)
 	VALUES
 	(#{stream}, #{minVal}, #{maxVal}, #{minDelta}, #{maxDelta}, #{timeFrameID}, #{notificationID},
 	 #{assertionGroupID}, #{assertionIndex})
- </select>
+ </insert>
 
- <select id="setRuleTime" parameterType="TimeConstraints" resultMap="TimeConstraintsResultMap">
+ <insert id="setRuleTime" parameterType="TimeConstraints">
  	  insert into timeconstraints (ASSGRP_ID, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY,
  	  START_HOUR, START_MIN, END_HOUR, END_MIN)
  	  VALUES
  	  (#{assertionGroupID}, #{monday}, #{tuesday}, #{wednesday}, #{thursday}, #{friday}, #{saturday}, #{sunday},
  	   #{startHour}, #{startMin}, #{endHour}, #{endMin})
- </select>
+ </insert>
 
- <select id="addRecipents" parameterType="CommunicationViaEmail" resultMap="CommunicationViaEmailResultMap">
+ <insert id="addRecipients" parameterType="CommunicationViaEmail">
  	  insert into communicationviaemail (ASSGROUP_ID, EMAILRECIPENTS)
  	  VALUES
  	  (#{assertionGroupID}, #{recipents})
- </select>
+ </insert>
 
  <insert id="addNewSource" parameterType="Sources">
  	  insert into sources (SOURCE_URL, DESCRIPTION) VALUES (#{url}, #{description})

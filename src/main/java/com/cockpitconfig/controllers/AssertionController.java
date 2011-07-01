@@ -108,8 +108,7 @@ public class AssertionController extends AbstractController {
 
 		// If all parameters are defined insert a row into assertionCondition
 		// Table
-		if (TimeFrameIndex != null && NotificationIndex != null && isAreIndex != null && slopeIndex != null && ruleIndex != null && numberField != null
-				&& stream != null) {
+		if (TimeFrameIndex != null && NotificationIndex != null && isAreIndex != null && slopeIndex != null && ruleIndex != null && numberField != null && stream != null) {
 			BigInteger value = new BigInteger(numberField);
 			setAssertionCondition(stream, Integer.parseInt(isAreIndex), Integer.parseInt(slopeIndex), value,
 
@@ -166,8 +165,7 @@ public class AssertionController extends AbstractController {
 	}
 
 	/**
-	 * Function which removes row of existing rules from communicationViaEmail with id = grpID when user modifies the
-	 * rule
+	 * Function which removes row of existing rules from communicationViaEmail with id = grpID when user modifies the rule
 	 * 
 	 * @param grpID
 	 *            ID corresponding to existing rule
@@ -200,8 +198,7 @@ public class AssertionController extends AbstractController {
 	}
 
 	/**
-	 * Invoked when communication Medium is select as E-Mail. Function inserts a row in to communicationViaEmail table
-	 * with given recipent and assertionGroupID
+	 * Invoked when communication Medium is select as E-Mail. Function inserts a row in to communicationViaEmail table with given recipent and assertionGroupID
 	 * 
 	 * @param recipents
 	 *            E-Mail id of the user to which application should inform upon violation of constraints
@@ -215,7 +212,7 @@ public class AssertionController extends AbstractController {
 
 		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
 		CommunicationViaEmailDAO viaEmailDao = new CommunicationViaEmailDAO(sf);
-		viaEmailDao.addEmailRecipents(viaEmail);
+		viaEmailDao.addEmailRecipients(viaEmail);
 	}
 
 	/**
@@ -309,7 +306,7 @@ public class AssertionController extends AbstractController {
 		AssertionGroupDAO agDao = new AssertionGroupDAO(sf);
 		agDao.setConstraintName(ag);
 
-		return agDao.getLastInsertedIndex(ag);
+		return agDao.getLastInsertedIndex();
 	}
 
 	/**
@@ -330,8 +327,7 @@ public class AssertionController extends AbstractController {
 	 * @param groupID
 	 *            Group ID of the rule(as stored in ASSERTIONGROUP table)
 	 */
-	public void setAssertionCondition(String stream, int isAreIndex, int slopeIndex, BigInteger numberField, int TimeFrameIndex, int NotificationIndex,
-			int ruleIndex, int groupID) {
+	public void setAssertionCondition(String stream, int isAreIndex, int slopeIndex, BigInteger numberField, int TimeFrameIndex, int NotificationIndex, int ruleIndex, int groupID) {
 
 		AssertionCondition ac = new AssertionCondition();
 		ac.setStream(stream);
@@ -395,10 +391,10 @@ public class AssertionController extends AbstractController {
 		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
 
 		AssertionGroupDAO agDao = new AssertionGroupDAO(sf);
-		ArrayList<AssertionGroup> groupName = agDao.getAllrules();
+		ArrayList<String> groupName = agDao.getRuleNames();
 		String[] rulesTemp = new String[groupName.size()];
 		for (int i = 0; i < groupName.size(); ++i) {
-			rulesTemp[i] = groupName.get(i).getConstraintName();
+			rulesTemp[i] = groupName.get(i);
 		}
 		mav.addObject("ruleNames", rulesTemp);
 

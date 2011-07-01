@@ -21,85 +21,115 @@ public class AssertionGroupDAO {
 		sf = containerSessionFactory;
 	}
 
-	public void setConstraintName(AssertionGroup assGrp)
-			throws PersistenceException {
+	/**
+	 * Function to set the constraint name, communication medium and source in the assertionGroup table
+	 * 
+	 * @param assGrp
+	 *            Object of assertionGroup class holding the information
+	 * @throws PersistenceException
+	 */
+	public void setConstraintName(AssertionGroup assGrp) throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.selectList(
-					"com.cockpitconfig.objects.CommunicationMapper.setRuleName",
-					assGrp);
+			session.insert("com.cockpitconfig.objects.CommunicationMapper.setRuleName", assGrp);
 		} finally {
+			session.commit();
 			session.close();
 		}
 	}
 
+	/**
+	 * Function to get the PK for a given rule, invoked when user selects an existing rule
+	 * 
+	 * @param ruleName
+	 *            Rule selected by user
+	 * @return returns the PK from the assertionGroup table for given rule
+	 * @throws PersistenceException
+	 */
 	public int getPKForRule(String ruleName) throws PersistenceException {
-		ArrayList<AssertionGroup> getRuleRow = null;
+		Integer PK;
 		SqlSession session = sf.openSession();
 		try {
-			getRuleRow = (ArrayList<AssertionGroup>) session
-					.selectList(
-							"com.cockpitconfig.objects.CommunicationMapper.getPKForConstraint",
-							ruleName);
-			if (getRuleRow == null || getRuleRow.size() == 0) {
+			PK = (Integer) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getPKForConstraint", ruleName);
+			if (PK == null) {
 				return -1;
-			} else {
-				return getRuleRow.get(0).getId();
 			}
 		} finally {
 			session.close();
 		}
+
+		return PK.intValue();
 	}
 
-	public ArrayList<AssertionGroup> getGrpRow(int grpID)
-			throws PersistenceException {
-		ArrayList<AssertionGroup> getGrpRow = null;
+	/**
+	 * @param grpID
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public ArrayList<AssertionGroup> getGrpRow(int grpID) throws PersistenceException {
+		ArrayList<AssertionGroup> groupRow = null;
 		SqlSession session = sf.openSession();
 		try {
-			getGrpRow = (ArrayList<AssertionGroup>) session
-					.selectList(
-							"com.cockpitconfig.objects.CommunicationMapper.getGroupRow",
-							grpID);
-			if (getGrpRow == null || getGrpRow.size() == 0) {
+			groupRow = (ArrayList<AssertionGroup>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getGroupRow", grpID);
+			if (groupRow == null || groupRow.size() == 0) {
 				return null;
-			} else {
-				return getGrpRow;
 			}
 		} finally {
 			session.close();
 		}
+
+		return groupRow;
 	}
 
+	/**
+	 * Update communication Medium
+	 * 
+	 * @param ag
+	 * @throws PersistenceException
+	 */
 	public void updateCommMedium(AssertionGroup ag) throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.selectList(
-					"com.cockpitconfig.objects.CommunicationMapper.updateCommID",
-					ag);
+			session.selectList("com.cockpitconfig.objects.CommunicationMapper.updateCommID", ag);
 		} finally {
 			session.close();
 		}
 	}
 
-	public int getLastInsertedIndex(AssertionGroup assGrp)
-			throws PersistenceException {
+	/**
+	 * Function to get the PK for last inserted rule
+	 * 
+	 * @param assGrp
+	 *            temp obj to hold the information
+	 * @return PK for the last inserted rule
+	 * @throws PersistenceException
+	 */
+	public int getLastInsertedIndex() throws PersistenceException {
+		Integer lastInserted;
 		SqlSession session = sf.openSession();
 		try {
-			ArrayList<AssertionGroup> lastInsertedRow = (ArrayList<AssertionGroup>) session
-					.selectList("com.cockpitconfig.objects.CommunicationMapper.getLastInsertedID");
-			int lastInsertedID = lastInsertedRow.get(0).getId();
-			return lastInsertedID;
+			lastInserted = (Integer) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getLastInsertedID");
+			if (lastInserted == null) {
+				throw new PersistenceException();
+			}
 		} finally {
 			session.close();
 		}
+
+		return lastInserted.intValue();
 	}
 
+	/**
+	 * Function to get the all rows of the assertionGroup table
+	 * 
+	 * @return all rows of the assertionGroup table
+	 * @throws PersistenceException
+	 */
 	public ArrayList<AssertionGroup> getAllrules() throws PersistenceException {
 		ArrayList<AssertionGroup> rules = null;
 		SqlSession session = sf.openSession();
 		try {
-			rules = (ArrayList<AssertionGroup>) session
-					.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllRuleName");
+			rules = (ArrayList<AssertionGroup>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllRules");
 			if (rules == null) {
 				throw new PersistenceException();
 			}
@@ -111,9 +141,28 @@ public class AssertionGroupDAO {
 	}
 
 	/**
-	 * Function which retrieves Constraint Name for printing Alert Message when
-	 * user tries to delete a url from ManageSource Screen which can not be
-	 * deleted
+	 * Function to get the all ruleName of the assertionGroup table
+	 * 
+	 * @return all ruleName of the assertionGroup table
+	 * @throws PersistenceException
+	 */
+	public ArrayList<String> getRuleNames() throws PersistenceException {
+		ArrayList<String> ruleNames = null;
+		SqlSession session = sf.openSession();
+		try {
+			ruleNames = (ArrayList<String>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getAllRuleNames");
+			if (ruleNames == null) {
+				throw new PersistenceException();
+			}
+		} finally {
+			session.close();
+		}
+
+		return ruleNames;
+	}
+
+	/**
+	 * Function which retrieves Constraint Name for printing Alert Message when user tries to delete a url from ManageSource Screen which can not be deleted
 	 * 
 	 * @param pkForSource
 	 * @return
@@ -123,10 +172,7 @@ public class AssertionGroupDAO {
 		ArrayList<AssertionGroup> checkExists = null;
 		SqlSession session = sf.openSession();
 		try {
-			checkExists = (ArrayList<AssertionGroup>) session
-					.selectList(
-							"com.cockpitconfig.objects.CommunicationMapper.checkForGivenSource",
-							pkForSource);
+			checkExists = (ArrayList<AssertionGroup>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.checkForGivenSource", pkForSource);
 			if (checkExists == null) {
 				return null;
 			} else {
@@ -144,15 +190,11 @@ public class AssertionGroupDAO {
 	 * @return
 	 * @throws PersistenceException
 	 */
-	public int getSourceKeyForGivenRule(String ruleName)
-			throws PersistenceException {
+	public int getSourceKeyForGivenRule(String ruleName) throws PersistenceException {
 		Integer source = null;
 		SqlSession session = sf.openSession();
 		try {
-			source = (Integer) session
-					.selectOne(
-							"com.cockpitconfig.objects.CommunicationMapper.getSourceKeyForGivenConstraint",
-							ruleName);
+			source = (Integer) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getSourceKeyForGivenConstraint", ruleName);
 			if (source == null) {
 				throw new PersistenceException();
 			}
@@ -172,8 +214,7 @@ public class AssertionGroupDAO {
 		Integer source = null;
 		SqlSession session = sf.openSession();
 		try {
-			source = (Integer) session
-					.selectOne("com.cockpitconfig.objects.CommunicationMapper.getTotalCountofRules");
+			source = (Integer) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getTotalCountofRules");
 			if (source == null) {
 				throw new PersistenceException();
 			}
@@ -193,10 +234,7 @@ public class AssertionGroupDAO {
 		HashMap hMap = new HashMap();
 		SqlSession session = sf.openSession();
 		try {
-			hMap = (HashMap) session
-					.selectMap(
-							"com.cockpitconfig.objects.CommunicationMapper.getAllPKAndSources",
-							"id");
+			hMap = (HashMap) session.selectMap("com.cockpitconfig.objects.CommunicationMapper.getAllPKAndSources", "id");
 			if (hMap == null) {
 				throw new PersistenceException();
 			}

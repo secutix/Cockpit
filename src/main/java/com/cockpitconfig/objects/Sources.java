@@ -1,8 +1,5 @@
 package com.cockpitconfig.objects;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import net.sf.json.JSONObject;
 
 public class Sources {
