@@ -20,10 +20,8 @@ public class MyBatisContextListener implements ServletContextListener {
 		try {
 			Reader reader = Resources.getResourceAsReader(resource);
 
-			// this will load the default environment configured in
-			// Configuration.xml
-			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder()
-					.build(reader);
+			// this will load the default environment configured in Configuration.xml
+			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 
 			// set the sqlSessionFactory as an application scoped variable
 			ctx.setAttribute("sqlSessionFactory", sqlSessionFactory);

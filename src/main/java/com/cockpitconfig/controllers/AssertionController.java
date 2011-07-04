@@ -108,11 +108,11 @@ public class AssertionController extends AbstractController {
 
 		// If all parameters are defined insert a row into assertionCondition
 		// Table
-		if (TimeFrameIndex != null && NotificationIndex != null && isAreIndex != null && slopeIndex != null && ruleIndex != null && numberField != null && stream != null) {
+		if (TimeFrameIndex != null && NotificationIndex != null && isAreIndex != null && slopeIndex != null && ruleIndex != null
+				&& numberField != null && stream != null) {
 			BigInteger value = new BigInteger(numberField);
-			setAssertionCondition(stream, Integer.parseInt(isAreIndex), Integer.parseInt(slopeIndex), value,
-
-			Integer.parseInt(TimeFrameIndex), Integer.parseInt(NotificationIndex), Integer.parseInt(ruleIndex), lastInsertedGroupIndex);
+			setAssertionCondition(stream, Integer.parseInt(isAreIndex), Integer.parseInt(slopeIndex), value, Integer.parseInt(TimeFrameIndex),
+					Integer.parseInt(NotificationIndex), Integer.parseInt(ruleIndex), lastInsertedGroupIndex);
 		}
 
 		// If all parameters are defined insert a row into timeConstraints Table
@@ -283,6 +283,7 @@ public class AssertionController extends AbstractController {
 				}
 			}
 		}
+
 		tcDao.setTimeConstraintForRule(tc);
 	}
 
@@ -327,7 +328,8 @@ public class AssertionController extends AbstractController {
 	 * @param groupID
 	 *            Group ID of the rule(as stored in ASSERTIONGROUP table)
 	 */
-	public void setAssertionCondition(String stream, int isAreIndex, int slopeIndex, BigInteger numberField, int TimeFrameIndex, int NotificationIndex, int ruleIndex, int groupID) {
+	public void setAssertionCondition(String stream, int isAreIndex, int slopeIndex, BigInteger numberField, int TimeFrameIndex,
+			int NotificationIndex, int ruleIndex, int groupID) {
 
 		AssertionCondition ac = new AssertionCondition();
 		ac.setStream(stream);

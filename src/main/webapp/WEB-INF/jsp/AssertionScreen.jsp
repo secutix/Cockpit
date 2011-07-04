@@ -692,7 +692,7 @@
 				regex : /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/,
 				regexText : 'Invalid format. Enter time in HH:MM',
 				disabled : true,
-				emptyText : 'HH:MM',
+				emptyText : 'HH:MM | 24 HOUR FORMAT',
 				allowBlank : false
 			});
 
@@ -709,7 +709,7 @@
 				regex : /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/,
 				regexText : 'Invalid format. Enter time in HH:MM',
 				disabled : true,
-				emptyText : 'HH:MM',
+				emptyText : 'HH:MM | 24 HOUR FORMAT',
 				allowBlank : false
 			});
 
