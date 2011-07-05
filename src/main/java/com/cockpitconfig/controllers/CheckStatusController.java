@@ -46,7 +46,8 @@ public class CheckStatusController {
 
 		for (int i = 0; i < allRules.size(); ++i) {
 			AssertionGroup tempObj = allRules.get(i);
-			checkRule(tempObj.getId(), tempObj.getSource(), tempObj.getConstraintName(), tempObj.getCommunicationID(), sf);
+			checkRule(tempObj.getId(), tempObj.getSource(), tempObj.getConstraintName(), tempObj.getCommunicationID(),
+					sf);
 		}
 
 		return model;
@@ -62,7 +63,8 @@ public class CheckStatusController {
 	 * @param sf
 	 * @throws Exception
 	 */
-	private void checkRule(int PK, int sourcePK, String constraintName, int communicationID, SqlSessionFactory sf) throws Exception {
+	private void checkRule(int PK, int sourcePK, String constraintName, int communicationID, SqlSessionFactory sf)
+			throws Exception {
 
 		AssertionConditionDAO acDao = new AssertionConditionDAO(sf);
 		SourcesDAO sourcesDao = new SourcesDAO(sf);
@@ -106,136 +108,166 @@ public class CheckStatusController {
 				if (temp.getMinVal() != null && temp.getMaxVal() != null) {
 					if (timeFrameIndex == TimeFrameEnum.PER_STEP.ordinal()) {
 						int increamentSize = 1;
-						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_5_STEP.ordinal()) {
 						int increamentSize = 5;
-						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_10_STEP.ordinal()) {
 						int increamentSize = 10;
-						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_25_STEP.ordinal()) {
 						int increamentSize = 25;
-						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_50_STEP.ordinal()) {
 						int increamentSize = 50;
-						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreEqualTo(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					}
 				} else if (temp.getMinVal() != null) {
 					if (timeFrameIndex == TimeFrameEnum.PER_STEP.ordinal()) {
 						int increamentSize = 1;
-						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_5_STEP.ordinal()) {
 						int increamentSize = 5;
-						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_10_STEP.ordinal()) {
 						int increamentSize = 10;
-						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_25_STEP.ordinal()) {
 						int increamentSize = 25;
-						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_50_STEP.ordinal()) {
 						int increamentSize = 50;
-						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreGreaterThan(increamentSize, valueList, temp.getMinVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					}
 				} else {
 					if (timeFrameIndex == TimeFrameEnum.PER_STEP.ordinal()) {
 						int increamentSize = 1;
-						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_5_STEP.ordinal()) {
 						int increamentSize = 5;
-						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_10_STEP.ordinal()) {
 						int increamentSize = 10;
-						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_25_STEP.ordinal()) {
 						int increamentSize = 25;
-						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_50_STEP.ordinal()) {
 						int increamentSize = 50;
-						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstIsAreLessThan(increamentSize, valueList, temp.getMaxVal(), assertionConditionID,
+								notificationLevelID, constraintName, communicationID, assertionIndex, header,
+								constrainedTime, sf);
 					}
 				}
 			} else {
 				if (temp.getMinDelta() != null && temp.getMaxDelta() != null) {
 					if (timeFrameIndex == TimeFrameEnum.PER_STEP.ordinal()) {
 						int increamentSize = 1;
-						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_5_STEP.ordinal()) {
 						int increamentSize = 5;
-						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_10_STEP.ordinal()) {
 						int increamentSize = 10;
-						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_25_STEP.ordinal()) {
 						int increamentSize = 25;
-						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_50_STEP.ordinal()) {
 						int increamentSize = 50;
-						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeIsEqualTo(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					}
 				} else if (temp.getMinDelta() != null) {
 					if (timeFrameIndex == TimeFrameEnum.PER_STEP.ordinal()) {
 						int increamentSize = 1;
-						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_5_STEP.ordinal()) {
 						int increamentSize = 5;
-						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_10_STEP.ordinal()) {
 						int increamentSize = 10;
-						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_25_STEP.ordinal()) {
 						int increamentSize = 25;
-						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_50_STEP.ordinal()) {
 						int increamentSize = 50;
-						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeGreaterThan(increamentSize, valueList, temp.getMinDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					}
 				} else {
 					if (timeFrameIndex == TimeFrameEnum.PER_STEP.ordinal()) {
 						int increamentSize = 1;
-						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_5_STEP.ordinal()) {
 						int increamentSize = 5;
-						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_10_STEP.ordinal()) {
 						int increamentSize = 10;
-						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_25_STEP.ordinal()) {
 						int increamentSize = 25;
-						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					} else if (timeFrameIndex == TimeFrameEnum.PER_50_STEP.ordinal()) {
 						int increamentSize = 50;
-						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(), assertionConditionID, notificationLevelID,
-								constraintName, communicationID, assertionIndex, header, constrainedTime, sf);
+						checkAgainstHasSlopeLessThan(increamentSize, valueList, temp.getMaxDelta(),
+								assertionConditionID, notificationLevelID, constraintName, communicationID,
+								assertionIndex, header, constrainedTime, sf);
 					}
 				}
 			}
@@ -255,7 +287,8 @@ public class CheckStatusController {
 	}
 
 	/**
-	 * Checks a row of a rule against current value when rule contains "is/are" and "equal to". Upon violation, insert a row in NotificationOccurrence table
+	 * Checks a row of a rule against current value when rule contains "is/are" and "equal to". Upon violation, insert a
+	 * row in NotificationOccurrence table
 	 * 
 	 * @param increamentSize
 	 *            describes steps to check against
@@ -269,9 +302,9 @@ public class CheckStatusController {
 	 *            PK of notificationLevel in NotificationLevel table
 	 */
 
-	private void checkAgainstIsAreEqualTo(int increamentSize, String[] valueList, BigInteger maxValue, int assertionConditionID,
-			int notificationLevelID, String constraintName, int communicationID, int assertionIndex, String header,
-			ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
+	private void checkAgainstIsAreEqualTo(int increamentSize, String[] valueList, BigInteger maxValue,
+			int assertionConditionID, int notificationLevelID, String constraintName, int communicationID,
+			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length; j = j + increamentSize) {
 			if (!isDisabled(header, constrainedTime, j) && valueList[j] != null) {
@@ -311,7 +344,8 @@ public class CheckStatusController {
 	}
 
 	/**
-	 * Checks a row of a rule against current value when rule contains "is/are" and "greater than". Upon violation, insert a row in NotificationOccurrence table
+	 * Checks a row of a rule against current value when rule contains "is/are" and "greater than". Upon violation,
+	 * insert a row in NotificationOccurrence table
 	 * 
 	 * @param increamentSize
 	 *            describes steps to check against
@@ -325,9 +359,9 @@ public class CheckStatusController {
 	 *            PK of notificationLevel in NotificationLevel table
 	 */
 
-	private void checkAgainstIsAreGreaterThan(int increamentSize, String[] valueList, BigInteger minValue, int assertionConditionID,
-			int notificationLevelID, String constraintName, int communicationID, int assertionIndex, String header,
-			ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
+	private void checkAgainstIsAreGreaterThan(int increamentSize, String[] valueList, BigInteger minValue,
+			int assertionConditionID, int notificationLevelID, String constraintName, int communicationID,
+			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length; j = j + increamentSize) {
 			if (!isDisabled(header, constrainedTime, j) && valueList[j] != null) {
@@ -367,7 +401,8 @@ public class CheckStatusController {
 	}
 
 	/**
-	 * Checks a row of a rule against current value when rule contains "is/are" and "less than". Upon violation, insert a row in NotificationOccurrence table
+	 * Checks a row of a rule against current value when rule contains "is/are" and "less than". Upon violation, insert
+	 * a row in NotificationOccurrence table
 	 * 
 	 * @param increamentSize
 	 *            describes steps to check against
@@ -381,9 +416,9 @@ public class CheckStatusController {
 	 *            PK of notificationLevel in NotificationLevel table
 	 */
 
-	private void checkAgainstIsAreLessThan(int increamentSize, String[] valueList, BigInteger maxValue, int assertionConditionID,
-			int notificationLevelID, String constraintName, int communicationID, int assertionIndex, String header,
-			ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
+	private void checkAgainstIsAreLessThan(int increamentSize, String[] valueList, BigInteger maxValue,
+			int assertionConditionID, int notificationLevelID, String constraintName, int communicationID,
+			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length; j = j + increamentSize) {
 			if (!isDisabled(header, constrainedTime, j) && valueList[j] != null) {
@@ -422,9 +457,9 @@ public class CheckStatusController {
 		}
 	}
 
-	private void checkAgainstHasSlopeIsEqualTo(int increamentSize, String[] valueList, BigInteger maxValue, int assertionConditionID,
-			int notificationLevelID, String constraintName, int communicationID, int assertionIndex, String header,
-			ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
+	private void checkAgainstHasSlopeIsEqualTo(int increamentSize, String[] valueList, BigInteger maxValue,
+			int assertionConditionID, int notificationLevelID, String constraintName, int communicationID,
+			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length - increamentSize; j = j + increamentSize) {
 			if (valueList[j + increamentSize] != null && valueList[j] != null) {
@@ -472,9 +507,9 @@ public class CheckStatusController {
 		}
 	}
 
-	private void checkAgainstHasSlopeGreaterThan(int increamentSize, String[] valueList, BigInteger minValue, int assertionConditionID,
-			int notificationLevelID, String constraintName, int communicationID, int assertionIndex, String header,
-			ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
+	private void checkAgainstHasSlopeGreaterThan(int increamentSize, String[] valueList, BigInteger minValue,
+			int assertionConditionID, int notificationLevelID, String constraintName, int communicationID,
+			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length - increamentSize; j = j + increamentSize) {
 			if (valueList[j + increamentSize] != null && valueList[j] != null) {
@@ -522,9 +557,9 @@ public class CheckStatusController {
 		}
 	}
 
-	private void checkAgainstHasSlopeLessThan(int increamentSize, String[] valueList, BigInteger maxValue, int assertionConditionID,
-			int notificationLevelID, String constraintName, int communicationID, int assertionIndex, String header,
-			ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
+	private void checkAgainstHasSlopeLessThan(int increamentSize, String[] valueList, BigInteger maxValue,
+			int assertionConditionID, int notificationLevelID, String constraintName, int communicationID,
+			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length - increamentSize; j = j + increamentSize) {
 			if (valueList[j + increamentSize] != null && valueList[j] != null) {
@@ -608,7 +643,8 @@ public class CheckStatusController {
 		return false;
 	}
 
-	private boolean checkForTime(String epochStartTimes, String epochEndTimes, String constrainedStartTimes, String constrainedEndTimes) {
+	private boolean checkForTime(String epochStartTimes, String epochEndTimes, String constrainedStartTimes,
+			String constrainedEndTimes) {
 		String[] constrainedStart = constrainedStartTimes.split(":");
 		String[] constrainedEnd = constrainedEndTimes.split(":");
 
@@ -641,8 +677,8 @@ public class CheckStatusController {
 	 *            timeConstraint list
 	 * @param day
 	 *            Day as calculated by epoch time. graphite day
-	 * @return list of string containing 2 entries for everyday if day is enable then first entry represents start timing and second entry represents end timing
-	 *         else null in both entries
+	 * @return list of string containing 2 entries for everyday if day is enable then first entry represents start
+	 *         timing and second entry represents end timing else null in both entries
 	 */
 	private ArrayList<String> getDayTimes(ArrayList<TimeConstraints> constraintTime, int day) {
 		ArrayList<String> dayTime = new ArrayList<String>();

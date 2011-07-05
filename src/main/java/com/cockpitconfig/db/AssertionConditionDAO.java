@@ -22,7 +22,7 @@ public class AssertionConditionDAO {
 
 	/**
 	 * Function to insert a new rule whenever user adds a new rule
-	 * 
+	 *
 	 * @param tempobj
 	 *            Object to hold the information
 	 * @throws PersistenceException
@@ -39,7 +39,7 @@ public class AssertionConditionDAO {
 
 	/**
 	 * Function to get the row corresponding to given PK
-	 * 
+	 *
 	 * @param grpID
 	 *            PK of the rule
 	 * @return Row containing the information regarding the rule
@@ -62,7 +62,7 @@ public class AssertionConditionDAO {
 
 	/**
 	 * Removes the rule from the assertionCondition table with the given PK
-	 * 
+	 *
 	 * @param grpID
 	 *            PK of the rule
 	 * @throws PersistenceException
@@ -70,7 +70,7 @@ public class AssertionConditionDAO {
 	public void removeRulesWithID(int grpID) throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.delete("com.cockpitconfig.objects.CommunicationMapper.deleteRulesWithID", grpID);
+			session.selectList("com.cockpitconfig.objects.CommunicationMapper.deleteRulesWithID", grpID);
 		} finally {
 			session.close();
 		}

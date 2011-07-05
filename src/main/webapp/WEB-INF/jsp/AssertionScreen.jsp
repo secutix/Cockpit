@@ -239,15 +239,29 @@
 						}
 
 						var str1 = existingValues.startHour[i];
-						str1 += ""; // convert int to string
 						var str2 = existingValues.startMin[i];
+						str1 += ""; 			// convert int to string
 						str2 += "";
-						fromFields[i + 1].setValue(str1.concat(":", str2));
+						if (str1.length == 1) {
+							str1 = "0" + str1;
+						}
+						if (str2.length == 1) {
+							str2 = "0" + str2;
+						}
+						fromFields[i + 1].setValue(str1 + ":" + str2);
+
 						str1 = existingValues.endHour[i];
-						str1 += "";
 						str2 = existingValues.endMin[i];
+						str1 += "";
 						str2 += "";
-						toFields[i + 1].setValue(str1.concat(":", str2));
+						if (str1.length == 1) {
+							str1 = "0" + str1;
+						}
+						if (str2.length == 1) {
+							str2 = "0" + str2;
+						}
+						toFields[i + 1].setValue(str1 + ":" + str2);
+
 					}
 
 					if (existingValues.communicationVia == 0) {
@@ -546,6 +560,13 @@
 					var index = indexToRemove;
 					ruleForms[index].ownerCt.remove(ruleForms[index]);
 					ruleForms.splice(index, 1);
+					streamBoxes.splice(index, 1);
+					timeFrameBoxes.splice(index, 1);
+					notificationBoxes.splice(index, 1);
+					isAreBoxes.splice(index, 1);
+					slopeBoxes.splice(index, 1);
+					numberBoxes.splice(index, 1);
+
 					win.doLayout();
 				}
 			}
@@ -766,6 +787,10 @@
 					var index = indexToRemoveFrequency;
 					frequencyForms[index].ownerCt.remove(frequencyForms[index]);
 					frequencyForms.splice(index, 1);
+					fromFields.splice(index, 1);
+					toFields.splice(index, 1);
+					frequencyFields.splice(index, 1);
+
 					win.doLayout();
 				}
 			}
@@ -1055,7 +1080,7 @@
 			bodyStyle : 'background-color:#fff;padding: 10px',
 			autoScroll : true,
 			items : [ {
-				items : [ nameTextFieldContainer, getNewRuleForm(), getNewLabel('<br/><b><font size="3">Disabled on</font></b>'),
+				items : [ nameTextFieldContainer, getNewRuleForm(), getNewLabel('<br/><b><font size="3">Disabled on</font><font size="2"> &nbsp;(24 hour format)</font></b>'),
 							getNewFrequencyForm(), getNewLabel('<br/><b><font size="3">Communication Via</font></b>'), communicationForm ]
 			} ],
 			buttonAlign : 'right', // buttons aligned to the right
