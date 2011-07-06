@@ -1077,6 +1077,7 @@
 			height : 770,
 			id : 'win',
 			name : 'win',
+			//style				: 'margin:0 auto;margin-top:100;',
 			bodyStyle : 'background-color:#fff;padding: 10px',
 			autoScroll : true,
 			items : [ {

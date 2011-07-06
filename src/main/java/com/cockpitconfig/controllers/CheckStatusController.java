@@ -55,7 +55,7 @@ public class CheckStatusController {
 
 	/**
 	 * Function which monitor each rule
-	 * 
+	 *
 	 * @param PK
 	 *            Primary Key of assertion group table
 	 * @param sourcePK
@@ -276,7 +276,7 @@ public class CheckStatusController {
 
 	/**
 	 * Function which returns current data or time
-	 * 
+	 *
 	 * @param dateFormat
 	 * @return String containing current date or time
 	 */
@@ -289,7 +289,7 @@ public class CheckStatusController {
 	/**
 	 * Checks a row of a rule against current value when rule contains "is/are" and "equal to". Upon violation, insert a
 	 * row in NotificationOccurrence table
-	 * 
+	 *
 	 * @param increamentSize
 	 *            describes steps to check against
 	 * @param valueList
@@ -307,7 +307,7 @@ public class CheckStatusController {
 			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length; j = j + increamentSize) {
-			if (!isDisabled(header, constrainedTime, j) && valueList[j] != null) {
+			if (!isDisabled(header, constrainedTime, j) && valueList[j].equals("None") == false) {
 				String s = valueList[j].substring(0, valueList[j].indexOf("."));
 				BigInteger dataValue = new BigInteger(s);
 				int checkCondition = maxValue.compareTo(dataValue);
@@ -335,7 +335,7 @@ public class CheckStatusController {
 					notiOccurrence.setDateOccur(currentDate);
 					notiOccurrence.setType(alertType);
 					notiOccurrence.setDescription("[" + constraintName + "] | Stream index " + assertionIndex + " ("
-							+ (int) Float.parseFloat(valueList[j]) + ") != " + maxValue);
+							+ (int) Float.parseFloat(valueList[j]) + ") = " + maxValue);
 					NotificationOccurrencesDAO notiOccDao = new NotificationOccurrencesDAO(sf);
 					notiOccDao.setRow(notiOccurrence);
 				}
@@ -346,7 +346,7 @@ public class CheckStatusController {
 	/**
 	 * Checks a row of a rule against current value when rule contains "is/are" and "greater than". Upon violation,
 	 * insert a row in NotificationOccurrence table
-	 * 
+	 *
 	 * @param increamentSize
 	 *            describes steps to check against
 	 * @param valueList
@@ -364,7 +364,7 @@ public class CheckStatusController {
 			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length; j = j + increamentSize) {
-			if (!isDisabled(header, constrainedTime, j) && valueList[j] != null) {
+			if (!isDisabled(header, constrainedTime, j) && valueList[j].equals("None") == false) {
 				String s = valueList[j].substring(0, valueList[j].indexOf("."));
 				BigInteger dataValue = new BigInteger(s);
 				int checkCondition = dataValue.compareTo(minValue);
@@ -403,7 +403,7 @@ public class CheckStatusController {
 	/**
 	 * Checks a row of a rule against current value when rule contains "is/are" and "less than". Upon violation, insert
 	 * a row in NotificationOccurrence table
-	 * 
+	 *
 	 * @param increamentSize
 	 *            describes steps to check against
 	 * @param valueList
@@ -421,7 +421,7 @@ public class CheckStatusController {
 			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length; j = j + increamentSize) {
-			if (!isDisabled(header, constrainedTime, j) && valueList[j] != null) {
+			if (!isDisabled(header, constrainedTime, j) && valueList[j].equals("None") == false) {
 				String s = valueList[j].substring(0, valueList[j].indexOf("."));
 				BigInteger dataValue = new BigInteger(s);
 				int checkCondition = maxValue.compareTo(dataValue);
@@ -462,7 +462,7 @@ public class CheckStatusController {
 			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length - increamentSize; j = j + increamentSize) {
-			if (valueList[j + increamentSize] != null && valueList[j] != null) {
+			if (valueList[j + increamentSize].equals("None") == false && valueList[j].equals("None") == false) {
 				String s1 = valueList[j + increamentSize].substring(0, valueList[j + increamentSize].indexOf("."));
 				String s0 = valueList[j].substring(0, valueList[j].indexOf("."));
 				BigInteger dataValue1 = new BigInteger(s1);
@@ -499,7 +499,7 @@ public class CheckStatusController {
 					notiOccurrence.setDateOccur(currentDate);
 					notiOccurrence.setType(alertType);
 					notiOccurrence.setDescription("[" + constraintName + "] | Stream index " + assertionIndex + " ("
-							+ (int) Float.parseFloat(valueList[j]) + ") != " + maxValue);
+							+ (int) Float.parseFloat(valueList[j]) + ") = " + maxValue);
 					NotificationOccurrencesDAO notiOccDao = new NotificationOccurrencesDAO(sf);
 					notiOccDao.setRow(notiOccurrence);
 				}
@@ -512,7 +512,7 @@ public class CheckStatusController {
 			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length - increamentSize; j = j + increamentSize) {
-			if (valueList[j + increamentSize] != null && valueList[j] != null) {
+			if (valueList[j + increamentSize].equals("None") == false && valueList[j].equals("None") == false) {
 				String s1 = valueList[j + increamentSize].substring(0, valueList[j + increamentSize].indexOf("."));
 				String s0 = valueList[j].substring(0, valueList[j].indexOf("."));
 				BigInteger dataValue1 = new BigInteger(s1);
@@ -562,7 +562,7 @@ public class CheckStatusController {
 			int assertionIndex, String header, ArrayList<TimeConstraints> constrainedTime, SqlSessionFactory sf) {
 
 		for (int j = 0; j < valueList.length - increamentSize; j = j + increamentSize) {
-			if (valueList[j + increamentSize] != null && valueList[j] != null) {
+			if (valueList[j + increamentSize].equals("None") == false && valueList[j].equals("None") == false) {
 				String s1 = valueList[j + increamentSize].substring(0, valueList[j + increamentSize].indexOf("."));
 				String s0 = valueList[j].substring(0, valueList[j].indexOf("."));
 				BigInteger dataValue1 = new BigInteger(s1);
@@ -609,7 +609,7 @@ public class CheckStatusController {
 
 	/**
 	 * Function to check rules against time constraint specified by users.
-	 * 
+	 *
 	 * @param header
 	 * @param constrainedTime
 	 * @param index
@@ -672,7 +672,7 @@ public class CheckStatusController {
 
 	/**
 	 * Function to check whether rule is enabled or disabled on a particular day
-	 * 
+	 *
 	 * @param constraintTime
 	 *            timeConstraint list
 	 * @param day

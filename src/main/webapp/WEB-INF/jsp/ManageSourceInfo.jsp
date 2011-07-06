@@ -54,13 +54,6 @@ Ext.onReady(function(){
     		hideBorders 	: false,
     		autoHeight 		: true,
     		labelWidth  	: 70,
-    		height  	  	: 42,
-    		defaultType 	: 'field',
-    		defaults    	: {
-    			anchor     	: '100%',
-    			allowBlank 	: false,
-    			border		: 'false'
-	  	      },
 	  	      items : [
 	  	               urlTextField, descritptionTextField
 	  	              ]
@@ -76,6 +69,7 @@ Ext.onReady(function(){
 	    	bodyStyle		: 'background-color:#fff;padding: 5px',
 	    	autoScroll  	: true,
 	    	closable		: false,
+	    	layout 			: 'fit',
 	    	items			: [
 	    		urlContainer()
 	    	],
@@ -228,6 +222,7 @@ Ext.onReady(function(){
         title				: 'Available Sources',
         trackMouseOver		: true,
     	autoExpandColumn	: 'topic',
+    	style				: 'margin:0 auto;margin-top:100;',
         store				: store,
         selModel         : new Ext.grid.RowSelectionModel({singleSelect : true}),
 

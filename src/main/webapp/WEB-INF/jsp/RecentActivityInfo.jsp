@@ -15,8 +15,7 @@ Ext.onReady(function(){
 
     var bd = Ext.getBody();
 
-    function getNewLabel (text)
-    {
+    function getNewLabel (text) {
       return {
            xtype	: 'box',
            autoEl	: {cn: text}
@@ -45,11 +44,6 @@ Ext.onReady(function(){
 		});
     };
 
-    var saveButton = function()
-    {
-		alert(Ext.getCmp('id-to').getValue().format('Y-m-d'));
-    };
-
     var getURL = function() {
     	var temp = Ext.getCmp('id-to').getValue().format('Y-m-d');
     }
@@ -58,7 +52,8 @@ Ext.onReady(function(){
     	border		: false,
     	labelAlign	: 'top',
         frame		: true,
-        bodyStyle	: 'padding-left:100px;',
+      	id			: 'recent-activity-duration-form',
+        bodyStyle	: 'padding-left:20px;',
         items: [{
           items: [{
             rowWidth	: .5,
@@ -128,14 +123,15 @@ Ext.onReady(function(){
     }
 
     var grid = new Ext.grid.GridPanel ({
-        renderTo			: Ext.getBody(),
+    	renderTo			: Ext.getBody(),
         width				: 700,
-       // waitMsg			: 'Loading',
+        //waitMsg			: 'Loading',
         height				: 500,
         frame				: true,
         title				: 'Recent Activites',
         trackMouseOver		: true,
     	autoExpandColumn	: 'topic',
+    	style				: 'margin:0 auto;margin-top:100;',
         store				: store,
 
         columns: [new Ext.grid.RowNumberer({width: 30}),{

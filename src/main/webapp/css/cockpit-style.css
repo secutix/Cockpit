@@ -1,0 +1,42 @@
+.add {
+    background-image:url(../images/cockpit/add.gif) !important;
+}
+.option {
+    background-image:url(../images/cockpit/plugin.gif) !important;
+}
+.remove {
+    background-image:url(../images/cockpit/delete.gif) !important;
+}
+.save {
+    background-image:url(../images/cockpit/save.gif) !important;
+}
+.accept {
+    background-image:url(../images/cockpit/accept.gif) !important;
+}
+.error {
+    background-image:url(../images/cockpit/error.png) !important;
+}
+.information {
+    background-image:url(../images/cockpit/information.png) !important;
+}
+.cancel {
+    background-image:url(../images/cockpit/cancel.gif) !important;
+}
+
+.activityPanel .x-panel-body {
+	margin-top 		: 10px;
+	position   		: absolute;
+	vertical-align  : middle;
+}
+
+.sourcePanel .x-panel-body {
+	margin-top 		: 10px;
+	position   		: absolute;
+	vertical-align  : middle;
+}
+
+.rule .x-panel-body {
+	margin-top 		: 10px;
+	position   		: absolute;
+	vertical-align  : middle;
+}

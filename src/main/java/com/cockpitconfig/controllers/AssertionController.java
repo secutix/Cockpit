@@ -43,7 +43,7 @@ public class AssertionController extends AbstractController {
 		handleFormSubmission(request, mav);
 
 		// Following parameters would be received by AJAX Request when user
-		// saves current Assertoin Screen
+		// saves current Assertion Screen
 		String existingRule = request.getParameter("existingRule");
 		String selectedSource = request.getParameter("selectedSource");
 		String TimeFrameIndex = request.getParameter("TimeFrameIndex");
@@ -131,7 +131,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function which removes row of existing rules from assertionCondition with id = grpID when user modifies the rule
-	 * 
+	 *
 	 * @param grpID
 	 *            ID corresponding to existing rule
 	 */
@@ -145,7 +145,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function which removes row of existing rules from timeConstraints with id = grpID when user modifies the rule
-	 * 
+	 *
 	 * @param grpID
 	 *            ID corresponding to existing rule
 	 */
@@ -166,7 +166,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function which removes row of existing rules from communicationViaEmail with id = grpID when user modifies the rule
-	 * 
+	 *
 	 * @param grpID
 	 *            ID corresponding to existing rule
 	 */
@@ -184,10 +184,10 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function which return primary key from assertion group table for given ruleName
-	 * 
+	 *
 	 * @param ruleName
 	 *            Name of the Rule
-	 * @return primary key of assertiongroup table corroesponding to given ruleName
+	 * @return primary key of assertiongroup table corresponding to given ruleName
 	 */
 	private int getPKForRule(String ruleName) {
 		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
@@ -199,7 +199,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Invoked when communication Medium is select as E-Mail. Function inserts a row in to communicationViaEmail table with given recipent and assertionGroupID
-	 * 
+	 *
 	 * @param recipents
 	 *            E-Mail id of the user to which application should inform upon violation of constraints
 	 * @param assertionGrpIndex
@@ -217,7 +217,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function which stores Time Constraints for a Rule in the Database.
-	 * 
+	 *
 	 * @param selectedDays
 	 *            Each element of array corresponds to a day, if day is selected then true otherwise false
 	 * @param startTime
@@ -289,7 +289,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function whicih returns the ID of the last inserted Rule
-	 * 
+	 *
 	 * @param ruleName
 	 *            Name of the rule
 	 * @param communicationVia
@@ -312,7 +312,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function which sets all the parameters for a rule
-	 * 
+	 *
 	 * @param isAreIndex
 	 *            1 = is/are, 2 = has slope
 	 * @param slopeIndex
@@ -382,7 +382,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function which sends back values from Server Side to Client side using ModelAndView object
-	 * 
+	 *
 	 * @param request
 	 *            HttpServletRequest Object
 	 * @param mav
@@ -459,7 +459,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function which executes when user selects an existing rule from Database
-	 * 
+	 *
 	 * @param existingRuleName
 	 *            Name of the rule selected by User
 	 * @param response

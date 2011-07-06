@@ -1,20 +1,16 @@
 var showWelcomeScreen = function () {
-	//var obj = document.getElementById('body-frame');
 	document.getElementById('body-frame').src = 'recentActivityinfo.htm';
 }
 
 var showManageSourceScreen = function () {
-	//var obj = document.getElementById('body-frame');
 	document.getElementById('body-frame').src = 'manageSourceInfo.htm';
 }
 
 var showAssertionScreen = function () {
-	//var obj = document.getElementById('body-frame');
 	document.getElementById('body-frame').src = 'assertion.htm';
 }
 
 var showSystemInfo = function () {
-	//var obj = document.getElementById('body-frame');
 	document.getElementById('body-frame').src = 'system.htm';
 }
 
