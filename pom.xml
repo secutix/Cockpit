@@ -68,6 +68,19 @@
 	    <version>4.4</version>
 	</dependency>
 
+	<!-- Jackson JSON Mapper -->
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.8.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-core-asl</artifactId>
+		<version>1.8.2</version>
+	</dependency>
+
 	<!--  Camel Dependencies -->
   	<dependency>
 	    <groupId>org.apache.camel</groupId>
