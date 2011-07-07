@@ -59,15 +59,15 @@ Ext.onReady(function(){
             rowWidth	: .5,
             layout		:'column',
                 items:[{
-                	columnWidth		: .10,
+                	columnWidth		: .08,
                     layout			: 'form',
                     items			: [getNewLabel('<br/><font size="3">Duration: </font>')]
                 },{
-                	columnWidth		: .17,
+                	columnWidth		: .13,
                     layout			: 'form',
                     items			: [fromDate()]
                 },{
-             	    columnWidth		: .17,
+             	    columnWidth		: .1,
                     layout			: 'form',
                     items			: [toDate()]
                 }]

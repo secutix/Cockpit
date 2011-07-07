@@ -53,7 +53,7 @@
 	<result property="minDelta" column="MIN_DELTA" />
 	<result property="maxDelta" column="MAX_DELTA" />
 	<result property="timeFrameID" column="TIMEFRAME_ID" />
-	<result property="notificationID" column="NOTIFICATION_NAME" />
+	<result property="notificationID" column="NOTIFICATION_ID" />
 	<result property="assertionGroupID" column="ASSERTIONGROUP_ID" />
 	<result property="assertionIndex" column="ASSERTION_INDEX" />
 	<result property="stream" column="STREAM" />
@@ -120,7 +120,7 @@
  	   select LABEL from assertiongroup
  </select>
 
-  <select id="getRuleInfo" parameterType="AssertionCondition" resultMap="AssertionConditionResultMap">
+  <select id="getRuleInfo" parameterType="int" resultMap="AssertionConditionResultMap">
 		select * from assertioncondition where ASSERTIONGROUP_ID = (#{assertionGroupID})
  </select>
 
@@ -175,10 +175,10 @@
  <select id="getNotifications" parameterType="map" resultMap="NotificationOccurrenceResultMap">
 	select * from notificationoccurrence where TRUE
 	<if test="fromdate != null">
-		AND DATEOCCUR &gt; #{fromdate}
+		AND DATEOCCUR &gt;= #{fromdate}
 	</if>
 	<if test="todate != null">
-		AND DATEOCCUR &lt; #{todate}
+		AND DATEOCCUR &lt;= #{todate}
 	</if>
 	ORDER BY DATEOCCUR DESC LIMIT #{start},#{limit}
  </select>
@@ -186,10 +186,10 @@
  <select id="getNotificationsCount" resultMap="MyInteger">
 	SELECT COUNT(*) FROM notificationoccurrence where TRUE
 	<if test="fromdate != null">
-		AND DATEOCCUR &gt; #{fromdate}
+		AND DATEOCCUR &gt;= #{fromdate}
 	</if>
 	<if test="todate != null">
-		AND DATEOCCUR &lt; #{todate}
+		AND DATEOCCUR &lt;= #{todate}
 	</if>
  </select>
 

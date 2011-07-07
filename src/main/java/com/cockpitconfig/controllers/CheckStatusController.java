@@ -36,7 +36,7 @@ import com.cockpitconfig.objects.TimeConstraints;
 @RequestMapping("/checkStatus")
 public class CheckStatusController {
 
-	ArrayList<NotificationOccurrence> notificationOccurences = new ArrayList<NotificationOccurrence>();
+	ArrayList<NotificationOccurrence> notificationOccurences;
 
 	public enum TimeFrameEnum {
 		PER_STEP, PER_5_STEP, PER_10_STEP, PER_25_STEP, PER_50_STEP
@@ -52,6 +52,7 @@ public class CheckStatusController {
 		AssertionGroupDAO agDao = new AssertionGroupDAO(sf);
 		ArrayList<AssertionGroup> allRules = agDao.getAllrules();
 
+		notificationOccurences = new ArrayList<NotificationOccurrence>();
 		for (int i = 0; i < allRules.size(); ++i) {
 			AssertionGroup tempObj = allRules.get(i);
 			checkRule(tempObj.getId(), tempObj.getSource(),
@@ -62,12 +63,6 @@ public class CheckStatusController {
 		ObjectMapper mapper = new ObjectMapper();
 		model.addObject("json",
 				mapper.writeValueAsString(notificationOccurences));
-		// response.setContentType("application/json;charset=UTF-8");
-		// response.setHeader("Cache-Control", "no-cache");
-		//
-		//
-		// response.getWriter().write(
-		// mapper.writeValueAsString(notificationOccurences));
 		return model;
 	}
 
