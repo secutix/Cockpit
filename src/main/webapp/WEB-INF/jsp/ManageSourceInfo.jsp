@@ -140,7 +140,7 @@ Ext.onReady(function(){
 
     var store = new Ext.data.Store ({
         autoLoad	: { params:
-        					{start:0, limit:10}
+        					{start:0, limit:15}
         			  },
 
         proxy	: new Ext.data.HttpProxy ({
@@ -210,14 +210,14 @@ Ext.onReady(function(){
 
      var paging = new Ext.PagingToolbar({
 	  store			: store,
-	  pageSize		: 10,
+	  pageSize		: 15,
 	  displayInfo	: true
      });
 
     var grid = new Ext.grid.GridPanel({
         renderTo			: Ext.getBody(),
-        width				: 700,
-        height				: 500,
+        width				: 900,
+        height				: 525,
         frame				: true,
         title				: 'Available Sources',
         trackMouseOver		: true,

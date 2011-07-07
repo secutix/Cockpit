@@ -79,7 +79,7 @@ Ext.onReady(function(){
 
     var store = new Ext.data.Store ({
         autoLoad	: { params:
-        					{start:0, limit:10}
+        					{start:0, limit:20}
         			  },
 
         proxy	: new Ext.data.HttpProxy({
@@ -92,6 +92,7 @@ Ext.onReady(function(){
             idProperty		: 'threadid',
             fields: [
 				{name: 'Date', type:'string'},
+				{name: 'Time', type:'string'},
                 {name: 'Type', type: 'string'},
                 {name: 'Description', type: 'string'}
             ]
@@ -124,14 +125,14 @@ Ext.onReady(function(){
 
     var grid = new Ext.grid.GridPanel ({
     	renderTo			: Ext.getBody(),
-        width				: 700,
+        width				: 900,
         //waitMsg			: 'Loading',
-        height				: 500,
+        height				: 525,
         frame				: true,
         title				: 'Recent Activites',
         trackMouseOver		: true,
     	autoExpandColumn	: 'topic',
-    	style				: 'margin:0 auto;margin-top:100;',
+    	style				: 'margin:0 auto;margin-top:50;',
         store				: store,
 
         columns: [new Ext.grid.RowNumberer({width: 30}),{
@@ -140,6 +141,13 @@ Ext.onReady(function(){
             dataIndex	: 'Date',
             width		: 200,
     		//renderer	: formatDate,
+            sortable	: true
+        },{
+            header		: "Time",
+            dataIndex	: 'Time',
+            width		: 120,
+            //align		: 'right',
+            //renderer	: renderType,
             sortable	: true
         },{
             header		: "Type",
@@ -152,14 +160,14 @@ Ext.onReady(function(){
             id			: 'last',
             header		: "Description:  [RuleName] | Cause",
             dataIndex	: 'Description',
-            width		: 320,
+            width		: 400,
             //renderer	: renderLast,
             sortable	: true
         }],
 
       bbar: new Ext.PagingToolbar({
         store			: store,
-        pageSize		: 10,
+        pageSize		: 20,
         displayInfo		: true
       }),
 

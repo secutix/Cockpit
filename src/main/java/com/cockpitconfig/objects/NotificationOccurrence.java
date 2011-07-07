@@ -64,6 +64,7 @@ public class NotificationOccurrence {
 		// DateFormat formatter;
 		// formatter = new SimpleDateFormat("yyyy-MM-dd");
 		// String s = formatter.format(this.dateOccur);
+		json.put("Time", this.timeOccur);
 		json.put("Date", this.dateOccur);
 		json.put("Type", this.type);
 		json.put("Description", this.description);
