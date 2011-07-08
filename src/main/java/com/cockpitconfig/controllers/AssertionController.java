@@ -38,8 +38,10 @@ public class AssertionController extends AbstractController {
 	int lastInsertedGroupIndex = INITIAL_VALUE;
 
 	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mav = new ModelAndView("AssertionScreen", "AssertRules", "A"); // TODO: last argument is message
+	protected ModelAndView handleRequestInternal(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		ModelAndView mav = new ModelAndView("AssertionScreen", "AssertRules",
+				"A"); // TODO: last argument is message
 		handleFormSubmission(request, mav);
 
 		// Following parameters would be received by AJAX Request when user
@@ -59,6 +61,7 @@ public class AssertionController extends AbstractController {
 		String recipents = request.getParameter("recipents");
 		String source = request.getParameter("source");
 		String stream = request.getParameter("stream");
+		String ruleToDelete = request.getParameter("ruleToDelete");
 
 		String[] selectedDays = request.getParameterValues("selectedDays");
 
@@ -66,7 +69,8 @@ public class AssertionController extends AbstractController {
 			// If user selects an existing rule then load the screen
 			updateScreen(existingRule, response);
 			/*
-			 * if (communicationVia != null) { commMedium = Integer.parseInt(communicationVia); }
+			 * if (communicationVia != null) { commMedium =
+			 * Integer.parseInt(communicationVia); }
 			 */
 			return mav;
 		}
@@ -74,6 +78,10 @@ public class AssertionController extends AbstractController {
 		if (selectedSource != null) { // To load stream for a given source
 			updateStreams(selectedSource, response);
 			return mav;
+		}
+
+		if (ruleToDelete != null) {
+			deleteRule(ruleToDelete);
 		}
 
 		int ifExists = INITIAL_VALUE;
@@ -88,7 +96,8 @@ public class AssertionController extends AbstractController {
 			ifExists = getPKForRule(ruleName);
 
 			if (ifExists == -1) {
-				lastInsertedGroupIndex = setAssertionGroupID(ruleName, pkForSourceUrl, communicationVia);
+				lastInsertedGroupIndex = setAssertionGroupID(ruleName,
+						pkForSourceUrl, communicationVia);
 			} else {
 				// When updated screen is 'saved'
 				lastInsertedGroupIndex = ifExists;
@@ -108,16 +117,22 @@ public class AssertionController extends AbstractController {
 
 		// If all parameters are defined insert a row into assertionCondition
 		// Table
-		if (TimeFrameIndex != null && NotificationIndex != null && isAreIndex != null && slopeIndex != null && ruleIndex != null
-				&& numberField != null && stream != null) {
+		if (TimeFrameIndex != null && NotificationIndex != null
+				&& isAreIndex != null && slopeIndex != null
+				&& ruleIndex != null && numberField != null && stream != null) {
 			BigInteger value = new BigInteger(numberField);
-			setAssertionCondition(stream, Integer.parseInt(isAreIndex), Integer.parseInt(slopeIndex), value, Integer.parseInt(TimeFrameIndex),
-					Integer.parseInt(NotificationIndex), Integer.parseInt(ruleIndex), lastInsertedGroupIndex);
+			setAssertionCondition(stream, Integer.parseInt(isAreIndex),
+					Integer.parseInt(slopeIndex), value,
+					Integer.parseInt(TimeFrameIndex),
+					Integer.parseInt(NotificationIndex),
+					Integer.parseInt(ruleIndex), lastInsertedGroupIndex);
 		}
 
 		// If all parameters are defined insert a row into timeConstraints Table
-		if (selectedDays != null && selectedDays[0] != "" && startTime != null && endTime != null) {
-			setTimeConstraints(selectedDays, startTime, endTime, lastInsertedGroupIndex);
+		if (selectedDays != null && selectedDays[0] != "" && startTime != null
+				&& endTime != null) {
+			setTimeConstraints(selectedDays, startTime, endTime,
+					lastInsertedGroupIndex);
 		}
 
 		// If communicationMedium is selected as Email then set email recipnet
@@ -130,34 +145,39 @@ public class AssertionController extends AbstractController {
 	}
 
 	/**
-	 * Function which removes row of existing rules from assertionCondition with id = grpID when user modifies the rule
-	 *
+	 * Function which removes row of existing rules from assertionCondition with
+	 * id = grpID when user modifies the rule
+	 * 
 	 * @param grpID
 	 *            ID corresponding to existing rule
 	 */
 	private void removeExistingRules(int grpID) {
 
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 		AssertionConditionDAO assDao = new AssertionConditionDAO(sf);
 
 		assDao.removeRulesWithID(grpID);
 	}
 
 	/**
-	 * Function which removes row of existing rules from timeConstraints with id = grpID when user modifies the rule
-	 *
+	 * Function which removes row of existing rules from timeConstraints with id
+	 * = grpID when user modifies the rule
+	 * 
 	 * @param grpID
 	 *            ID corresponding to existing rule
 	 */
 	private void removeExistingTimeConstraints(int grpID) {
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 		TimeConstraintsDAO tcDao = new TimeConstraintsDAO(sf);
 
 		tcDao.removeTimeConstraintsWithID(grpID);
 	}
 
 	private int getPKForSourceUrl(String source) {
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 
 		SourcesDAO sourceDao = new SourcesDAO(sf);
 
@@ -165,13 +185,15 @@ public class AssertionController extends AbstractController {
 	}
 
 	/**
-	 * Function which removes row of existing rules from communicationViaEmail with id = grpID when user modifies the rule
-	 *
+	 * Function which removes row of existing rules from communicationViaEmail
+	 * with id = grpID when user modifies the rule
+	 * 
 	 * @param grpID
 	 *            ID corresponding to existing rule
 	 */
 	private void removeExistingMedium(int grpID) {
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 		AssertionGroupDAO agDao = new AssertionGroupDAO(sf);
 		ArrayList<AssertionGroup> ag = agDao.getGrpRow(grpID);
 		if (ag.get(0).getCommunicationID() == 0) {
@@ -183,14 +205,17 @@ public class AssertionController extends AbstractController {
 	}
 
 	/**
-	 * Function which return primary key from assertion group table for given ruleName
-	 *
+	 * Function which return primary key from assertion group table for given
+	 * ruleName
+	 * 
 	 * @param ruleName
 	 *            Name of the Rule
-	 * @return primary key of assertiongroup table corresponding to given ruleName
+	 * @return primary key of assertiongroup table corresponding to given
+	 *         ruleName
 	 */
 	private int getPKForRule(String ruleName) {
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 		AssertionGroupDAO assertionGDao = new AssertionGroupDAO(sf);
 
 		int pk = assertionGDao.getPKForRule(ruleName);
@@ -198,28 +223,34 @@ public class AssertionController extends AbstractController {
 	}
 
 	/**
-	 * Invoked when communication Medium is select as E-Mail. Function inserts a row in to communicationViaEmail table with given recipent and assertionGroupID
-	 *
+	 * Invoked when communication Medium is select as E-Mail. Function inserts a
+	 * row in to communicationViaEmail table with given recipent and
+	 * assertionGroupID
+	 * 
 	 * @param recipents
-	 *            E-Mail id of the user to which application should inform upon violation of constraints
+	 *            E-Mail id of the user to which application should inform upon
+	 *            violation of constraints
 	 * @param assertionGrpIndex
-	 *            Primary key of assertiongroup table corresponding to current screen
+	 *            Primary key of assertiongroup table corresponding to current
+	 *            screen
 	 */
-	public void setEmailRecipent(String recipents, int assertionGrpIndex) {
+	private void setEmailRecipent(String recipents, int assertionGrpIndex) {
 		CommunicationViaEmail viaEmail = new CommunicationViaEmail();
 		viaEmail.setAssertionGroupID(assertionGrpIndex);
 		viaEmail.setRecipents(recipents);
 
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 		CommunicationViaEmailDAO viaEmailDao = new CommunicationViaEmailDAO(sf);
 		viaEmailDao.addEmailRecipients(viaEmail);
 	}
 
 	/**
 	 * Function which stores Time Constraints for a Rule in the Database.
-	 *
+	 * 
 	 * @param selectedDays
-	 *            Each element of array corresponds to a day, if day is selected then true otherwise false
+	 *            Each element of array corresponds to a day, if day is selected
+	 *            then true otherwise false
 	 * @param startTime
 	 *            start time(HH:MM format) for constraint to start
 	 * @param endTime
@@ -227,7 +258,8 @@ public class AssertionController extends AbstractController {
 	 * @param assertionGrpIndex
 	 *            index of this constraint among all constraint set for a rule
 	 */
-	public void setTimeConstraints(String[] selectedDays, String startTime, String endTime, int assertionGrpIndex) {
+	private void setTimeConstraints(String[] selectedDays, String startTime,
+			String endTime, int assertionGrpIndex) {
 
 		TimeConstraints tc = new TimeConstraints();
 		tc.setAssertionGroupID(assertionGrpIndex);
@@ -249,7 +281,8 @@ public class AssertionController extends AbstractController {
 		tc.setEndHour(Integer.parseInt(endField[0]));
 		tc.setEndMin(Integer.parseInt(endField[1]));
 
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 		TimeConstraintsDAO tcDao = new TimeConstraintsDAO(sf);
 
 		for (int i = 0; i < checkedDays.length; ++i) {
@@ -289,30 +322,40 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function whicih returns the ID of the last inserted Rule
-	 *
+	 * 
 	 * @param ruleName
 	 *            Name of the rule
 	 * @param communicationVia
 	 *            communication Medium
 	 * @return
 	 */
-	public int setAssertionGroupID(String ruleName, int source, String communicationVia) {
+	private int setAssertionGroupID(String ruleName, int source,
+			String communicationVia) {
 
 		AssertionGroup ag = new AssertionGroup();
 		ag.setConstraintName(ruleName);
 		ag.setSource(source);
 		ag.setCommunicationID(Integer.parseInt(communicationVia));
 
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 		AssertionGroupDAO agDao = new AssertionGroupDAO(sf);
 		agDao.setConstraintName(ag);
 
 		return agDao.getLastInsertedIndex();
 	}
 
+	private void deleteRule(String ruleName) {
+
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
+		AssertionGroupDAO agDao = new AssertionGroupDAO(sf);
+		agDao.removeRule(ruleName);
+	}
+
 	/**
 	 * Function which sets all the parameters for a rule
-	 *
+	 * 
 	 * @param isAreIndex
 	 *            1 = is/are, 2 = has slope
 	 * @param slopeIndex
@@ -322,13 +365,15 @@ public class AssertionController extends AbstractController {
 	 * @param TimeFrameIndex
 	 *            Index of given TimeFrame as described in TIMEFRAME table.
 	 * @param NotificationIndex
-	 *            Index of given Notification as described in NOTIFICATION table.
+	 *            Index of given Notification as described in NOTIFICATION
+	 *            table.
 	 * @param ruleIndex
 	 *            Index of the row in the rule
 	 * @param groupID
 	 *            Group ID of the rule(as stored in ASSERTIONGROUP table)
 	 */
-	public void setAssertionCondition(String stream, int isAreIndex, int slopeIndex, BigInteger numberField, int TimeFrameIndex,
+	private void setAssertionCondition(String stream, int isAreIndex,
+			int slopeIndex, BigInteger numberField, int TimeFrameIndex,
 			int NotificationIndex, int ruleIndex, int groupID) {
 
 		AssertionCondition ac = new AssertionCondition();
@@ -375,22 +420,26 @@ public class AssertionController extends AbstractController {
 		ac.setAssertionIndex(ruleIndex);
 		ac.setAssertionGroupID(groupID);
 
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 		AssertionConditionDAO assertionDao = new AssertionConditionDAO(sf);
 		assertionDao.addNewRule(ac);
 	}
 
 	/**
-	 * Function which sends back values from Server Side to Client side using ModelAndView object
-	 *
+	 * Function which sends back values from Server Side to Client side using
+	 * ModelAndView object
+	 * 
 	 * @param request
 	 *            HttpServletRequest Object
 	 * @param mav
 	 *            ModelAndView Object
 	 */
-	private void handleFormSubmission(HttpServletRequest request, ModelAndView mav) {
+	private void handleFormSubmission(HttpServletRequest request,
+			ModelAndView mav) {
 
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 
 		AssertionGroupDAO agDao = new AssertionGroupDAO(sf);
 		ArrayList<String> groupName = agDao.getRuleNames();
@@ -417,18 +466,23 @@ public class AssertionController extends AbstractController {
 		mav.addObject("frames", timeFrameTemp);
 
 		NotificationLevelDAO notificationlevelDao = new NotificationLevelDAO(sf);
-		ArrayList<NotificationLevel> notificationlevelLevels = notificationlevelDao.getAllNotificationLevels();
-		String[] notificationLevelTemp = new String[notificationlevelLevels.size()];
+		ArrayList<NotificationLevel> notificationlevelLevels = notificationlevelDao
+				.getAllNotificationLevels();
+		String[] notificationLevelTemp = new String[notificationlevelLevels
+				.size()];
 		for (int i = 0; i < notificationlevelLevels.size(); ++i) {
-			notificationLevelTemp[i] = notificationlevelLevels.get(i).getLevel();
+			notificationLevelTemp[i] = notificationlevelLevels.get(i)
+					.getLevel();
 		}
 		mav.addObject("levels", notificationLevelTemp);
 
 	}
 
-	private void updateStreams(String selectedSource, HttpServletResponse response) throws Exception {
+	private void updateStreams(String selectedSource,
+			HttpServletResponse response) throws Exception {
 		URL sources = new URL(selectedSource);
-		BufferedReader availableStreams = new BufferedReader(new InputStreamReader(sources.openStream()));
+		BufferedReader availableStreams = new BufferedReader(
+				new InputStreamReader(sources.openStream()));
 		String inputStream;
 
 		ArrayList<String> streamList = new ArrayList<String>();
@@ -459,7 +513,7 @@ public class AssertionController extends AbstractController {
 
 	/**
 	 * Function which executes when user selects an existing rule from Database
-	 *
+	 * 
 	 * @param existingRuleName
 	 *            Name of the rule selected by User
 	 * @param response
@@ -467,9 +521,11 @@ public class AssertionController extends AbstractController {
 	 * @throws Exception
 	 *             Exception thrown
 	 */
-	private void updateScreen(String existingRuleName, HttpServletResponse response) throws Exception {
+	private void updateScreen(String existingRuleName,
+			HttpServletResponse response) throws Exception {
 		int grpID = getPKForRule(existingRuleName);
-		SqlSessionFactory sf = (SqlSessionFactory) getServletContext().getAttribute("sqlSessionFactory");
+		SqlSessionFactory sf = (SqlSessionFactory) getServletContext()
+				.getAttribute("sqlSessionFactory");
 
 		AssertionConditionDAO acDao = new AssertionConditionDAO(sf);
 
@@ -529,7 +585,8 @@ public class AssertionController extends AbstractController {
 		ArrayList<AssertionGroup> grpInfo = agDao.getGrpRow(grpID);
 		int communicationMedium = grpInfo.get(0).getCommunicationID();
 		SourcesDAO src = new SourcesDAO(sf);
-		String existSource = src.getSourceUrlForGivenPK(agDao.getSourceKeyForGivenRule(existingRuleName));
+		String existSource = src.getSourceUrlForGivenPK(agDao
+				.getSourceKeyForGivenRule(existingRuleName));
 
 		String recipent;
 
@@ -543,7 +600,8 @@ public class AssertionController extends AbstractController {
 		if (communicationMedium == 0) {
 			// Retrieve values from CommunicationViaEmail Table
 			CommunicationViaEmailDAO emailDao = new CommunicationViaEmailDAO(sf);
-			ArrayList<CommunicationViaEmail> emailInfo = emailDao.getEmailRow(grpID);
+			ArrayList<CommunicationViaEmail> emailInfo = emailDao
+					.getEmailRow(grpID);
 			recipent = emailInfo.get(0).getRecipents();
 			jsonResult.put("recipent", recipent);
 		}

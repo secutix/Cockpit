@@ -249,4 +249,8 @@
  	  delete from sources where SOURCE_URL = (#{url})
  </select>
 
+ <select id="removeGivenRule" parameterType="String">
+ 	  delete from assertiongroup where LABEL = (#{constraintName})
+ </select>
+
  </mapper>

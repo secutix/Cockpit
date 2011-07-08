@@ -67,7 +67,7 @@ Ext.onReady(function(){
                     layout			: 'form',
                     items			: [fromDate()]
                 },{
-             	    columnWidth		: .1,
+             	    columnWidth		: .13,
                     layout			: 'form',
                     items			: [toDate()]
                 }]

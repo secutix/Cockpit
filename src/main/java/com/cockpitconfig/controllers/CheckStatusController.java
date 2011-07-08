@@ -63,6 +63,7 @@ public class CheckStatusController {
 		ObjectMapper mapper = new ObjectMapper();
 		model.addObject("json",
 				mapper.writeValueAsString(notificationOccurences));
+
 		return model;
 	}
 
@@ -558,7 +559,8 @@ public class CheckStatusController {
 
 		for (int j = 0; j < valueList.length - increamentSize; j = j
 				+ increamentSize) {
-			if (valueList[j + increamentSize].equals("None") == false
+			if (!isDisabled(header, constrainedTime, j)
+					&& valueList[j + increamentSize].equals("None") == false
 					&& valueList[j].equals("None") == false) {
 				String s1 = valueList[j + increamentSize].substring(0,
 						valueList[j + increamentSize].indexOf("."));
@@ -627,7 +629,8 @@ public class CheckStatusController {
 
 		for (int j = 0; j < valueList.length - increamentSize; j = j
 				+ increamentSize) {
-			if (valueList[j + increamentSize].equals("None") == false
+			if (!isDisabled(header, constrainedTime, j)
+					&& valueList[j + increamentSize].equals("None") == false
 					&& valueList[j].equals("None") == false) {
 				String s1 = valueList[j + increamentSize].substring(0,
 						valueList[j + increamentSize].indexOf("."));
@@ -696,7 +699,8 @@ public class CheckStatusController {
 
 		for (int j = 0; j < valueList.length - increamentSize; j = j
 				+ increamentSize) {
-			if (valueList[j + increamentSize].equals("None") == false
+			if (!isDisabled(header, constrainedTime, j)
+					&& valueList[j + increamentSize].equals("None") == false
 					&& valueList[j].equals("None") == false) {
 				String s1 = valueList[j + increamentSize].substring(0,
 						valueList[j + increamentSize].indexOf("."));

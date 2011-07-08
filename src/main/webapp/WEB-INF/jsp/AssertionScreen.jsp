@@ -60,13 +60,14 @@
 				allowBlank : false,
 				fieldLabel : 'Name',
 				name : 'rules',
-				anchor : '20%',
+				anchor : '30%',
 				displayField : 'ruleNames',
 				emptyText : 'Enter Rule Name',
 				valueField : 'id',
 				listeners : {
 					select : function(f, record, index) {
 						showExistingScreen();
+						Ext.getCmp('id-deleteRule').setDisabled(false);
 					}
 				}
 			});
@@ -336,21 +337,71 @@
 			allowBlank : false
 		});
 
+		/*
+		 * Function which display warning message whenever user tries to delete a row from "disable on" option
+		 */
+		var deleteRuleWarning = function(btn) {
+			Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this rule?', removeRule);
+		};
+
+
+		/**
+		 * Handler to remove rule
+		 */
+		var removeRule = function(btn) {
+			if (btn == 'yes') {
+				Ext.Ajax.request({
+					url : 'assertion.htm',
+					method : 'POST',
+					params : {
+						ruleToDelete : nameField.getRawValue()
+					},
+					scope : this
+				});
+			}
+			win.close();
+		};
+
+		var deleteButton = function() {
+			return new Ext.Button({
+				id		: 'id-deleteRule',
+				text    : 'Delete Rule',
+				//ctCls	: 'red-btn',
+				width	: 70,
+				height	: 25,
+				disabled : true,
+				handler : deleteRuleWarning
+			});
+		};
+
 		var nameTextFieldContainer = {
 			xtype : 'fieldset',
 			flex : 1,
 			border : false,
-			hideBorders : false,
+			hideBorders : true,
 			autoHeight : true,
-			labelWidth : 50,
+			labelWidth : 100,
 			height : 42,
-			defaultType : 'field',
-			defaults : {
-				//anchor 	   	: '80%',
-				allowBlank : false,
-				border : 'false'
-			},
-			items : [ RuleList(), SourceList() ]
+			width : 1250,
+			frame : true,
+			items: [{
+				items : [ {
+					rowWidth : .5,
+					layout   : 'column',
+					hideBorders : true,
+					bodyBorder: false,
+					items : [{
+						columnWidth : 0.92,
+						layout : 'form',
+						items : [RuleList()]
+					}, {
+						columnWidth : .08,
+						layout : 'form',
+						items : [deleteButton()]
+					}]
+				}]
+			}, SourceList()]
+
 		};
 
 		var AvailableStreamList = function() {
@@ -479,17 +530,6 @@
 				anchor : '70%',
 				displayField : 'value',
 				valueField : 'id'
-			/*listeners : {
-				select : function(f, record, index) {
-					var ruleIndex = isAreBoxes.indexOf(f);
-					if (index == 0) {
-						numberBoxes[ruleIndex].emptyText = "for e.g. 549464592";
-					} else if (index == 1) {
-						numberBoxes[ruleIndex].emptyText = "";
-					}
-					numberBoxes[ruleIndex].reset();
-				}
-			}*/
 			});
 
 			return isAreBoxes[ruleCount];
@@ -601,16 +641,13 @@
 			var ruleForm = new Ext.FormPanel({
 				border : false,
 				labelAlign : 'top',
-				//collapsible: true,
 				frame : true,
-				//style		: {borderColor:'#000000', borderStyle:'solid', borderWidth:'0px'},
-				//id			: 'id-ruleform',
-				//bodyStyle	:'padding: 0.005px',
-				//title: 'Assertion Screen',
 				items : [ {
 					items : [ {
 						rowWidth : .5,
 						layout : 'column',
+						hideBorders : true,
+						bodyBorder: false,
 						items : [ {
 							columnWidth : .30,
 							layout : 'form',
@@ -823,6 +860,8 @@
 					items : [ {
 						rowWidth : .5,
 						layout : 'column',
+						hideBorders : true,
+						bodyBorder: false,
 						items : [ {
 							columnWidth : 0.50,
 							layout : 'form',
@@ -1067,30 +1106,32 @@
 		}
 
 		function closeWindow(btn) {
+
 			win.close();
 		}
 
 		var win = new Ext.Window({
 			title : 'Cockpit',
-			width : 1300,
+			width : 1250,
 			border : 'false',
 			height : 770,
 			id : 'win',
 			name : 'win',
+			resizable   : false,
 			//style				: 'margin:0 auto;margin-top:100;',
 			bodyStyle : 'background-color:#fff;padding: 10px',
 			autoScroll : true,
 			items : [ {
-				items : [ nameTextFieldContainer, getNewRuleForm(), getNewLabel('<br/><b><font size="3">Disabled on</font><font size="2"> &nbsp;(24 hour format)</font></b>'),
-							getNewFrequencyForm(), getNewLabel('<br/><b><font size="3">Communication Via</font></b>'), communicationForm ]
+				items : [ nameTextFieldContainer, getNewRuleForm(), getNewLabel('<br/><b><font size="3"> Disabled on</font><font size="2"> &nbsp;(24 hour format)</font></b>'),
+							getNewFrequencyForm(), getNewLabel('<br/><b><font size="3"> Communication Via</font></b>'), communicationForm ]
 			} ],
 			buttonAlign : 'right', // buttons aligned to the right
 			buttons : [ {
-				text : 'Save',
+				text 	: 'Save',
 				iconCls : 'save',
 				handler : saveRules
 			}, {
-				text : 'Cancel',
+				text 	: 'Cancel',
 				iconCls : 'cancel',
 				handler : closeWindow
 			} ]
