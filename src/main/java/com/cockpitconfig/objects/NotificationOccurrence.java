@@ -2,6 +2,8 @@ package com.cockpitconfig.objects;
 
 import net.sf.json.JSONObject;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class NotificationOccurrence {
 
 	private int id;
@@ -11,6 +13,7 @@ public class NotificationOccurrence {
 	private String timeOccur;
 	private int assertionConditionID;
 
+	@JsonIgnore
 	public int getId() {
 		return id;
 	}
