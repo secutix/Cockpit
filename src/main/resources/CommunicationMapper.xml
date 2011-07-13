@@ -132,8 +132,8 @@
  	  select * from assertiongroup where ASSERTION_PK = (#{id})
  </select>
 
- <select id="checkForGivenSource" parameterType="int" resultMap="AssertionGroupResultMap">
- 	  SELECT * FROM assertiongroup WHERE SOURCE = (#{source}) LIMIT 1
+ <select id="checkForGivenSource" parameterType="int" resultMap="MyString">
+ 	  SELECT LABEL FROM assertiongroup WHERE SOURCE = (#{source}) LIMIT 1
  </select>
 
  <select id="getSourceKeyForGivenConstraint" parameterType="String" resultMap="MyInteger">
@@ -245,9 +245,9 @@
  	  delete from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
  </select>
 
- <select id="removeSource" parameterType="String" resultMap="SourcesResultMap">
+ <delete id="removeSource" parameterType="String">
  	  delete from sources where SOURCE_URL = (#{url})
- </select>
+ </delete>
 
  <select id="removeGivenRule" parameterType="String">
  	  delete from assertiongroup where LABEL = (#{constraintName})

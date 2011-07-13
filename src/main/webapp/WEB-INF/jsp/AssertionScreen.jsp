@@ -54,16 +54,16 @@
 		// ComboBox which contains all the available rules as well as able to store new rule name.
 		var RuleList = function() {
 			nameField = new Ext.form.ComboBox({
-				store : rules,
-				mode : 'local',
-				forceSelection : false,
-				allowBlank : false,
-				fieldLabel : 'Name',
-				name : 'rules',
-				anchor : '30%',
-				displayField : 'ruleNames',
-				emptyText : 'Enter Rule Name',
-				valueField : 'id',
+				store 			: rules,
+				mode			: 'local',
+				forceSelection 	: false,
+				allowBlank 		: false,
+				fieldLabel 		: 'Name',
+				name 			: 'rules',
+				anchor 			: '30%',
+				displayField 	: 'ruleNames',
+				emptyText	 	: 'Enter Rule Name',
+				valueField 		: 'id',
 				listeners : {
 					select : function(f, record, index) {
 						showExistingScreen();
@@ -95,17 +95,17 @@
 		// ComboBox which contains all the available sources
 		var SourceList = function() {
 			sourceField = new Ext.form.ComboBox({
-				store : sourceData,
-				mode : 'local',
-				forceSelection : true,
-				allowBlank : false,
-				fieldLabel : 'Sources',
-				resizable : true,
-				name : 'sources',
-				anchor : '85%',
-				displayField : 'sources',
-				emptyText : 'Select a Source',
-				valueField : 'id',
+				store			: sourceData,
+				mode 			: 'local',
+				forceSelection 	: true,
+				allowBlank 		: false,
+				fieldLabel 		: 'Sources',
+				resizable		: true,
+				name 			: 'sources',
+				anchor 			: '85%',
+				displayField 	: 'sources',
+				emptyText 		: 'Select a Source',
+				valueField 		: 'id',
 				listeners : {
 					select : function(f, record, index) {
 						showAvailableStreams();
@@ -119,15 +119,15 @@
 		// Number Field to store information about the rule
 		var numberField = function() {
 			numberBoxes[ruleCount] = new Ext.form.NumberField({
-				fieldLabel : '',
-				name : 'number',
-				emptyText : '',
-				allowNegative : false,
+				fieldLabel 		: '',
+				name 			: 'number',
+				emptyText 		: '',
+				allowNegative   : false,
 				//fieldLabel	: '%',
-				anchor : '80%',
-				emptyText : 'to compare value',
-				allowBlank : false,
-				valueField : 'number'
+				anchor 			: '80%',
+				emptyText		: 'to compare value',
+				allowBlank 		: false,
+				valueField 		: 'number'
 			});
 
 			return numberBoxes[ruleCount];
@@ -138,12 +138,12 @@
 		 */
 		var showExistingScreen = function() {
 			Ext.Ajax.request({
-				url : 'assertion.htm',
-				method : 'POST',
-				params : {
+				url 	: 'assertion.htm',
+				method  : 'POST',
+				params  : {
 					existingRule : nameField.getRawValue()
 				},
-				scope : this,
+				scope	: this,
 
 				success : function(response) {
 					var existingValues = Ext.util.JSON.decode(response.responseText); // parameters are passed from controller as a JSON Object
@@ -281,8 +281,8 @@
 		};
 
 		streamStore = new Ext.data.SimpleStore({
-			fields : [ 'id', 'streams' ],
-			data : []
+			fields 	: [ 'id', 'streams' ],
+			data 	: []
 		// multi-dimensional array
 		});
 
@@ -327,14 +327,14 @@
 
 		// When Email as a communication mode is selected this field will be displayed for recipents address
 		var emailTextField = new Ext.form.TextField({
-			border : false,
-			fieldLabel : 'Email',
-			vtype : 'email',
-			name : 'email',
-			id : 'id-email',
-			emptyText : 'Enter Email id',
-			anchor : '80%',
-			allowBlank : false
+			border 		: false,
+			fieldLabel  : 'Email',
+			vtype 		: 'email',
+			name 		: 'email',
+			id 			: 'id-email',
+			emptyText 	: 'Enter Email id',
+			anchor 		: '80%',
+			allowBlank 	: false
 		});
 
 		/*
@@ -351,12 +351,12 @@
 		var removeRule = function(btn) {
 			if (btn == 'yes') {
 				Ext.Ajax.request({
-					url : 'assertion.htm',
-					method : 'POST',
-					params : {
-						ruleToDelete : nameField.getRawValue()
+					url 	: 'assertion.htm',
+					method  : 'POST',
+					params  : {
+						ruleToDelete 	: nameField.getRawValue()
 					},
-					scope : this
+					scope 	: this
 				});
 			}
 			win.close();
@@ -364,40 +364,40 @@
 
 		var deleteButton = function() {
 			return new Ext.Button({
-				id		: 'id-deleteRule',
-				text    : 'Delete Rule',
-				//ctCls	: 'red-btn',
-				width	: 70,
-				height	: 25,
+				id		 : 'id-deleteRule',
+				text     : 'Delete Rule',
+				//ctCls	 : 'red-btn',
+				width	 : 70,
+				height	 : 25,
 				disabled : true,
-				handler : deleteRuleWarning
+				handler  : deleteRuleWarning
 			});
 		};
 
 		var nameTextFieldContainer = {
-			xtype : 'fieldset',
-			flex : 1,
-			border : false,
+			xtype 		: 'fieldset',
+			flex 		: 1,
+			border 		: false,
 			hideBorders : true,
-			autoHeight : true,
-			labelWidth : 100,
-			height : 42,
-			width : 1250,
-			frame : true,
+			autoHeight 	: true,
+			labelWidth 	: 100,
+			height 		: 42,
+			width 		: 1250,
+			frame 		: true,
 			items: [{
 				items : [ {
-					rowWidth : .5,
-					layout   : 'column',
+					rowWidth 	: .5,
+					layout   	: 'column',
 					hideBorders : true,
-					bodyBorder: false,
+					bodyBorder	: false,
 					items : [{
 						columnWidth : 0.92,
-						layout : 'form',
-						items : [RuleList()]
+						layout	    : 'form',
+						items 		: [RuleList()]
 					}, {
 						columnWidth : .08,
-						layout : 'form',
-						items : [deleteButton()]
+						layout 		: 'form',
+						items 		: [deleteButton()]
 					}]
 				}]
 			}, SourceList()]
@@ -406,18 +406,17 @@
 
 		var AvailableStreamList = function() {
 			streamBoxes[ruleCount] = new Ext.form.ComboBox({
-				store : streamStore,
-				mode : 'local',
-				forceSelection : true,
-				allowBlank : false,
-				disabled : !sourceSelected,
-				//fieldLabel	: 'Generates',
-				resizable : true,
-				name : 'stream',
-				emptyText : 'Select a source first',
-				anchor : '90%',
-				displayField : 'streams',
-				valueField : 'id',
+				store			: streamStore,
+				mode 			: 'local',
+				forceSelection  : true,
+				allowBlank 		: false,
+				disabled 		: !sourceSelected,
+				resizable 		: true,
+				name			: 'stream',
+				emptyText 		: 'Select a source first',
+				anchor 			: '90%',
+				displayField 	: 'streams',
+				valueField 		: 'id',
 				listeners : {
 					select : function(f, record, index) {
 						var ruleIndex = streamBoxes.indexOf(f);
@@ -441,8 +440,8 @@
 		</c:forEach>
 
 		var frames = new Ext.data.SimpleStore({
-			fields : [ 'id', 'frame' ],
-			data : dropDownTimeFrame
+			fields	 : [ 'id', 'frame' ],
+			data 	 : dropDownTimeFrame
 		// multi-dimensional array
 		});
 
@@ -451,16 +450,15 @@
 		 */
 		var TimeFrameList = function() {
 			timeFrameBoxes[ruleCount] = new Ext.form.ComboBox({
-				store : frames,
-				mode : 'local',
-				forceSelection : true,
-				allowBlank : false,
-				//fieldLabel		: 'Frames',
-				name : 'frames',
-				emptyText : 'Select Time Frame',
-				anchor : '70%',
-				displayField : 'frame',
-				valueField : 'id',
+				store			: frames,
+				mode 			: 'local',
+				forceSelection  : true,
+				allowBlank 		: false,
+				name 			: 'frames',
+				emptyText 		: 'Select Time Frame',
+				anchor 			: '70%',
+				displayField 	: 'frame',
+				valueField 		: 'id',
 				listeners : {
 					select : function(f, record, index) {
 						TimeFrameListIndex = index;
@@ -483,8 +481,8 @@
 		</c:forEach>
 
 		var levels = new Ext.data.SimpleStore({
-			fields : [ 'id', 'level' ],
-			data : dropDownNotificationLevel
+			fields 	: [ 'id', 'level' ],
+			data 	: dropDownNotificationLevel
 		// multi-dimensional array
 		});
 
@@ -493,16 +491,15 @@
 		 */
 		var NotificationLevelList = function() {
 			notificationBoxes[ruleCount] = new Ext.form.ComboBox({
-				store : levels,
-				mode : 'local',
-				forceSelection : true,
-				allowBlank : false,
-				//fieldLabel		: 'Generates',
-				name : 'levels',
-				emptyText : 'Generates',
-				anchor : '70%',
-				displayField : 'level',
-				valueField : 'id',
+				store 			: levels,
+				mode 			: 'local',
+				forceSelection  : true,
+				allowBlank 		: false,
+				name 			: 'levels',
+				emptyText 		: 'Generates',
+				anchor 			: '70%',
+				displayField 	: 'level',
+				valueField 		: 'id',
 				listeners : {
 					select : function(f, record, index) {
 						NotificationLevelListIndex = index;
@@ -521,15 +518,14 @@
 
 		var isAreCombo = function() {
 			isAreBoxes[ruleCount] = new Ext.form.ComboBox({
-				store : isAre,
-				mode : 'local',
-				forceSelection : true,
-				allowBlank : false,
-				//fieldLabel		: 'Frames',
-				name : 'isAre',
-				anchor : '70%',
-				displayField : 'value',
-				valueField : 'id'
+				store		 	: isAre,
+				mode 		 	: 'local',
+				forceSelection  : true,
+				allowBlank 		: false,
+				name 			: 'isAre',
+				anchor 			: '70%',
+				displayField 	: 'value',
+				valueField 		: 'id'
 			});
 
 			return isAreBoxes[ruleCount];
@@ -542,15 +538,14 @@
 
 		var slopeCombo = function() {
 			slopeBoxes[ruleCount] = new Ext.form.ComboBox({
-				store : param,
-				mode : 'local',
-				forceSelection : true,
-				allowBlank : false,
-				//fieldLabel	: 'Frames',
-				name : 'slope',
-				anchor : '70%',
-				displayField : 'value',
-				valueField : 'id',
+				store 			: param,
+				mode 			: 'local',
+				forceSelection  : true,
+				allowBlank 		: false,
+				name 			: 'slope',
+				anchor			: '70%',
+				displayField 	: 'value',
+				valueField 		: 'id',
 				listeners : {
 					select : function(f, record, index) {
 					}
@@ -589,11 +584,11 @@
 				if (ruleCount == 0) {
 					ruleCount ++;
 					Ext.MessageBox.show({
-						title : 'Warning!',
-						msg : 'Can not delete this rule! There must be atleast one constraint!',
-						width : 300,
+						title 	: 'Warning!',
+						msg 	: 'Can not delete this rule! There must be atleast one constraint!',
+						width 	: 300,
 						buttons : Ext.MessageBox.OK,
-						icon : Ext.MessageBox.WARNING
+						icon 	: Ext.MessageBox.WARNING
 					});
 					return;
 				} else {
@@ -606,7 +601,6 @@
 					isAreBoxes.splice(index, 1);
 					slopeBoxes.splice(index, 1);
 					numberBoxes.splice(index, 1);
-
 					win.doLayout();
 				}
 			}
@@ -617,18 +611,18 @@
 		 */
 		var plusButton = function() {
 			return new Ext.Button({
-				text : '+',
-				width : 20,
-				height : 20,
-				handler : addRuleTemplate
+				text 		: '+',
+				width 		: 20,
+				height		: 20,
+				handler 	: addRuleTemplate
 			});
 		};
 
 		var minusButton = function() {
 			return new Ext.Button({
-				text : '-',
-				width : 20,
-				height : 20,
+				text 	: '-',
+				width 	: 20,
+				height	: 20,
 				handler : removeWarning
 			});
 		};
@@ -639,47 +633,47 @@
 		var getNewRuleForm = function() {
 			ruleCount ++;
 			var ruleForm = new Ext.FormPanel({
-				border : false,
-				labelAlign : 'top',
-				frame : true,
+				border 		: false,
+				labelAlign 	: 'top',
+				frame 		: true,
 				items : [ {
 					items : [ {
-						rowWidth : .5,
-						layout : 'column',
+						rowWidth 	: .5,
+						layout 		: 'column',
 						hideBorders : true,
-						bodyBorder: false,
+						bodyBorder	: false,
 						items : [ {
 							columnWidth : .30,
-							layout : 'form',
-							items : [ AvailableStreamList() ]
+							layout 		: 'form',
+							items 		: [ AvailableStreamList() ]
 						}, {
 							columnWidth : .12,
-							layout : 'form',
-							items : [ isAreCombo() ]
+							layout 		: 'form',
+							items 		: [ isAreCombo() ]
 						}, {
 							columnWidth : .14,
-							layout : 'form',
-							items : [ slopeCombo() ]
+							layout 		: 'form',
+							items		: [ slopeCombo() ]
 						}, {
 							columnWidth : .09,
-							layout : 'form',
-							items : [ numberField() ]
+							layout		: 'form',
+							items 		: [ numberField() ]
 						}, {
 							columnWidth : .15,
-							layout : 'form',
-							items : [ TimeFrameList() ]
+							layout 		: 'form',
+							items 		: [ TimeFrameList() ]
 						}, {
 							columnWidth : .10,
-							layout : 'form',
-							items : [ NotificationLevelList() ]
+							layout 		: 'form',
+							items 		: [ NotificationLevelList() ]
 						}, {
 							columnWidth : .05,
-							layout : 'form',
-							items : [ plusButton() ]
+							layout 		: 'form',
+							items 		: [ plusButton() ]
 						}, {
 							columnWidth : .05,
-							layout : 'form',
-							items : [ minusButton() ]
+							layout 		: 'form',
+							items 		: [ minusButton() ]
 						} ]
 					} ]
 				} ]
@@ -694,10 +688,10 @@
 		 */
 		var frequencyGroup = function() {
 			frequencyFields[frequencyCount] = new Ext.form.CheckboxGroup({
-				xtype : 'checkboxgroup',
-				itemCls : 'x-check-group-alt',
-				columns : 8,
-				bodyStyle : 'padding-bottom:20px;',
+				xtype 		: 'checkboxgroup',
+				itemCls 	: 'x-check-group-alt',
+				columns 	: 8,
+				bodyStyle 	: 'padding-bottom:20px;',
 				items : [ {
 					boxLabel : 'MO',
 					name : '1'
@@ -745,13 +739,13 @@
 		 */
 		var fromTimeField = function() {
 			fromFields[frequencyCount] = new Ext.form.TextField({
-				border : false,
-				fieldLabel : 'From',
-				regex : /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/,
-				regexText : 'Invalid format. Enter time in HH:MM',
-				disabled : true,
-				emptyText : 'HH:MM | 24 HOUR FORMAT',
-				allowBlank : false
+				border 		: false,
+				fieldLabel 	: 'From',
+				regex 		: /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/,
+				regexText 	: 'Invalid format. Enter time in HH:MM',
+				disabled 	: true,
+				emptyText 	: 'HH:MM | 24 HOUR FORMAT',
+				allowBlank 	: false
 			});
 
 			return fromFields[frequencyCount];
@@ -762,13 +756,13 @@
 		 */
 		var toTimeField = function() {
 			toFields[frequencyCount] = new Ext.form.TextField({
-				border : false,
-				fieldLabel : 'To',
-				regex : /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/,
-				regexText : 'Invalid format. Enter time in HH:MM',
-				disabled : true,
-				emptyText : 'HH:MM | 24 HOUR FORMAT',
-				allowBlank : false
+				border 		: false,
+				fieldLabel  : 'To',
+				regex 		: /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/,
+				regexText 	: 'Invalid format. Enter time in HH:MM',
+				disabled 	: true,
+				emptyText 	: 'HH:MM | 24 HOUR FORMAT',
+				allowBlank 	: false
 			});
 
 			return toFields[frequencyCount];
@@ -851,37 +845,37 @@
 		var getNewFrequencyForm = function() {
 			frequencyCount ++;
 			var frequencyForm = new Ext.FormPanel({
-				border : false,
-				labelAlign : 'top',
-				frame : true,
-				height : 55,
-				bodyStyle : 'padding-left:10px;',
+				border 		: false,
+				labelAlign  : 'top',
+				frame 		: true,
+				height		: 55,
+				bodyStyle 	: 'padding-left:10px;',
 				items : [ {
 					items : [ {
-						rowWidth : .5,
-						layout : 'column',
+						rowWidth 	: .5,
+						layout 		: 'column',
 						hideBorders : true,
-						bodyBorder: false,
+						bodyBorder	: false,
 						items : [ {
 							columnWidth : 0.50,
-							layout : 'form',
-							items : [ frequencyGroup() ]
+							layout 		: 'form',
+							items 		: [ frequencyGroup() ]
 						}, {
 							columnWidth : .20,
-							layout : 'form',
-							items : [ fromTimeField() ]
+							layout 		: 'form',
+							items 		: [ fromTimeField() ]
 						}, {
 							columnWidth : .20,
-							layout : 'form',
-							items : [ toTimeField() ]
+							layout 		: 'form',
+							items 		: [ toTimeField() ]
 						}, {
 							columnWidth : .05,
-							layout : 'form',
-							items : [ plusFrequencyButton() ]
+							layout 		: 'form',
+							items 		: [ plusFrequencyButton() ]
 						}, {
 							columnWidth : .05,
-							layout : 'form',
-							items : [ minusFrequencyButton() ]
+							layout 		: 'form',
+							items		: [ minusFrequencyButton() ]
 						} ]
 					} ]
 				} ]
@@ -923,24 +917,23 @@
 		emailTextField.setVisible(false);
 
 		var communicationForm = new Ext.FormPanel({
-			border : false,
-			labelAlign : 'top',
-			frame : true,
-			height : 55,
-			//id			: 'id-frequency',
-			bodyStyle : 'padding-left:10px;',
+			border 		: false,
+			labelAlign  : 'top',
+			frame 		: true,
+			height 		: 55,
+			bodyStyle 	: 'padding-left:10px;',
 			items : [ {
 				items : [ {
-					rowWidth : .5,
-					layout : 'column',
+					rowWidth 	: .5,
+					layout 		: 'column',
 					items : [ {
-						columnWidth : 0.50,
-						layout : 'form',
-						items : [ radios ]
+						columnWidth	 : 0.50,
+						layout 		 : 'form',
+						items  		 : [ radios ]
 					}, {
-						columnWidth : .20,
-						layout : 'form',
-						items : [ emailTextField ]
+						columnWidth  : .20,
+						layout 		 : 'form',
+						items  		 : [ emailTextField ]
 					} ]
 				} ]
 			} ]
@@ -1008,20 +1001,20 @@
 					url : 'assertion.htm',
 					method : 'POST',
 					params : {
-						TimeFrameIndex : timeFrameBoxes[1].getValue(), // TimeFrameIndex is the selected option of the TimeFrameaList
-						NotificationIndex : notificationBoxes[1].getValue(), // NotificationIndex is the selected option of the NotificationList
-						isAreIndex : isAreBoxes[1].getValue(),
-						slopeIndex : slopeBoxes[1].getValue(),
-						totalRule : 1,
-						numberValue : numberBoxes[1].getValue(),
-						ruleName : nameField.getRawValue(),
-						source : sourceField.getRawValue(),
-						stream : streamBoxes[1].getRawValue(),
-						selectedDays : checkedDays,
-						startHour : fromFields[1].getValue(),
-						endHour : toFields[1].getValue(),
-						communicationVia : flagCommunication,
-						recipents : emailField.getValue()
+						TimeFrameIndex 			: timeFrameBoxes[1].getValue(), // TimeFrameIndex is the selected option of the TimeFrameaList
+						NotificationIndex		: notificationBoxes[1].getValue(), // NotificationIndex is the selected option of the NotificationList
+						isAreIndex 				: isAreBoxes[1].getValue(),
+						slopeIndex 				: slopeBoxes[1].getValue(),
+						totalRule				: 1,
+						numberValue 			: numberBoxes[1].getValue(),
+						ruleName 				: nameField.getRawValue(),
+						source 					: sourceField.getRawValue(),
+						stream 					: streamBoxes[1].getRawValue(),
+						selectedDays 			: checkedDays,
+						startHour 				: fromFields[1].getValue(),
+						endHour 				: toFields[1].getValue(),
+						communicationVia 		: flagCommunication,
+						recipents 				: emailField.getValue()
 					},
 					scope : this,
 					callback : saveOtherRules
@@ -1031,18 +1024,18 @@
 					url : 'assertion.htm',
 					method : 'POST',
 					params : {
-						TimeFrameIndex : timeFrameBoxes[1].getValue(), // TimeFrameIndex is the selected option of the TimeFrameaList
-						NotificationIndex : notificationBoxes[1].getValue(), // NotificationIndex is the selected option of the NotificationList
-						isAreIndex : isAreBoxes[1].getValue(),
-						slopeIndex : slopeBoxes[1].getValue(),
-						totalRule : 1,
-						numberValue : numberBoxes[1].getValue(),
-						ruleName : nameField.getRawValue(),
-						source : sourceField.getRawValue(),
-						stream : streamBoxes[1].getRawValue(),
-						selectedDays : checkedDays,
-						startHour : fromFields[1].getValue(),
-						endHour : toFields[1].getValue(),
+						TimeFrameIndex 		: timeFrameBoxes[1].getValue(), // TimeFrameIndex is the selected option of the TimeFrameaList
+						NotificationIndex 	: notificationBoxes[1].getValue(), // NotificationIndex is the selected option of the NotificationList
+						isAreIndex 			: isAreBoxes[1].getValue(),
+						slopeIndex 			: slopeBoxes[1].getValue(),
+						totalRule			: 1,
+						numberValue 		: numberBoxes[1].getValue(),
+						ruleName 			: nameField.getRawValue(),
+						source 				: sourceField.getRawValue(),
+						stream 				: streamBoxes[1].getRawValue(),
+						selectedDays 		: checkedDays,
+						startHour 			: fromFields[1].getValue(),
+						endHour 			: toFields[1].getValue(),
 						communicationMedium : flagCommunication
 					},
 					scope : this,
@@ -1055,16 +1048,16 @@
 		function saveOtherRules() {
 			for ( var i = 2; i <= ruleCount; ++ i) {
 				Ext.Ajax.request({
-					url : 'assertion.htm',
-					method : 'POST',
-					params : {
-						TimeFrameIndex : timeFrameBoxes[i].getValue(), // TimeFrameIndex is the selected option of the TimeFrameaList
-						NotificationIndex : notificationBoxes[i].getValue(), // NotificationIndex is the selected option of the NotificationList
-						isAreIndex : isAreBoxes[i].getValue(),
-						stream : streamBoxes[i].getRawValue(),
-						slopeIndex : slopeBoxes[i].getValue(),
-						totalRule : i,
-						numberValue : numberBoxes[i].getValue()
+					url 	: 'assertion.htm',
+					method 	: 'POST',
+					params 	: {
+						TimeFrameIndex 	 	: timeFrameBoxes[i].getValue(), // TimeFrameIndex is the selected option of the TimeFrameaList
+						NotificationIndex	: notificationBoxes[i].getValue(), // NotificationIndex is the selected option of the NotificationList
+						isAreIndex 			: isAreBoxes[i].getValue(),
+						stream 				: streamBoxes[i].getRawValue(),
+						slopeIndex 			: slopeBoxes[i].getValue(),
+						totalRule 			: i,
+						numberValue 		: numberBoxes[i].getValue()
 					//ruleName			: nameField.getValue()
 					},
 					scope : this
@@ -1106,21 +1099,20 @@
 		}
 
 		function closeWindow(btn) {
-
 			win.close();
 		}
 
 		var win = new Ext.Window({
-			title : 'Cockpit',
-			width : 1250,
-			border : 'false',
-			height : 770,
-			id : 'win',
-			name : 'win',
+			title 		: 'Assertion Screen',
+			width 		: 1250,
+			border 		: 'false',
+			height	 	: 770,
+			id 			: 'win',
+			name 		: 'win',
 			resizable   : false,
-			//style				: 'margin:0 auto;margin-top:100;',
-			bodyStyle : 'background-color:#fff;padding: 10px',
-			autoScroll : true,
+			//style		: 'margin:0 auto;margin-top:100;',
+			bodyStyle	: 'background-color:#fff;padding: 10px',
+			autoScroll 	: true,
 			items : [ {
 				items : [ nameTextFieldContainer, getNewRuleForm(), getNewLabel('<br/><b><font size="3"> Disabled on</font><font size="2"> &nbsp;(24 hour format)</font></b>'),
 							getNewFrequencyForm(), getNewLabel('<br/><b><font size="3"> Communication Via</font></b>'), communicationForm ]
@@ -1135,10 +1127,10 @@
 				iconCls : 'cancel',
 				handler : closeWindow
 			} ]
-		// buttons of the form
 		});
 		win.show();
 	});
+
 </script>
 </body>
 </html>

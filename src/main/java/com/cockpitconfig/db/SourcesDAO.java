@@ -22,18 +22,22 @@ public class SourcesDAO {
 	}
 
 	/**
-	 * Function which retrieves sources from DB to display them on ManageSource Screen, no need to load all sources
+	 * Function which retrieves sources from DB to display them on ManageSource
+	 * Screen, no need to load all sources
 	 * 
 	 * @param tempHashMap
 	 *            Specifies how many sources to load from DB to display
 	 * @return List of sourcs according to tempHashMap
 	 * @throws PersistenceException
 	 */
-	public ArrayList<Sources> getAllSources(HashMap tempHashMap) throws PersistenceException {
+	public ArrayList<Sources> getAllSources(HashMap tempHashMap)
+			throws PersistenceException {
 		ArrayList<Sources> src = null;
 		SqlSession session = sf.openSession();
 		try {
-			src = (ArrayList<Sources>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getSources", tempHashMap);
+			src = (ArrayList<Sources>) session.selectList(
+					"com.cockpitconfig.objects.CommunicationMapper.getSources",
+					tempHashMap);
 			if (src == null) {
 				throw new PersistenceException(); // TODO: Do Better Error
 													// handling
@@ -46,7 +50,8 @@ public class SourcesDAO {
 	}
 
 	/**
-	 * Function which retrieves all sources from DB to show show them on AssertionScreen
+	 * Function which retrieves all sources from DB to show show them on
+	 * AssertionScreen
 	 * 
 	 * @return
 	 * @throws PersistenceException
@@ -55,9 +60,11 @@ public class SourcesDAO {
 		ArrayList<Sources> src = null;
 		SqlSession session = sf.openSession();
 		try {
-			src = (ArrayList<Sources>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getCompleteSourceList");
+			src = (ArrayList<Sources>) session
+					.selectList("com.cockpitconfig.objects.CommunicationMapper.getCompleteSourceList");
 			if (src == null) {
-				throw new PersistenceException(); // TODO: Do Better Error handling
+				throw new PersistenceException(); // TODO: Do Better Error
+													// handling
 			}
 		} finally {
 			session.close();
@@ -76,9 +83,11 @@ public class SourcesDAO {
 		Integer totalNumberOfSources = null;
 		SqlSession session = sf.openSession();
 		try {
-			totalNumberOfSources = (Integer) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getSourceCount");
+			totalNumberOfSources = (Integer) session
+					.selectOne("com.cockpitconfig.objects.CommunicationMapper.getSourceCount");
 			if (totalNumberOfSources == null) {
-				throw new PersistenceException(); // TODO: Do Better Error handling
+				throw new PersistenceException(); // TODO: Do Better Error
+													// handling
 			}
 		} finally {
 			session.close();
@@ -93,11 +102,15 @@ public class SourcesDAO {
 	 * @param selectedUrl
 	 * @throws PersistenceException
 	 */
-	public void removeSelectedSource(String selectedUrl) throws PersistenceException {
+	public void removeSelectedSource(String selectedUrl)
+			throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.selectOne("com.cockpitconfig.objects.CommunicationMapper.removeSource", selectedUrl);
+			session.delete(
+					"com.cockpitconfig.objects.CommunicationMapper.removeSource",
+					selectedUrl);
 		} finally {
+			session.commit();
 			session.close();
 		}
 	}
@@ -112,7 +125,9 @@ public class SourcesDAO {
 	public void addSource(Sources source) throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.insert("com.cockpitconfig.objects.CommunicationMapper.addNewSource", source);
+			session.insert(
+					"com.cockpitconfig.objects.CommunicationMapper.addNewSource",
+					source);
 		} finally {
 			session.commit();
 			session.close();
@@ -131,9 +146,13 @@ public class SourcesDAO {
 		Integer PK;
 		SqlSession session = sf.openSession();
 		try {
-			PK = (Integer) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getPKForGivenSource", source);
+			PK = (Integer) session
+					.selectOne(
+							"com.cockpitconfig.objects.CommunicationMapper.getPKForGivenSource",
+							source);
 			if (PK == null) {
-				throw new PersistenceException(); // TODO: Do Better Error handling
+				throw new PersistenceException(); // TODO: Do Better Error
+													// handling
 			}
 		} finally {
 			session.close();
@@ -145,7 +164,10 @@ public class SourcesDAO {
 		String url = null;
 		SqlSession session = sf.openSession();
 		try {
-			url = (String) session.selectOne("com.cockpitconfig.objects.CommunicationMapper.getSourceUrlForPK", PK);
+			url = (String) session
+					.selectOne(
+							"com.cockpitconfig.objects.CommunicationMapper.getSourceUrlForPK",
+							PK);
 			if (url == null) {
 				throw new PersistenceException();
 			}

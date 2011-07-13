@@ -161,7 +161,7 @@ Ext.onReady(function(){
     store.on({
         'beforeload': {
             fn: function(store, options){
-                options.params || (options.params = {}); //assert params
+                options.params || (options.params = {});
             },
             scope: this
         }
@@ -186,22 +186,25 @@ Ext.onReady(function(){
                 },
 
                 success: function (response) {
-      	          var existRule = Ext.util.JSON.decode(response.responseText);
-	      	      Ext.MessageBox.show ({
-	      	    	  title		: 'Warning!',
-	      	    	  msg		: 'Cannot delete selected source. It is already being used by ' + existRule.ruleName + '.',
-	      	    	  width		: 260,
-	      	    	  buttons	: Ext.MessageBox.OK,
-	      	    	  icon		: Ext.MessageBox.WARNING
-           		  });
-                },
+                	var existRule = Ext.util.JSON.decode(response.responseText);
+                	if (existRule.ruleName == "notExist") {
+                	} else {
+                		Ext.MessageBox.show ({
+	                		title		: 'Warning!',
+	                		msg			: 'Cannot delete selected source. It is already being used by ' + existRule.ruleName + '.',
+	                		width		: 260,
+	                		buttons		: Ext.MessageBox.OK,
+	                		icon		: Ext.MessageBox.WARNING
+	                	});
+                	}
+               	},
 
     			failure: function( r, o ) {
     				alert( "fail: " + r.responseText );
     			},
 
-                scope	: this,
-                callback				:  function () {
+                scope		: this,
+                callback	:  function () {
                 	paging.doRefresh();
                 }
          	});
@@ -209,9 +212,9 @@ Ext.onReady(function(){
      };
 
      var paging = new Ext.PagingToolbar({
-	  store			: store,
-	  pageSize		: 15,
-	  displayInfo	: true
+    	 store			: store,
+    	 pageSize		: 15,
+    	 displayInfo	: true
      });
 
     var grid = new Ext.grid.GridPanel({
@@ -224,34 +227,29 @@ Ext.onReady(function(){
     	autoExpandColumn	: 'topic',
     	style				: 'margin:0 auto;margin-top:100;',
         store				: store,
-        selModel         : new Ext.grid.RowSelectionModel({singleSelect : true}),
+        selModel            : new Ext.grid.RowSelectionModel({singleSelect : true}),
 
         columns: [new Ext.grid.RowNumberer({width: 30}),{
             id			: 'topic',
             header		: "URL",
             dataIndex	: 'url',
             width		: 300,
-            //renderer	: renderTopic,
             sortable	: true
         },{
             header		: "Description",
             dataIndex	: 'description',
             height		: 50,
             width		: 200,
-            //align		: 'right',
-			//renderer	: renderType,
             sortable	: true
         }],
 
         tbar:[{
         	text		: 'Add Source',
-            //tooltip	: 'Add a new source',
             handler 	: getURL,
             iconCls		: 'add'
         }, '-', {
             text		: 'Remove Source',
             handler 	: removeSource,
-            //tooltip	: 'Remove the selected source',
             iconCls		: 'remove'
         }],
 

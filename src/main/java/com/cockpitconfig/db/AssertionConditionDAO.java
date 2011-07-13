@@ -22,15 +22,18 @@ public class AssertionConditionDAO {
 
 	/**
 	 * Function to insert a new rule whenever user adds a new rule
-	 *
+	 * 
 	 * @param tempobj
 	 *            Object to hold the information
 	 * @throws PersistenceException
 	 */
-	public void addNewRule(AssertionCondition tempobj) throws PersistenceException {
+	public void addNewRule(AssertionCondition tempobj)
+			throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.insert("com.cockpitconfig.objects.CommunicationMapper.addRule", tempobj);
+			session.insert(
+					"com.cockpitconfig.objects.CommunicationMapper.addRule",
+					tempobj);
 		} finally {
 			session.commit();
 			session.close();
@@ -39,19 +42,24 @@ public class AssertionConditionDAO {
 
 	/**
 	 * Function to get the row corresponding to given PK
-	 *
+	 * 
 	 * @param grpID
 	 *            PK of the rule
 	 * @return Row containing the information regarding the rule
 	 * @throws PersistenceException
 	 */
-	public ArrayList<AssertionCondition> getRuleRow(int grpID) throws PersistenceException {
+	public ArrayList<AssertionCondition> getRuleRow(int grpID)
+			throws PersistenceException {
 		ArrayList<AssertionCondition> ruleRow = null;
 		SqlSession session = sf.openSession();
 		try {
-			ruleRow = (ArrayList<AssertionCondition>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getRuleInfo", grpID);
+			ruleRow = (ArrayList<AssertionCondition>) session
+					.selectList(
+							"com.cockpitconfig.objects.CommunicationMapper.getRuleInfo",
+							grpID);
 			if (ruleRow == null) {
-				throw new PersistenceException(); // TODO: Do Better Error handling
+				throw new PersistenceException(); // TODO: Do Better Error
+													// handling
 			}
 		} finally {
 			session.close();
@@ -62,7 +70,7 @@ public class AssertionConditionDAO {
 
 	/**
 	 * Removes the rule from the assertionCondition table with the given PK
-	 *
+	 * 
 	 * @param grpID
 	 *            PK of the rule
 	 * @throws PersistenceException
@@ -70,7 +78,9 @@ public class AssertionConditionDAO {
 	public void removeRulesWithID(int grpID) throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.selectList("com.cockpitconfig.objects.CommunicationMapper.deleteRulesWithID", grpID);
+			session.selectList(
+					"com.cockpitconfig.objects.CommunicationMapper.deleteRulesWithID",
+					grpID);
 		} finally {
 			session.close();
 		}

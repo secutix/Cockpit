@@ -60,6 +60,15 @@ public class ManageSourceInfoController extends AbstractController {
 				.getPKForSource(selectedSource));
 		if (ifExists == null) {
 			sourcesDao.removeSelectedSource(selectedSource);
+			response.setContentType("application/json;charset=UTF-8");
+			response.setHeader("Cache-Control", "no-cache");
+			JSONObject jsonResult = new JSONObject();
+
+			ifExists = "notExist";
+			jsonResult.put("ruleName", ifExists);
+
+			response.getWriter().write(jsonResult.toString());
+			response.getWriter().close();
 		} else {
 			response.setContentType("application/json;charset=UTF-8");
 			response.setHeader("Cache-Control", "no-cache");

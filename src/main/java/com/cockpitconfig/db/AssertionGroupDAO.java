@@ -188,17 +188,17 @@ public class AssertionGroupDAO {
 	 * @throws PersistenceException
 	 */
 	public String checkForSource(int pkForSource) throws PersistenceException {
-		ArrayList<AssertionGroup> checkExists = null;
+		String checkExists;
 		SqlSession session = sf.openSession();
 		try {
-			checkExists = (ArrayList<AssertionGroup>) session
-					.selectList(
+			checkExists = (String) session
+					.selectOne(
 							"com.cockpitconfig.objects.CommunicationMapper.checkForGivenSource",
 							pkForSource);
 			if (checkExists == null) {
 				return null;
 			} else {
-				return checkExists.get(0).getConstraintName();
+				return checkExists;
 			}
 		} finally {
 			session.close();
