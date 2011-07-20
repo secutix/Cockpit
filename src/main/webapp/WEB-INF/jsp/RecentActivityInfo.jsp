@@ -140,20 +140,16 @@ Ext.onReady(function(){
             header		: "Date",
             dataIndex	: 'Date',
             width		: 200,
-    		//renderer	: formatDate,
             sortable	: true
         },{
             header		: "Time",
             dataIndex	: 'Time',
             width		: 120,
-            //align		: 'right',
-            //renderer	: renderType,
             sortable	: true
         },{
             header		: "Type",
             dataIndex	: 'Type',
             width		: 120,
-            //align		: 'right',
             renderer	: renderType,
             sortable	: true
         },{
@@ -161,7 +157,6 @@ Ext.onReady(function(){
             header		: "Description:  [RuleName] | Cause",
             dataIndex	: 'Description',
             width		: 400,
-            //renderer	: renderLast,
             sortable	: true
         }],
 

@@ -118,6 +118,6 @@ drop table if exists COMMUNICATIONVIAEMAIL;
 create table COMMUNICATIONVIAEMAIL (
 		COMMEMAIL_PK int not null AUTO_INCREMENT primary key,
 		ASSGROUP_ID int not null,
-		EMAILRECIPENTS varchar(255),
+		EMAILRECIPIENT varchar(255),
 		foreign key (ASSGROUP_ID) references ASSERTIONGROUP(ASSERTION_PK) on delete cascade
 );

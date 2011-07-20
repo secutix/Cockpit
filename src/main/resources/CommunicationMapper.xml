@@ -37,7 +37,7 @@
  <resultMap id="CommunicationViaEmailResultMap" type="CommunicationViaEmail">
  	<id property="id" column="COMMEMAIL_PK" />
  	<result property="assertionGroupID" column="ASSGROUP_ID" />
- 	<result property="recipents" column="EMAILRECIPENTS" />
+ 	<result property="recipents" column="EMAILRECIPIENT" />
  </resultMap>
 
  <resultMap id="SourcesResultMap" type="Sources">
@@ -136,6 +136,10 @@
  	  SELECT LABEL FROM assertiongroup WHERE SOURCE = (#{source}) LIMIT 1
  </select>
 
+<select id="getCommID" parameterType="int" resultMap="MyInteger">
+ 	  SELECT COMMUNICATION_ID FROM assertiongroup where ASSERTION_PK = (#{id})
+ </select>
+
  <select id="getSourceKeyForGivenConstraint" parameterType="String" resultMap="MyInteger">
  	  SELECT SOURCE FROM assertiongroup WHERE LABEL = (#{constraintName})
  </select>
@@ -150,6 +154,10 @@
 
  <select id="getEmailRowInfo" parameterType="CommunicationViaEmail" resultMap="CommunicationViaEmailResultMap">
  	  select * from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
+ </select>
+
+ <select id="getEmailRecipient" parameterType="int" resultMap="MyString">
+ 	  select EMAILRECIPIENT from communicationviaemail where ASSGROUP_ID = (#{assertionGroupID})
  </select>
 
  <select id="getSources" parameterType="map" resultMap="SourcesResultMap">
@@ -214,7 +222,7 @@
  </insert>
 
  <insert id="addRecipients" parameterType="CommunicationViaEmail">
- 	  insert into communicationviaemail (ASSGROUP_ID, EMAILRECIPENTS)
+ 	  insert into communicationviaemail (ASSGROUP_ID, EMAILRECIPIENT)
  	  VALUES
  	  (#{assertionGroupID}, #{recipents})
  </insert>

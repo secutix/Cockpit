@@ -1,6 +1,7 @@
 package com.cockpitconfig.schedulars;
 
 import java.util.Properties;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -11,8 +12,9 @@ import javax.mail.internet.MimeMessage;
 
 public class CommunicationEmail {
 
-	// use http://www.quartz-scheduler.org/docs/tutorial/TutorialLesson02.html to receive email address and email text
-	public void sendEmail (String recipent, String emailText) {
+	// use http://www.quartz-scheduler.org/docs/tutorial/TutorialLesson02.html
+	// to receive email address and email text
+	public static void sendEmail(String recipent, String emailText) {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
@@ -22,19 +24,23 @@ public class CommunicationEmail {
 		props.put("mail.smtp.port", "465");
 
 		Session session = Session.getDefaultInstance(props,
-			new javax.mail.Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication("username","password");	//Username and Password
-				}
-			});
+				new javax.mail.Authenticator() {
+					@Override
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(
+								"alokgupta3010@gmail.com", "innoparkinterview"); // Username
+																					// and
+																					// Password
+					}
+				});
 
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("myemailID@gmail.com"));
+			message.setFrom(new InternetAddress("diwakar.sapan@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(recipent));
-			message.setSubject("DONE");
+			message.setSubject("Cockpit Notification");
 			message.setText(emailText);
 
 			Transport.send(message);

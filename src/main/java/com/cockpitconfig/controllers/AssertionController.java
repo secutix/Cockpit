@@ -582,13 +582,12 @@ public class AssertionController extends AbstractController {
 
 		// Retrieve values from AssertionGroup Table Table
 		AssertionGroupDAO agDao = new AssertionGroupDAO(sf);
-		ArrayList<AssertionGroup> grpInfo = agDao.getGrpRow(grpID);
-		int communicationMedium = grpInfo.get(0).getCommunicationID();
+		int communicationMedium = agDao.getCommunicationID(grpID);
 		SourcesDAO src = new SourcesDAO(sf);
 		String existSource = src.getSourceUrlForGivenPK(agDao
 				.getSourceKeyForGivenRule(existingRuleName));
 
-		String recipent;
+		String recipient;
 
 		response.setContentType("application/json;charset=UTF-8");
 		response.setHeader("Cache-Control", "no-cache");
@@ -596,14 +595,13 @@ public class AssertionController extends AbstractController {
 
 		jsonResult.put("communicationVia", communicationMedium);
 		jsonResult.put("existSource", existSource);
-		// If communication MEdium is Email
+
+		// If communication Medium is Email
 		if (communicationMedium == 0) {
 			// Retrieve values from CommunicationViaEmail Table
 			CommunicationViaEmailDAO emailDao = new CommunicationViaEmailDAO(sf);
-			ArrayList<CommunicationViaEmail> emailInfo = emailDao
-					.getEmailRow(grpID);
-			recipent = emailInfo.get(0).getRecipents();
-			jsonResult.put("recipent", recipent);
+			recipient = emailDao.getrecipient(grpID);
+			jsonResult.put("recipent", recipient);
 		}
 
 		// Sending Value to Client as JSON Object

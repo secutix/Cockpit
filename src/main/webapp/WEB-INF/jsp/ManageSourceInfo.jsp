@@ -19,7 +19,6 @@ Ext.onReady(function(){
     var getUrlTextField = function (){
     	return new Ext.form.TextField({
 			border			: false,
-			fieldLabel		: 'Name',
 			name			: 'first',
 			//id			: 'id-name',
 			emptyText		: 'Enter URL',
@@ -233,6 +232,7 @@ Ext.onReady(function(){
             id			: 'topic',
             header		: "URL",
             dataIndex	: 'url',
+            cls			: 'wordwrap',
             width		: 300,
             sortable	: true
         },{

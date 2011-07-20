@@ -28,13 +28,18 @@ public class CommunicationViaEmailDAO {
 	 * @return
 	 * @throws PersistenceException
 	 */
-	public ArrayList<CommunicationViaEmail> getEmailRow(int grpID) throws PersistenceException {
+	public ArrayList<CommunicationViaEmail> getEmailRow(int grpID)
+			throws PersistenceException {
 		ArrayList<CommunicationViaEmail> recipents = null;
 		SqlSession session = sf.openSession();
 		try {
-			recipents = (ArrayList<CommunicationViaEmail>) session.selectList("com.cockpitconfig.objects.CommunicationMapper.getEmailRowInfo", grpID);
+			recipents = (ArrayList<CommunicationViaEmail>) session
+					.selectList(
+							"com.cockpitconfig.objects.CommunicationMapper.getEmailRowInfo",
+							grpID);
 			if (recipents == null) {
-				throw new PersistenceException(); // TODO: Do Better Error handling
+				throw new PersistenceException(); // TODO: Do Better Error
+													// handling
 			}
 		} finally {
 			session.close();
@@ -50,10 +55,13 @@ public class CommunicationViaEmailDAO {
 	 *            PK of the rule
 	 * @throws PersistenceException
 	 */
-	public void removeEmailRecipentWithID(int grpID) throws PersistenceException {
+	public void removeEmailRecipentWithID(int grpID)
+			throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.selectList("com.cockpitconfig.objects.CommunicationMapper.removeEmailRecipentWithGivenID", grpID);
+			session.selectList(
+					"com.cockpitconfig.objects.CommunicationMapper.removeEmailRecipentWithGivenID",
+					grpID);
 		} finally {
 			session.close();
 		}
@@ -65,13 +73,34 @@ public class CommunicationViaEmailDAO {
 	 * @param viaEmail
 	 * @throws PersistenceException
 	 */
-	public void addEmailRecipients(CommunicationViaEmail viaEmail) throws PersistenceException {
+	public void addEmailRecipients(CommunicationViaEmail viaEmail)
+			throws PersistenceException {
 		SqlSession session = sf.openSession();
 		try {
-			session.insert("com.cockpitconfig.objects.CommunicationMapper.addRecipients", viaEmail);
+			session.insert(
+					"com.cockpitconfig.objects.CommunicationMapper.addRecipients",
+					viaEmail);
 		} finally {
 			session.commit();
 			session.close();
 		}
+	}
+
+	public String getrecipient(int grpID) throws PersistenceException {
+		String recipient;
+		SqlSession session = sf.openSession();
+		try {
+			recipient = (String) session
+					.selectOne(
+							"com.cockpitconfig.objects.CommunicationMapper.getEmailRecipient",
+							grpID);
+			if (recipient == null) {
+				throw new PersistenceException();
+			}
+		} finally {
+			session.close();
+		}
+
+		return recipient;
 	}
 }

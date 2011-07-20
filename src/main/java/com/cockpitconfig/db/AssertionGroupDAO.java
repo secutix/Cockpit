@@ -285,4 +285,20 @@ public class AssertionGroupDAO {
 			session.close();
 		}
 	}
+
+	public int getCommunicationID(int grpID) throws PersistenceException {
+		SqlSession session = sf.openSession();
+		Integer communicationID;
+		try {
+			communicationID = (Integer) session.selectOne(
+					"com.cockpitconfig.objects.CommunicationMapper.getCommID",
+					grpID);
+			if (communicationID == null) {
+				throw new PersistenceException();
+			}
+		} finally {
+			session.close();
+		}
+		return communicationID.intValue();
+	}
 }
