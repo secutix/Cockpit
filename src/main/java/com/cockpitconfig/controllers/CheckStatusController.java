@@ -793,36 +793,38 @@ public class CheckStatusController {
 		notiOccurrence.setTimeOccur(curentTime);
 		notiOccurrence.setDateOccur(currentDate);
 		notiOccurrence.setType(alertType);
+
+		String text = "";
 		switch (descriptionIndex) {
 		case 1:
-			notiOccurrence.setDescription("[" + constraintName
-					+ "] | Stream index " + assertionIndex + " (" + value
-					+ ") = " + maxValue);
+			text = "[" + constraintName + "] | Stream index " + assertionIndex
+					+ " (" + value + ") = " + maxValue;
+			notiOccurrence.setDescription(text);
 			break;
 		case 2:
-			notiOccurrence.setDescription("[" + constraintName
-					+ "] | Stream index " + assertionIndex + " (" + value
-					+ ") > " + maxValue);
+			text = "[" + constraintName + "] | Stream index " + assertionIndex
+					+ " (" + value + ") > " + maxValue;
+			notiOccurrence.setDescription(text);
 			break;
 		case 3:
-			notiOccurrence.setDescription("[" + constraintName
-					+ "] | Stream index " + assertionIndex + " (" + value
-					+ ") < " + maxValue);
+			text = "[" + constraintName + "] | Stream index " + assertionIndex
+					+ " (" + value + ") < " + maxValue;
+			notiOccurrence.setDescription(text);
 			break;
 		case 4:
-			notiOccurrence.setDescription("[" + constraintName
-					+ "] | Stream index " + assertionIndex + " (" + value
-					+ ") = " + maxValue);
+			text = "[" + constraintName + "] | Stream index " + assertionIndex
+					+ " (" + value + ") = " + maxValue;
+			notiOccurrence.setDescription(text);
 			break;
 		case 5:
-			notiOccurrence.setDescription("[" + constraintName
-					+ "] | Stream index " + assertionIndex + " (" + value
-					+ ") > " + maxValue);
+			text = "[" + constraintName + "] | Stream index " + assertionIndex
+					+ " (" + value + ") > " + maxValue;
+			notiOccurrence.setDescription(text);
 			break;
 		case 6:
-			notiOccurrence.setDescription("[" + constraintName
-					+ "] | Stream index " + assertionIndex + " (" + value
-					+ ") < " + maxValue);
+			text = "[" + constraintName + "] | Stream index " + assertionIndex
+					+ " (" + value + ") < " + maxValue;
+			notiOccurrence.setDescription(text);
 			break;
 		default:
 			break;
@@ -835,7 +837,7 @@ public class CheckStatusController {
 
 		CommunicationViaEmailDAO commuDAO = new CommunicationViaEmailDAO(sf);
 		CommunicationEmail.sendEmail(commuDAO.getrecipient(assertionGroupID),
-				"s");
+				text);
 	}
 
 	/**
