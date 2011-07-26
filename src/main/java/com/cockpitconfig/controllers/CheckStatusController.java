@@ -445,7 +445,7 @@ public class CheckStatusController {
 
 		for (int j = 0; j < valueList.length; j = j + increamentSize) {
 			if (!isDisabled(header, constrainedTime, j)
-					&& valueList[j].equals("None") == false) {
+					|| valueList[j].equals("None") == false) {
 				String s = valueList[j].substring(0, valueList[j].indexOf("."));
 				BigInteger dataValue = new BigInteger(s);
 				int checkCondition = maxValue.compareTo(dataValue);
@@ -484,7 +484,7 @@ public class CheckStatusController {
 
 		for (int j = 0; j < valueList.length; j = j + increamentSize) {
 			if (!isDisabled(header, constrainedTime, j)
-					&& valueList[j].equals("None") == false) {
+					|| valueList[j].equals("None") == false) {
 				String s = valueList[j].substring(0, valueList[j].indexOf("."));
 				BigInteger dataValue = new BigInteger(s);
 				int checkCondition = dataValue.compareTo(minValue);
@@ -523,7 +523,7 @@ public class CheckStatusController {
 
 		for (int j = 0; j < valueList.length; j = j + increamentSize) {
 			if (!isDisabled(header, constrainedTime, j)
-					&& valueList[j].equals("None") == false) {
+					|| valueList[j].equals("None") == false) {
 				String s = valueList[j].substring(0, valueList[j].indexOf("."));
 				BigInteger dataValue = new BigInteger(s);
 				int checkCondition = maxValue.compareTo(dataValue);
@@ -580,8 +580,8 @@ public class CheckStatusController {
 		for (int j = 0; j < valueList.length - increamentSize; j = j
 				+ increamentSize) {
 			if (!isDisabled(header, constrainedTime, j)
-					&& valueList[j + increamentSize].equals("None") == false
-					&& valueList[j].equals("None") == false) {
+					|| valueList[j + increamentSize].equals("None") == false
+					|| valueList[j].equals("None") == false) {
 				String s1 = valueList[j + increamentSize].substring(0,
 						valueList[j + increamentSize].indexOf("."));
 				String s0 = valueList[j]
@@ -649,8 +649,8 @@ public class CheckStatusController {
 		for (int j = 0; j < valueList.length - increamentSize; j = j
 				+ increamentSize) {
 			if (!isDisabled(header, constrainedTime, j)
-					&& valueList[j + increamentSize].equals("None") == false
-					&& valueList[j].equals("None") == false) {
+					|| valueList[j + increamentSize].equals("None") == false
+					|| valueList[j].equals("None") == false) {
 				String s1 = valueList[j + increamentSize].substring(0,
 						valueList[j + increamentSize].indexOf("."));
 				String s0 = valueList[j]
@@ -718,8 +718,8 @@ public class CheckStatusController {
 		for (int j = 0; j < valueList.length - increamentSize; j = j
 				+ increamentSize) {
 			if (!isDisabled(header, constrainedTime, j)
-					&& valueList[j + increamentSize].equals("None") == false
-					&& valueList[j].equals("None") == false) {
+					|| valueList[j + increamentSize].equals("None") == false
+					|| valueList[j].equals("None") == false) {
 				String s1 = valueList[j + increamentSize].substring(0,
 						valueList[j + increamentSize].indexOf("."));
 				String s0 = valueList[j]
@@ -850,6 +850,7 @@ public class CheckStatusController {
 	 */
 	private boolean isDisabled(String header,
 			ArrayList<TimeConstraints> constrainedTime, int index) {
+
 		String[] headerList = header.split(",");
 		String startTime = headerList[0];
 		// String endTime = headerList[1];

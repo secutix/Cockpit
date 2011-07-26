@@ -41,7 +41,7 @@ public class AssertionController extends AbstractController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView("AssertionScreen", "AssertRules",
-				"A"); // TODO: last argument is message
+				"A");
 		handleFormSubmission(request, mav);
 
 		// Following parameters would be received by AJAX Request when user
