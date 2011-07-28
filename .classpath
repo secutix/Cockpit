@@ -1,0 +1,43 @@
+<classpath>
+  <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
+  <classpathentry kind="src" path="src/test/resources" output="target/test-classes" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/javax/mail/javamail/1.4/javamail-1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/servlet/jstl/1.2/jstl-1.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.1/jta-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/c3p0/c3p0/0.9.1.1/c3p0-0.9.1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-core/2.5.0/camel-core-2.5.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-quartz/2.5.0/camel-quartz-2.5.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-stream/2.5.0/camel-stream-2.5.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2/commons-collections-3.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/fusesource/commonman/commons-management/1.0/commons-management-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/biz/minaret/log4j/datedFileAppender/1.0.2/datedFileAppender-1.0.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/ezmorph/ezmorph/1.0.3/ezmorph-1.0.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-core-asl/1.8.2/jackson-core-asl-1.8.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-mapper-asl/1.8.2/jackson-mapper-asl-1.8.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/json-lib/json-lib/2.1/json-lib-2.1-jdk15.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/4.4/junit-4.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.16/log4j-1.2.16.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mybatis/mybatis/3.0.4/mybatis-3.0.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/quartz-scheduler/quartz/2.0.1/quartz-2.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.6.1/slf4j-log4j12-1.6.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.0.5.RELEASE/spring-aop-3.0.5.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-asm/3.0.5.RELEASE/spring-asm-3.0.5.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/3.0.5.RELEASE/spring-beans-3.0.5.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/3.0.0.RELEASE/spring-context-3.0.0.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/3.0.5.RELEASE/spring-core-3.0.5.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-expression/3.0.0.RELEASE/spring-expression-3.0.0.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/3.0.0.RELEASE/spring-web-3.0.0.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/3.0.0.RELEASE/spring-webmvc-3.0.0.RELEASE.jar"/>
+  <classpathentry kind="lib" path="C:/jdk1.6.0_13/lib/tools.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+</classpath>
